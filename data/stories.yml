@@ -1,0 +1,28 @@
+version: "3.1"
+
+stories:
+- story: User greets and asks for help
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_help
+  - action: utter_ask_help
+
+- story: User asks about submission
+  steps:
+  - intent: ask_public_service_submission
+  - action: utter_ask_public_service_submission
+  - intent: go_back
+  - action: utter_ask_help
+
+- story: User asks unknown question
+  steps:
+  - intent: fallback
+  - action: utter_fallback
+  - intent: go_back
+  - action: utter_ask_help
+  
+- story: User asks about confirmation
+  steps:
+  - intent: ask_public_service_confirmation
+  - action: utter_ask_public_service_confirmation

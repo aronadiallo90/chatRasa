@@ -1,0 +1,13 @@
+{
+  "0": "ask_account_creation",
+  "1": "ask_help",
+  "2": "ask_hours",
+  "3": "ask_login",
+  "4": "ask_public_service_application",
+  "5": "ask_public_service_confirmation",
+  "6": "ask_public_service_documents",
+  "7": "ask_public_service_steps",
+  "8": "ask_public_service_submission",
+  "9": "ask_tutorial_link",
+  "10": "greet"
+}

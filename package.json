@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@rasahq/chat-widget-react": "^0.1.5"
+  }
+}
