@@ -1,0 +1,364 @@
+﻿REPUBLIQUE DU SENEGAL
+                                                    Un Peuple – Un But – Une Foi
+
+
+              -----------
+  
+
+
+
+                   MINISTÈRE DE LA FONCTION PUBLIQUE 
+                               ET DE LA RÉFORME DU SERVICE PUBLIC
+
+
+                                        -----------
+
+
+
+
+Guide d’utilisation de la plateforme E-carrière
+
+
+
+
+
+
+
+
+
+
+
+
+Introduction
+Dans un monde en pleine transformation numérique, la modernisation des services publics est devenue une nécessité pour améliorer l’efficacité administrative et la satisfaction des usagers. Conscient de cet enjeu, le Ministère de la Fonction Publique et de la Réforme du Service Public a mis en place E-Carrière, une plateforme numérique dédiée aux agents de l’État sénégalais.
+Cette initiative vise à simplifier et digitaliser la gestion des carrières en permettant aux fonctionnaires de suivre, en temps réel, l’évolution de leurs actes administratifs. Grâce à cet outil, les agents peuvent accéder à leurs informations professionnelles et recevoir des notifications sur des mises à jour importantes, tout en gagnant en autonomie dans leurs démarches.
+En offrant un accès facilité aux données administratives, E-Carrière contribue à une meilleure organisation du parcours professionnel des agents de l’État et s’inscrit dans une dynamique de modernisation de nos  services publics.
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I. Présentation de la plateforme E-Carrière
+*  À qui est destinée la plateforme E-Carrière ?
+La plateforme E-Carrière est spécialement conçue pour les agents de l’État administrés par la Fonction Publique. Elle s’adresse à tous les fonctionnaires, mais également aux agents contractuels du Ministère de l’Éducation nationale.
+L’objectif est d’accompagner chaque agent tout au long de son parcours professionnel, en lui offrant un accès rapide et sécurisé à ses informations administratives.
+II. Comment accéder à son compte  E-carrière 
+
+
+Scénario 1 : Activation personnelle du compte sur la plateforme E-Carrière
+L’agent peut directement activer son compte via la plateforme en suivant ces étapes :
+1. Accéder à la plateforme
+   * Se rendre sur le site officiel de E-Carrière en cliquant sur ce lien :
+👉 https://e-carriere.sec.gouv.sn/#/login
+  
+
+
+
+
+
+
+
+   2. Activer son compte 
+Une fois sur la page d’accueil, repérer et cliquer sur l’option "Activation compte".
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   3. Saisir les informations demandées, telles que :
+NB: Matricule (le matricule de l’agent doit être saisi sans le ‘/’. Par exemple, si le matricule est 700200/A, il faudra saisir 700200A).
+ Le numéro de téléphone doit être saisi sans tiret (-), sans slash (/) et sans espace.
+✅ Exemple correct : 771234567
+❌ Exemples incorrects : 77-123-4567, 77/123/4567, 77 123 4567
+
+
+  
+
+
+
+
+
+
+
+
+
+Si les informations saisies correspondent à celles enregistrées par la Fonction Publique, l’activation du compte est validée avec succès. Un message de confirmation sera alors envoyé à l’agent par e-mail et via WhatsApp. Ce message contiendra également un premier mot de passe généré automatiquement, que l’agent pourra modifier dès sa première connexion pour plus de sécurité.
+
+
+
+
+
+
+
+
+Message Email:
+  
+
+
+
+
+
+
+
+Message whatsapp:
+  
+
+Une fois ces messages reçus, l’agent peut retourner à la page de connexion et accéder à son compte en utilisant son matricule et le mot de passe temporaire fourni.
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dès que ces informations sont renseignées et validées, l’agent sera en mesure d’accéder à son espace personnel.
+  
+
+
+
+Scénario 2 : Activation automatique du compte
+Dans le but de faciliter l’accès des agents à la plateforme E-Carrière, une activation automatique des comptes est mise en place. Cette méthode permet d’activer les comptes par lots, sans que chaque agent ait à effectuer manuellement le processus d’activation.
+A-Déroulement de l’activation automatique :
+   1. Activation en masse des comptes
+   * La Fonction Publique procède à l’activation automatique des comptes des agents en se basant sur les informations déjà enregistrées dans ses bases de données.
+   * Cette activation se fait par lots, permettant de traiter un grand nombre d’agents simultanément.
+   2. Notification de l’activation
+   * Une fois le compte activé, l’agent reçoit un message de confirmation par SMS et sur WhatsApp.
+   * Ce message contient les identifiants de connexion (matricule et mot de passe temporaire) ainsi que le lien d’accès à la plateforme.
+  
+
+
+
+
+
+Dans ces cas le mot de passe par défaut est passer et l’agent est invité à modifier son mot de passe dès sa première connexion
+🔹 NB : Le nouveau mot de passe doit contenir au moins 8 caractères, incluant au moins une majuscule, une minuscule et un chiffre.
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+une fois le mot de passe saisi , l’agent aura accès à son espace personnel 
+  
+
+
+
+III - Fonctionnalités de la plateforme
+1. Suivi de l’évolution des actes administratifs
+La plateforme E-Carrière permet aux agents de suivre en temps réel l’état d’avancement de leurs projets d’actes administratifs ( avancement, titularisation, mise en disponibilité, etc.).
+📌 comment suivre un projet d’acte :
+   * il doit se rendre dans l’onglet "Mes Projets", car toute situation administrative initiée est considérée comme un projet d’acte.
+   * Un projet d’acte suit un parcours administratif avant de devenir un acte officiel.
+  
+
+
+
+
+
+2. Téléchargement des actes administratifs
+La plateforme E-Carrière permet aux agents d’accéder à leurs documents officiels en toute simplicité et de les télécharger directement depuis leur espace personnel.
+📌 Comment accéder aux documents officiels ?
+   * Une fois un acte administratif validé et finalisé, il est automatiquement disponible dans l’espace personnel de l’agent.
+   * Pour consulter ses différents actes, l’agent doit se rendre dans l’onglet "Mes Actes".
+  pour télécharger un acte on clique sur visualiser puis sur l’icone de téléchargement 
+
+
+3. Dépôt et suivi des réclamations
+   * Les agents peuvent soumettre une réclamation en cas d’anomalie sur leurs actes ou leur situation administrative.
+pour ce faire si il faut d’abord cliquez que les 3 barres latérales à gauche en haut pour ensuite allez dans réclamation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1- 
+  
+
+2-
+  
+
+
+
+
+
+
+
+L’agent doit obligatoirement renseigner les informations suivantes :
+1️⃣ Objet de la réclamation
+   * Sélectionner l’objet dans la liste déroulante (exemple : erreur sur un acte, retard de validation, etc.).
+2️⃣ Explication détaillée
+   * Rédiger un message clair expliquant le problème rencontré.
+3️⃣ Télécharger une pièce justificative 📎 (Format : PDF, PNG ou JPEG)
+   * ⚠️ Sans pièce justificative, la réclamation risque d’être classée sans suite.
+4️⃣ Valider la demande 
+   * En cliquant sur "Soumettre", l’agent envoie sa demande.
+
+
+  
+
+
+
+
+
+
+
+
+
+IV- changement des mot de passe 
+1️⃣ Modification du Mot de Passe
+Si l’agent souhaite modifier son mot de passe, il peut le faire directement depuis son espace personnel :
+   1. Se connecter à E-Carrière.
+   2. Accéder à son profil.
+   3. Cliquer sur "Modifier mon mot de passe".
+   4. Saisir l’ancien mot de passe, puis le nouveau mot de passe.
+   5. Valider la modification.
+
+
+2️⃣ Réinitialisation en cas d’oubli du mot de passe
+Si l’agent a oublié son mot de passe, il peut en demander un nouveau en suivant ces étapes :
+   1. Se rendre sur la page de connexion.
+   2. Cliquer sur "Mot de passe oublié ?".
+   3. Saisir son adresse email associée à son compte.
+   4. Recevoir un email et un message whatsapp contenant un lien de réinitialisation.
+   5. Cliquer sur le lien reçu, saisir un nouveau mot de passe, et confirmer.
+✅ Une fois réinitialisé, l’agent pourra se connecter avec son nouveau mot de passe.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1-
+  
+
+2-
+  
+
+
+
+
+
+
+
+3-
+reception par mail
+  
+
+
+
+ou reception par whatsapp  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Perspectives et Conclusion 
+Cette plateforme représente une avancée majeure dans la digitalisation des services administratifs pour les agents de l’État. En centralisant l’accès aux actes administratifs, en facilitant le suivi des demandes et en optimisant la communication avec les usagers , elle modernise la gestion des carrières dans la fonction publique.
+Toutefois, plusieurs améliorations et évolutions sont en cours afin d'optimiser l’expérience utilisateur et de renforcer l’efficacité du service.

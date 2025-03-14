@@ -14,6 +14,7 @@ intents:
   - ask_public_service_confirmation
   - fallback  
   - go_back  
+  - ask_document_info
 
 entities:
   - service
@@ -21,17 +22,27 @@ entities:
 
 
 responses:
+  utter_no_info:
+    - text: "Désolé, je n’ai pas trouvé d’information pertinente dans mes documents."
+      buttons:
+            - title: "Retour"
+              payload: "/ask_help"
+
+
+    
   utter_ask_public_service_confirmation:
     - text: "Une fois votre candidature soumise, vous recevrez une confirmation par email."
       buttons:
         - title: "Retour"
           payload: "/go_back"
+        
 
   utter_greet:
     - text: "Bonjour, comment puis-je vous aider ?"
       buttons:
         - title: "Obtenir de l'aide"
           payload: "/ask_help"
+        
 
   utter_ask_help:
     - text: "Voici les options disponibles :"
@@ -49,6 +60,13 @@ responses:
 
   utter_ask_hours:
     - text: "Nos horaires sont du lundi au vendredi de 9h à 16h."
+
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+        - title: "Retour"
+          payload: "/ask_help"
+
 
   utter_ask_account_creation:
     - text: "Pour créer un compte, rendez-vous sur notre site,\ncliquez sur 'Créer un compte' et suivez les instructions.\n\nVoici un tutoriel : [lien du tutoriel]"
@@ -104,3 +122,4 @@ responses:
 actions:
   - action_ask_help
   - action_test
+  - action_retrieve_answer

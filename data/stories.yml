@@ -21,8 +21,13 @@ stories:
   - action: utter_fallback
   - intent: go_back
   - action: utter_ask_help
-  
+
 - story: User asks about confirmation
   steps:
   - intent: ask_public_service_confirmation
   - action: utter_ask_public_service_confirmation
+- story: User goes back
+  steps:
+  - intent: go_back
+  - action: utter_ask_help
+

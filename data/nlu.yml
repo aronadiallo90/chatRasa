@@ -1,5 +1,20 @@
 version: "3.1"
 nlu:
+  - intent: ask_document_info
+    examples: |
+      - Peux-tu me donner des infos sur [les horaires]{"entity": "service"}
+      - J’aimerais en savoir plus sur [les tarifs](service)
+      - Où puis-je trouver des informations sur [la création de compte](service) ?
+      - Quels sont les documents nécessaires pour [la fonction publique](service) ?
+      - Je veux des détails sur [le dossier à soumettre](service)
+      - Quels sont les [horaires](service) d’ouverture ?
+      - Je veux tout savoir sur [le tutoriel](service)
+      - Comment fonctionne [le chatbot](service) ?
+      - Explique-moi comment faire une [inscription](service)
+      - Quelle est la procédure d'[inscription](service) pour un [étudiant](user_type) ?
+      - Comment [un professionnel](user_type) peut-il s’inscrire ?
+      - Comment les [étudiants](user_type) peuvent s’enregistrer ?
+
   - intent: greet
     examples: |
       - Bonjour
@@ -67,10 +82,11 @@ nlu:
       - Quand recevrai-je la confirmation de ma candidature ?
       - Vais-je recevoir un email de confirmation ?
       - Comment savoir si ma candidature a bien été reçue ?
-      
+
   - intent: fallback
     examples: |
       - Je ne comprends pas
       - C'est quoi ?
       - Pouvez-vous répéter ?
       - Je ne sais pas
+  
