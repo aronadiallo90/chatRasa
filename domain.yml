@@ -62,8 +62,7 @@ responses:
     - text: "Nos horaires sont du lundi au vendredi de 9h à 16h."
 
       buttons:
-        - title: "Retour"
-          payload: "/go_back"
+        
         - title: "Retour"
           payload: "/ask_help"
 

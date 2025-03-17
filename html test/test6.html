@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Rasa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 350px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-header h2 {
+            font-size: 16px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-header span {
+            color: green;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .chat-header .refresh {
+            cursor: pointer;
+            color: red;
+            font-size: 18px;
+        }
+
+        .chat-box {
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .bot-message {
+            background: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 75%;
+        }
+
+        .user-message {
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 75%;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+
+        .chat-input button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .option-btn {
+            border: 1px solid #007bff;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        .option-btn:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            padding: 5px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h2>🤖 Chatbot <span>online</span></h2>
+        <div class="refresh" onclick="location.reload()">🔄</div>
+    </div>
+    
+    <div class="chat-box" id="chatBox">
+        <div class="message bot-message">Hello 👋</div>
+        <div class="message bot-message">I am Mr. Chatbot</div>
+        <div class="message bot-message">How can I help you?</div>
+        <div class="options" id="optionsContainer"></div>
+    </div>
+
+    <div class="chat-input">
+        <input type="text" id="userMessage" placeholder="Tapez votre message..." />
+        <button onclick="sendMessage()">Envoyer</button>
+    </div>
+
+    <div class="footer">powered by @webhub</div>
+</div>
+
+<script>
+    function sendMessage(text = null) {
+        const userMessageInput = document.getElementById('userMessage');
+        const chatBox = document.getElementById('chatBox');
+        const optionsContainer = document.getElementById('optionsContainer');
+
+        const userMessage = text || userMessageInput.value.trim();
+        if (!userMessage) return;
+
+        // Ajouter le message utilisateur à l'interface
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'message user-message';
+        userMessageDiv.innerText = userMessage;
+        chatBox.appendChild(userMessageDiv);
+
+        // Effacer l'input
+        userMessageInput.value = "";
+
+        // Supprimer les anciennes options
+        optionsContainer.innerHTML = "";
+
+        // Appel à l'API Rasa
+        fetch("http://localhost:5005/webhooks/rest/webhook", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sender: "test_user", message: userMessage })
+        })
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(res => {
+                if (res.text) {
+                    // Ajouter le message du bot
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'message bot-message';
+                    botMessageDiv.innerText = res.text;
+                    chatBox.appendChild(botMessageDiv);
+                }
+
+                if (res.custom && res.custom.options) {
+                    // Ajouter des boutons dynamiques
+                    res.custom.options.forEach(option => {
+                        const button = document.createElement('button');
+                        button.className = 'option-btn';
+                        button.innerText = option;
+                        button.onclick = () => sendMessage(option);
+                        optionsContainer.appendChild(button);
+                    });
+                }
+            });
+
+            // Faire défiler vers le bas
+            chatBox.scrollTop = chatBox.scrollHeight;
+        })
+        .catch(error => console.error("Erreur:", error));
+    }
+</script>
+
+</body>
+</html>

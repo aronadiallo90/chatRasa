@@ -58,12 +58,15 @@ rules:
   - action: utter_fallback
 
 
-- rule: Répondre à une question avec un document
-  steps:
-  - intent: ask_document_info
-  - action: action_retrieve_answer
+
 
 - rule: Répondre avec le document via LLaMA
   steps:
   - intent: ask_document_info
   - action: action_retrieve_answer
+
+- rule: Rediriger `nlu_fallback` vers `action_retrieve_answer`
+  steps:
+  - intent: nlu_fallback
+  - action: action_retrieve_answer
+

@@ -1,0 +1,356 @@
+2025-03-17 09:49:29 DEBUG    rasa.core.lock_store  - Deleted lock for conversation 'user'.
+2025-03-17 09:50:05 DEBUG    rasa.core.lock_store  - Issuing ticket for conversation 'user'.
+2025-03-17 09:50:05 DEBUG    rasa.core.lock_store  - Acquiring lock for conversation 'user'.
+2025-03-17 09:50:05 DEBUG    rasa.core.lock_store  - Acquired lock for conversation 'user'.
+2025-03-17 09:50:05 DEBUG    rasa.core.tracker_store  - Recreating tracker for id 'user'
+2025-03-17 09:50:05 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__message__': [<rasa.core.channels.channel.UserMessage object at 0x000001F095F5F550>], '__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x000001F095F5F0A0>}, targets: ['run_RegexMessageHandler'] and ExecutionContext(model_id='8ff19192386a4612be03b1cbb03413c3', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'nlu_message_converter' running 'NLUMessageConverter.convert_user_message'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_WhitespaceTokenizer0' running 'WhitespaceTokenizer.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_RegexFeaturizer1' running 'RegexFeaturizer.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_LexicalSyntacticFeaturizer2' running 'LexicalSyntacticFeaturizer.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_CountVectorsFeaturizer3' running 'CountVectorsFeaturizer.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_CountVectorsFeaturizer4' running 'CountVectorsFeaturizer.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_DIETClassifier5' running 'DIETClassifier.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_EntitySynonymMapper6' running 'EntitySynonymMapper.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_ResponseSelector7' running 'ResponseSelector.process'.
+2025-03-17 09:50:05 DEBUG    rasa.nlu.classifiers.diet_classifier  - There is no trained model for 'ResponseSelector': The component is either not trained or didn't receive enough training data.
+2025-03-17 09:50:05 DEBUG    rasa.nlu.selectors.response_selector  - Adding following selector key to message property: default
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_FallbackClassifier8' running 'FallbackClassifier.process'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_RegexMessageHandler' running 'RegexMessageHandler.process'.
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.message.parse        parse_data_entities=[{'entity': 'service', 'start': 14, 'end': 22, 'confidence_entity': 0.6912550330162048, 'value': 'carriere', 'extractor': 'DIETClassifier'}] parse_data_intent={'name': 'fallback', 'confidence': 0.7279703617095947} parse_data_text=c'esst quoi e carriere
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.slots.log            slot_values=     session_started_metadata: None
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - Logged UserUtterance - tracker now has 227 events.
+2025-03-17 09:50:05 DEBUG    rasa.core.actions.action  - Validating extracted slots:
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.extract.slots        action_extract_slot=action_extract_slots len_extraction_events=0 rasa_events=[]
+2025-03-17 09:50:05 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x000001F095F5F0A0>}, targets: ['select_prediction'] and ExecutionContext(model_id='8ff19192386a4612be03b1cbb03413c3', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'rule_only_data_provider' running 'RuleOnlyDataProvider.provide'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_MemoizationPolicy1' running 'MemoizationPolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.memoization  - [debug    ] memoization.predict.actions    tracker_states=[{}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}]
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.memoization  - There is no memorised next action
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_RulePolicy0' running 'RulePolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+[state 1] user intent: greet | previous action name: action_listen
+[state 2] user intent: greet | previous action name: utter_greet
+[state 3] user intent: ask_help | previous action name: action_listen
+[state 4] user intent: ask_help | previous action name: utter_ask_help
+[state 5] user intent: ask_hours | previous action name: action_listen
+[state 6] user intent: ask_hours | previous action name: utter_ask_hours
+[state 7] user intent: ask_help | previous action name: action_listen
+[state 8] user intent: ask_help | previous action name: utter_ask_help
+[state 9] user intent: ask_tutorial_link | previous action name: action_listen
+[state 10] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 11] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 12] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 13] user intent: ask_help | previous action name: action_listen
+[state 14] user intent: ask_help | previous action name: utter_ask_help
+[state 15] user intent: ask_tutorial_link | previous action name: action_listen
+[state 16] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 17] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 18] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 19] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 20] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 21] user intent: greet | previous action name: action_listen
+[state 22] user intent: greet | previous action name: utter_greet
+[state 23] user intent: ask_help | previous action name: action_listen
+[state 24] user intent: ask_help | previous action name: utter_ask_help
+[state 25] user intent: ask_account_creation | previous action name: action_listen
+[state 26] user intent: ask_account_creation | previous action name: utter_ask_account_creation
+[state 27] user intent: go_back | previous action name: action_listen
+[state 28] user intent: go_back | previous action name: utter_ask_help
+[state 29] user intent: ask_account_creation | previous action name: action_listen
+[state 30] user intent: ask_account_creation | previous action name: utter_ask_account_creation
+[state 31] user intent: go_back | previous action name: action_listen
+[state 32] user intent: go_back | previous action name: utter_ask_help
+[state 33] user intent: ask_tutorial_link | previous action name: action_listen
+[state 34] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 35] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 36] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 37] user intent: greet | previous action name: action_listen
+[state 38] user intent: greet | previous action name: utter_greet
+[state 39] user intent: ask_help | previous action name: action_listen
+[state 40] user intent: ask_help | previous action name: utter_ask_help
+[state 41] user intent: greet | previous action name: action_listen
+[state 42] user intent: greet | previous action name: utter_greet
+[state 43] user intent: greet | previous action name: action_listen
+[state 44] user intent: greet | previous action name: action_unlikely_intent
+[state 45] user intent: greet | previous action name: utter_greet
+[state 46] user intent: greet | previous action name: action_listen
+[state 47] user intent: greet | previous action name: action_unlikely_intent
+[state 48] user intent: greet | previous action name: utter_greet
+[state 49] user intent: greet | previous action name: action_listen
+[state 50] user intent: greet | previous action name: action_unlikely_intent
+[state 51] user intent: greet | previous action name: utter_greet
+[state 52] user intent: greet | previous action name: action_listen
+[state 53] user intent: greet | previous action name: action_unlikely_intent
+[state 54] user intent: greet | previous action name: utter_greet
+[state 55] user intent: greet | previous action name: action_listen
+[state 56] user intent: greet | previous action name: action_unlikely_intent
+[state 57] user intent: greet | previous action name: utter_greet
+[state 58] user intent: greet | previous action name: action_listen
+[state 59] user intent: greet | previous action name: action_unlikely_intent
+[state 60] user intent: greet | previous action name: utter_greet
+[state 61] user intent: greet | previous action name: action_listen
+[state 62] user intent: greet | previous action name: action_unlikely_intent
+[state 63] user intent: greet | previous action name: utter_greet
+[state 64] user intent: greet | previous action name: action_listen
+[state 65] user intent: greet | previous action name: action_unlikely_intent
+[state 66] user intent: greet | previous action name: utter_greet
+[state 67] user intent: greet | previous action name: action_listen
+[state 68] user intent: greet | previous action name: action_unlikely_intent
+[state 69] user intent: greet | previous action name: utter_greet
+[state 70] user intent: greet | previous action name: action_listen
+[state 71] user intent: greet | previous action name: action_unlikely_intent
+[state 72] user intent: greet | previous action name: utter_greet
+[state 73] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 74] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 75] user intent: greet | previous action name: action_listen
+[state 76] user intent: greet | previous action name: action_unlikely_intent
+[state 77] user intent: greet | previous action name: utter_greet
+[state 78] user intent: greet | previous action name: action_listen
+[state 79] user intent: greet | previous action name: action_unlikely_intent
+[state 80] user intent: greet | previous action name: utter_greet
+[state 81] user intent: ask_help | previous action name: action_listen
+[state 82] user intent: ask_help | previous action name: utter_ask_help
+[state 83] user intent: ask_login | previous action name: action_listen
+[state 84] user intent: ask_login | previous action name: utter_ask_login
+[state 85] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 86] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 87] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 88] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 89] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 90] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 91] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 92] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 93] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 94] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 95] user text: c'esst quoi e carriere | previous action name: action_listen
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.rule_policy  - There is no applicable rule.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+[state 1] user intent: greet | previous action name: action_listen
+[state 2] user intent: greet | previous action name: utter_greet
+[state 3] user intent: ask_help | previous action name: action_listen
+[state 4] user intent: ask_help | previous action name: utter_ask_help
+[state 5] user intent: ask_hours | previous action name: action_listen
+[state 6] user intent: ask_hours | previous action name: utter_ask_hours
+[state 7] user intent: ask_help | previous action name: action_listen
+[state 8] user intent: ask_help | previous action name: utter_ask_help
+[state 9] user intent: ask_tutorial_link | previous action name: action_listen
+[state 10] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 11] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 12] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 13] user intent: ask_help | previous action name: action_listen
+[state 14] user intent: ask_help | previous action name: utter_ask_help
+[state 15] user intent: ask_tutorial_link | previous action name: action_listen
+[state 16] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 17] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 18] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 19] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 20] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 21] user intent: greet | previous action name: action_listen
+[state 22] user intent: greet | previous action name: utter_greet
+[state 23] user intent: ask_help | previous action name: action_listen
+[state 24] user intent: ask_help | previous action name: utter_ask_help
+[state 25] user intent: ask_account_creation | previous action name: action_listen
+[state 26] user intent: ask_account_creation | previous action name: utter_ask_account_creation
+[state 27] user intent: go_back | previous action name: action_listen
+[state 28] user intent: go_back | previous action name: utter_ask_help
+[state 29] user intent: ask_account_creation | previous action name: action_listen
+[state 30] user intent: ask_account_creation | previous action name: utter_ask_account_creation
+[state 31] user intent: go_back | previous action name: action_listen
+[state 32] user intent: go_back | previous action name: utter_ask_help
+[state 33] user intent: ask_tutorial_link | previous action name: action_listen
+[state 34] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 35] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 36] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 37] user intent: greet | previous action name: action_listen
+[state 38] user intent: greet | previous action name: utter_greet
+[state 39] user intent: ask_help | previous action name: action_listen
+[state 40] user intent: ask_help | previous action name: utter_ask_help
+[state 41] user intent: greet | previous action name: action_listen
+[state 42] user intent: greet | previous action name: utter_greet
+[state 43] user intent: greet | previous action name: action_listen
+[state 44] user intent: greet | previous action name: action_unlikely_intent
+[state 45] user intent: greet | previous action name: utter_greet
+[state 46] user intent: greet | previous action name: action_listen
+[state 47] user intent: greet | previous action name: action_unlikely_intent
+[state 48] user intent: greet | previous action name: utter_greet
+[state 49] user intent: greet | previous action name: action_listen
+[state 50] user intent: greet | previous action name: action_unlikely_intent
+[state 51] user intent: greet | previous action name: utter_greet
+[state 52] user intent: greet | previous action name: action_listen
+[state 53] user intent: greet | previous action name: action_unlikely_intent
+[state 54] user intent: greet | previous action name: utter_greet
+[state 55] user intent: greet | previous action name: action_listen
+[state 56] user intent: greet | previous action name: action_unlikely_intent
+[state 57] user intent: greet | previous action name: utter_greet
+[state 58] user intent: greet | previous action name: action_listen
+[state 59] user intent: greet | previous action name: action_unlikely_intent
+[state 60] user intent: greet | previous action name: utter_greet
+[state 61] user intent: greet | previous action name: action_listen
+[state 62] user intent: greet | previous action name: action_unlikely_intent
+[state 63] user intent: greet | previous action name: utter_greet
+[state 64] user intent: greet | previous action name: action_listen
+[state 65] user intent: greet | previous action name: action_unlikely_intent
+[state 66] user intent: greet | previous action name: utter_greet
+[state 67] user intent: greet | previous action name: action_listen
+[state 68] user intent: greet | previous action name: action_unlikely_intent
+[state 69] user intent: greet | previous action name: utter_greet
+[state 70] user intent: greet | previous action name: action_listen
+[state 71] user intent: greet | previous action name: action_unlikely_intent
+[state 72] user intent: greet | previous action name: utter_greet
+[state 73] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 74] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 75] user intent: greet | previous action name: action_listen
+[state 76] user intent: greet | previous action name: action_unlikely_intent
+[state 77] user intent: greet | previous action name: utter_greet
+[state 78] user intent: greet | previous action name: action_listen
+[state 79] user intent: greet | previous action name: action_unlikely_intent
+[state 80] user intent: greet | previous action name: utter_greet
+[state 81] user intent: ask_help | previous action name: action_listen
+[state 82] user intent: ask_help | previous action name: utter_ask_help
+[state 83] user intent: ask_login | previous action name: action_listen
+[state 84] user intent: ask_login | previous action name: utter_ask_login
+[state 85] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 86] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 87] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 88] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 89] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 90] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 91] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 92] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 93] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 94] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 95] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.rule_policy  - There is a rule for the next action 'utter_fallback'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'utter_fallback' based on user intent.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.unexpected_intent_policy  - Querying for intent `fallback`.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.unexpected_intent_policy  - Score for intent `fallback` is `-1.8626465797424316`, while threshold is `-1.1677864789962769`.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.unexpected_intent_policy  - Top 5 intents (in ascending order) that are likely here are: `[('ask_public_service_submission', -1.9790955), ('fallback', -1.8626466), ('ask_document_info', -1.849138), ('ask_help', -1.5754857), ('go_back', 1.3979616)]`.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.unexpected_intent_policy  - Intent `fallback-12` unlikely to occur here.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.ensemble  - Made prediction using user intent.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.ensemble  - Added `DefinePrevUserUtteredFeaturization(False)` event.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - Predicted next action 'utter_fallback' with confidence 1.00.
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[<rasa.shared.core.events.DefinePrevUserUtteredFeaturization object at 0x000001F095ED4B20>]
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=utter_fallback rasa_events=[BotUttered('Je suis désolé, je ne connais pas la réponse à cette question.', {"elements": null, "quick_replies": null, "buttons": [{"title": "Retour", "payload": "/go_back"}], "attachment": null, "image": null, "custom": null}, {"utter_action": "utter_fallback"}, 1742205005.5958426)]
+2025-03-17 09:50:05 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x000001F095F5F0A0>}, targets: ['select_prediction'] and ExecutionContext(model_id='8ff19192386a4612be03b1cbb03413c3', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'rule_only_data_provider' running 'RuleOnlyDataProvider.provide'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_MemoizationPolicy1' running 'MemoizationPolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.memoization  - [debug    ] memoization.predict.actions    tracker_states=[{}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'go_back'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'ask_help'}, 'prev_action': {'action_name': 'utter_ask_help'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'fallback', 'entities': ('service',)}, 'prev_action': {'action_name': 'utter_fallback'}}]
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.memoization  - There is no memorised next action
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_RulePolicy0' running 'RulePolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+[state 1] user intent: greet | previous action name: action_listen
+[state 2] user intent: greet | previous action name: utter_greet
+[state 3] user intent: ask_help | previous action name: action_listen
+[state 4] user intent: ask_help | previous action name: utter_ask_help
+[state 5] user intent: ask_hours | previous action name: action_listen
+[state 6] user intent: ask_hours | previous action name: utter_ask_hours
+[state 7] user intent: ask_help | previous action name: action_listen
+[state 8] user intent: ask_help | previous action name: utter_ask_help
+[state 9] user intent: ask_tutorial_link | previous action name: action_listen
+[state 10] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 11] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 12] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 13] user intent: ask_help | previous action name: action_listen
+[state 14] user intent: ask_help | previous action name: utter_ask_help
+[state 15] user intent: ask_tutorial_link | previous action name: action_listen
+[state 16] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 17] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 18] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 19] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 20] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 21] user intent: greet | previous action name: action_listen
+[state 22] user intent: greet | previous action name: utter_greet
+[state 23] user intent: ask_help | previous action name: action_listen
+[state 24] user intent: ask_help | previous action name: utter_ask_help
+[state 25] user intent: ask_account_creation | previous action name: action_listen
+[state 26] user intent: ask_account_creation | previous action name: utter_ask_account_creation
+[state 27] user intent: go_back | previous action name: action_listen
+[state 28] user intent: go_back | previous action name: utter_ask_help
+[state 29] user intent: ask_account_creation | previous action name: action_listen
+[state 30] user intent: ask_account_creation | previous action name: utter_ask_account_creation
+[state 31] user intent: go_back | previous action name: action_listen
+[state 32] user intent: go_back | previous action name: utter_ask_help
+[state 33] user intent: ask_tutorial_link | previous action name: action_listen
+[state 34] user intent: ask_tutorial_link | previous action name: utter_ask_tutorial_link
+[state 35] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 36] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 37] user intent: greet | previous action name: action_listen
+[state 38] user intent: greet | previous action name: utter_greet
+[state 39] user intent: ask_help | previous action name: action_listen
+[state 40] user intent: ask_help | previous action name: utter_ask_help
+[state 41] user intent: greet | previous action name: action_listen
+[state 42] user intent: greet | previous action name: utter_greet
+[state 43] user intent: greet | previous action name: action_listen
+[state 44] user intent: greet | previous action name: action_unlikely_intent
+[state 45] user intent: greet | previous action name: utter_greet
+[state 46] user intent: greet | previous action name: action_listen
+[state 47] user intent: greet | previous action name: action_unlikely_intent
+[state 48] user intent: greet | previous action name: utter_greet
+[state 49] user intent: greet | previous action name: action_listen
+[state 50] user intent: greet | previous action name: action_unlikely_intent
+[state 51] user intent: greet | previous action name: utter_greet
+[state 52] user intent: greet | previous action name: action_listen
+[state 53] user intent: greet | previous action name: action_unlikely_intent
+[state 54] user intent: greet | previous action name: utter_greet
+[state 55] user intent: greet | previous action name: action_listen
+[state 56] user intent: greet | previous action name: action_unlikely_intent
+[state 57] user intent: greet | previous action name: utter_greet
+[state 58] user intent: greet | previous action name: action_listen
+[state 59] user intent: greet | previous action name: action_unlikely_intent
+[state 60] user intent: greet | previous action name: utter_greet
+[state 61] user intent: greet | previous action name: action_listen
+[state 62] user intent: greet | previous action name: action_unlikely_intent
+[state 63] user intent: greet | previous action name: utter_greet
+[state 64] user intent: greet | previous action name: action_listen
+[state 65] user intent: greet | previous action name: action_unlikely_intent
+[state 66] user intent: greet | previous action name: utter_greet
+[state 67] user intent: greet | previous action name: action_listen
+[state 68] user intent: greet | previous action name: action_unlikely_intent
+[state 69] user intent: greet | previous action name: utter_greet
+[state 70] user intent: greet | previous action name: action_listen
+[state 71] user intent: greet | previous action name: action_unlikely_intent
+[state 72] user intent: greet | previous action name: utter_greet
+[state 73] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 74] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 75] user intent: greet | previous action name: action_listen
+[state 76] user intent: greet | previous action name: action_unlikely_intent
+[state 77] user intent: greet | previous action name: utter_greet
+[state 78] user intent: greet | previous action name: action_listen
+[state 79] user intent: greet | previous action name: action_unlikely_intent
+[state 80] user intent: greet | previous action name: utter_greet
+[state 81] user intent: ask_help | previous action name: action_listen
+[state 82] user intent: ask_help | previous action name: utter_ask_help
+[state 83] user intent: ask_login | previous action name: action_listen
+[state 84] user intent: ask_login | previous action name: utter_ask_login
+[state 85] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 86] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 87] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 88] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 89] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 90] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 91] user intent: ask_document_info | user entities: ('service',) | previous action name: action_listen
+[state 92] user intent: ask_document_info | user entities: ('service',) | previous action name: action_retrieve_answer
+[state 93] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 94] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+[state 95] user intent: fallback | user entities: ('service',) | previous action name: action_listen
+[state 96] user intent: fallback | user entities: ('service',) | previous action name: utter_fallback
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.rule_policy  - There is a rule for the next action 'action_listen'.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'action_listen' based on user intent.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.unexpected_intent_policy  - Skipping predictions for UnexpecTEDIntentPolicy as either there is no event of type `UserUttered`, event's intent is new and not in domain or there is an event of type `ActionExecuted` after the last `UserUttered`.
+2025-03-17 09:50:05 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
+2025-03-17 09:50:05 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - Predicted next action 'action_listen' with confidence 1.00.
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[]
+2025-03-17 09:50:05 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_listen rasa_events=[]
+2025-03-17 09:50:05 DEBUG    rasa.core.tracker_store  - No event broker configured. Skipping streaming events.
+2025-03-17 09:50:05 DEBUG    rasa.core.lock_store  - Deleted lock for conversation 'user'.

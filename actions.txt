@@ -1,35 +1,89 @@
-(.venv) C:\Users\Arona\Desktop\fp\chatRasa\pycharm>rasa run actions
-C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\rasa\core\tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
-  Base: DeclarativeMeta = declarative_base()
-C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
-  import pkg_resources
-C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\sanic_cors\extension.py:39: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
-  SANIC_VERSION = LooseVersion(sanic_version)
-2025-03-13 13:36:31 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
-2025-03-13 13:36:31 ERROR    rasa_sdk.executor  - Failed to register package 'actions'.
-Traceback (most recent call last):
-  File "C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 263, in register_package
-    self._import_submodules(package)
-  File "C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 226, in _import_submodules
-    self._import_module(full_name)
-  File "C:\Users\Arona\Desktop\fp\chatRasa\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 240, in _import_module
-    module = importlib.import_module(name)
-  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\importlib\__init__.py", line 127, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 790, in exec_module
-  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
-  File "C:\Users\Arona\Desktop\fp\chatRasa\pycharm\actions\actions.py", line 1, in <module>
-    from sentence_transformers import SentenceTransformer
-ModuleNotFoundError: No module named 'sentence_transformers'
+import os
+import pdfplumber
+import ollama
+import difflib
+from typing import Text, Dict, Any
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import UserUtteranceReverted
 
-(.venv) C:\Users\Arona\Desktop\fp\chatRasa\pycharm>
+# === Chargement du document PDF (Découpage en Sections) ===
+DOCUMENT_PATH = "data/knowledge_base/faq.pdf"
+
+def extract_text_from_pdf(pdf_path):
+    """ Extraction du texte depuis un PDF, divisé en sections """
+    sections = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            extracted_text = page.extract_text()
+            if extracted_text:
+                sections.append(extracted_text)  # On stocke chaque page comme une section
+    return sections
+
+DOCUMENT_SECTIONS = extract_text_from_pdf(DOCUMENT_PATH)
+
+# Cache pour stocker les réponses aux questions récurrentes
+response_cache = {}
+
+class ActionRetrieveAnswer(Action):
+    """ Action pour chercher une réponse en optimisant la requête LLaMA """
+
+    def name(self) -> str:
+        return "action_retrieve_answer"
+
+    def run(self, dispatcher, tracker, domain):
+        user_message = tracker.latest_message.get("text", "").lower()
+
+        # 📌 1️⃣ Vérifier si la réponse est en cache
+        if user_message in response_cache:
+            dispatcher.utter_message(text=response_cache[user_message])
+            return []
+
+        # 📌 2️⃣ Vérifier si la question correspond à une réponse déjà définie
+        predefined_answers = {
+            "horaires": "Nos horaires sont du lundi au vendredi de 9h à 17h.",
+            "créer un compte": "Rendez-vous sur notre site et cliquez sur 'Inscription'.",
+            "connexion": "Utilisez vos identifiants pour vous connecter.",
+            "lien tutoriel": "Voici le tutoriel : [Lien du tutoriel]",
+            "postuler à la fonction publique": "Le processus d'inscription est détaillé sur notre site."
+        }
+        for key, answer in predefined_answers.items():
+            if key in user_message:
+                dispatcher.utter_message(text=answer)
+                return []
+
+        # 📌 3️⃣ Trouver la section la plus pertinente dans le document
+        best_section = max(DOCUMENT_SECTIONS, key=lambda sec: difflib.SequenceMatcher(None, sec.lower(), user_message).ratio())
+
+        # 📌 4️⃣ Générer une réponse avec Ollama en utilisant SEULEMENT la section trouvée
+        prompt = f"""
+        Tu es un assistant qui répond aux questions en utilisant les informations suivantes :
+        ---
+        {best_section}
+        ---
+        Question de l'utilisateur : {user_message}
+        Réponds de manière claire et concise.
+        """
+
+        try:
+            response = ollama.chat(
+                model="llama3",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            bot_response = response["message"]["content"]
+        
+        except Exception:
+            bot_response = "Désolé, je ne peux pas répondre pour le moment."
+
+        # 📌 5️⃣ Ajouter la réponse en cache pour accélérer les requêtes similaires
+        response_cache[user_message] = bot_response
+
+        dispatcher.utter_message(text=bot_response)
+
+        # Ajouter un bouton de retour
+        dispatcher.utter_message(text="Que souhaitez-vous faire ?", buttons=[
+            {"title": "Retour", "payload": "/go_back"},
+            {"title": "Obtenir de l'aide", "payload": "/ask_help"}
+        ])
+
+        return []

@@ -2,6 +2,19 @@ version: "3.1"
 nlu:
   - intent: ask_document_info
     examples: |
+
+      - Quelle est l'utilité de [E-Carrière](service) ?
+  
+      - Quels sont les objectifs de [E-Carrière](service) ?
+      - Que fait [E-Carrière](service) ?  
+      - Peux-tu me donner des infos sur [E-Carrière](service) ?
+      - Qu'est-ce que [E-Carrière](service) ?
+      - À quoi sert [E-Carrière](service) ?
+      - Quelle est la mission de [E-Carrière](service) ?
+      - Comment utiliser la plateforme [E-Carrière](service) ?
+      - Quels services offre [E-Carrière](service) ?
+      - Comment fonctionne [E-Carrière](service) ?
+      - Où trouver plus d’informations sur [E-Carrière](service) ?
       - Peux-tu me donner des infos sur [les horaires]{"entity": "service"}
       - J’aimerais en savoir plus sur [les tarifs](service)
       - Où puis-je trouver des informations sur [la création de compte](service) ?

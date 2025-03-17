@@ -1,0 +1,69 @@
+{
+  "type": "IntentMaxHistoryTrackerFeaturizer",
+  "state_featurizer": {
+    "action_texts": [],
+    "entity_tag_specs": [],
+    "feature_states": {
+      "intent": {
+        "ask_account_creation": 0,
+        "ask_document_info": 1,
+        "ask_help": 2,
+        "ask_hours": 3,
+        "ask_login": 4,
+        "ask_public_service_application": 5,
+        "ask_public_service_confirmation": 6,
+        "ask_public_service_documents": 7,
+        "ask_public_service_steps": 8,
+        "ask_public_service_submission": 9,
+        "ask_tutorial_link": 10,
+        "back": 11,
+        "fallback": 12,
+        "go_back": 13,
+        "greet": 14,
+        "nlu_fallback": 15,
+        "out_of_scope": 16,
+        "restart": 17,
+        "session_start": 18
+      },
+      "action_name": {
+        "action_listen": 0,
+        "action_restart": 1,
+        "action_session_start": 2,
+        "action_default_fallback": 3,
+        "action_deactivate_loop": 4,
+        "action_revert_fallback_events": 5,
+        "action_default_ask_affirmation": 6,
+        "action_default_ask_rephrase": 7,
+        "action_two_stage_fallback": 8,
+        "action_unlikely_intent": 9,
+        "action_back": 10,
+        "...": 11,
+        "action_extract_slots": 12,
+        "action_ask_help": 13,
+        "action_test": 14,
+        "action_retrieve_answer": 15,
+        "utter_ask_account_creation": 16,
+        "utter_ask_help": 17,
+        "utter_ask_hours": 18,
+        "utter_ask_login": 19,
+        "utter_ask_public_service_application": 20,
+        "utter_ask_public_service_confirmation": 21,
+        "utter_ask_public_service_documents": 22,
+        "utter_ask_public_service_steps": 23,
+        "utter_ask_public_service_submission": 24,
+        "utter_ask_tutorial_link": 25,
+        "utter_fallback": 26,
+        "utter_greet": 27,
+        "utter_no_info": 28
+      },
+      "entities": {
+        "service": 0,
+        "user_type": 1
+      },
+      "slots": {},
+      "active_loop": {}
+    }
+  },
+  "remove_duplicates": true,
+  "max_history": 5
+}

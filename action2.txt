@@ -1,0 +1,109 @@
+import os
+import pdfplumber
+import faiss
+import numpy as np
+import ollama
+from sentence_transformers import SentenceTransformer
+from typing import Text, Dict, Any
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import UserUtteranceReverted
+
+# === 📌 Chargement et Indexation du PDF (avec FAISS) ===
+DOCUMENT_PATH = "data/knowledge_base/faq.pdf"
+
+def extract_text_from_pdf(pdf_path):
+    """ Extraction du texte depuis un PDF, divisé en sections """
+    sections = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            extracted_text = page.extract_text()
+            if extracted_text:
+                sections.append(extracted_text)  # Chaque page = une section
+    return sections
+
+# 🔥 Charger le document UNE SEULE FOIS en mémoire
+DOCUMENT_SECTIONS = extract_text_from_pdf(DOCUMENT_PATH)
+
+# 🔥 Initialiser le modèle de vecteurs (sentence transformer)
+embedding_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+
+def index_document(sections):
+    """ Convertit les sections en embeddings et les indexe avec FAISS """
+    embeddings = embedding_model.encode(sections, convert_to_numpy=True)
+    dimension = embeddings.shape[1]
+    index = faiss.IndexFlatL2(dimension)
+    index.add(embeddings)
+    return index, embeddings
+
+# 🔥 Indexation FAISS pour une recherche ultra-rapide
+faiss_index, document_embeddings = index_document(DOCUMENT_SECTIONS)
+
+# 🔥 Cache pour stocker les réponses et accélérer les futures recherches
+response_cache = {}
+
+class ActionRetrieveAnswer(Action):
+    def name(self):
+        return "action_retrieve_answer"
+
+    def run(self, dispatcher, tracker, domain):
+        user_message = tracker.latest_message.get("text", "").lower()
+        print("🟢 action_retrieve_answer a été déclenchée avec :", user_message)
+
+        # Vérifier si la réponse est déjà en cache
+        if user_message in response_cache:
+            print("✅ Réponse trouvée dans le cache")
+            dispatcher.utter_message(text=response_cache[user_message])
+            return []
+
+        # Recherche avec FAISS
+        print("🔍 Recherche avec FAISS...")
+        user_embedding = embedding_model.encode([user_message], convert_to_numpy=True)
+        D, I = faiss_index.search(user_embedding, 1)  # Trouver la section la plus pertinente
+
+        if D[0][0] < 0.6:
+            best_match = DOCUMENT_SECTIONS[I[0][0]]
+        else:
+            best_match = "Je ne sais pas."
+
+        # 🔥 Sécurité : Vérifier que `best_match` n'est pas vide
+        if not best_match or best_match == "Je ne sais pas.":
+            dispatcher.utter_message(text="Désolé, je n'ai pas trouvé d'information pertinente dans mes documents.")
+            dispatcher.utter_message(text="Que souhaitez-vous faire ?", buttons=[
+                {"title": "Retour", "payload": "/go_back"},
+                {"title": "Obtenir de l'aide", "payload": "/ask_help"}
+            ])
+            return []
+
+        # 🔥 Construire la requête pour Ollama
+        prompt = f"""
+        Tu es un assistant qui répond aux questions en utilisant les informations suivantes :
+        ---
+        {best_match}
+        ---
+        Question de l'utilisateur : {user_message}
+        Réponds de manière claire et concise.
+        """
+        print("🧠 Envoi à Ollama :", prompt)
+
+        try:
+            response = ollama.chat(
+                model="mistral",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            bot_response = response["message"]["content"]
+        
+        except Exception as e:
+            print("❌ Erreur avec Ollama :", str(e))
+            bot_response = "Désolé, une erreur est survenue."
+
+        # Ajouter la réponse en cache
+        response_cache[user_message] = bot_response
+
+        dispatcher.utter_message(text=bot_response)
+        dispatcher.utter_message(text="Que souhaitez-vous faire ?", buttons=[
+            {"title": "Retour", "payload": "/go_back"},
+            {"title": "Obtenir de l'aide", "payload": "/ask_help"}
+        ])
+
+        return []
