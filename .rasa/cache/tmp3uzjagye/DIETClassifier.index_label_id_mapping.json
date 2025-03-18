@@ -1,0 +1,19 @@
+{
+  "0": "ask_account_creation",
+  "1": "ask_acte_followup",
+  "2": "ask_claim_submission",
+  "3": "ask_document_info",
+  "4": "ask_help",
+  "5": "ask_hours",
+  "6": "ask_login",
+  "7": "ask_password_reset",
+  "8": "ask_platform_features",
+  "9": "ask_public_service_application",
+  "10": "ask_public_service_confirmation",
+  "11": "ask_public_service_documents",
+  "12": "ask_public_service_steps",
+  "13": "ask_public_service_submission",
+  "14": "ask_tutorial_link",
+  "15": "fallback",
+  "16": "greet"
+}

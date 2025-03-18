@@ -5,29 +5,84 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: ask_help
-  - action: utter_ask_help
+  - intent: E_carriere
+  - action: utter_E_carriere
+
+- story: User asks about account creation
+  steps:
+    - intent: ask_account_creation
+    - action: utter_ask_account_creation
+
+- story: User asks about administrative acts follow-up
+  steps:
+    - intent: ask_acte_followup
+    - action: utter_ask_acte_followup
+
+- story: User asks about claim submission
+  steps:
+    - intent: ask_claim_submission
+    - action: utter_ask_claim_submission
+
+- story: User asks about hours
+  steps:
+    - intent: ask_hours
+    - action: utter_ask_hours
 
 - story: User asks about submission
   steps:
   - intent: ask_public_service_submission
   - action: utter_ask_public_service_submission
   - intent: go_back
-  - action: utter_ask_help
+  - action: utter_E_carriere
+
+- story: User asks about login
+  steps:
+    - intent: ask_login
+    - action: utter_ask_login
+
+- story: User asks about password reset
+  steps:
+    - intent: ask_password_reset
+    - action: utter_ask_password_reset
+
+- story: User asks about platform features
+  steps:
+    - intent: ask_platform_features
+    - action: utter_ask_platform_features
+
+- story: User asks about public service application
+  steps:
+    - intent: ask_public_service_application
+    - action: utter_ask_public_service_application
 
 - story: User asks unknown question
   steps:
   - intent: fallback
   - action: utter_fallback
   - intent: go_back
-  - action: utter_ask_help
+  - action: utter_E_carriere
 
 - story: User asks about confirmation
   steps:
   - intent: ask_public_service_confirmation
   - action: utter_ask_public_service_confirmation
+
+- story: User asks about public service documents
+  steps:
+    - intent: ask_public_service_documents
+    - action: utter_ask_public_service_documents 
+
+- story: User asks about public service steps
+  steps:
+    - intent: ask_public_service_steps
+    - action: utter_ask_public_service_steps
+
+- story: User asks for tutorial link
+  steps:
+    - intent: ask_tutorial_link
+    - action: utter_ask_tutorial_link
+
 - story: User goes back
   steps:
   - intent: go_back
-  - action: utter_ask_help
-
+  - action: utter_E_carriere

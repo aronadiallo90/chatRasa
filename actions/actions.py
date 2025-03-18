@@ -80,12 +80,12 @@ class ActionRetrieveAnswer(Action):
             print("⚠️ FAISS n'a rien trouvé. Envoi direct à Ollama.")
 
             prompt = f"""
-            Tu es un assistant qui répond aux questions en utilisant le document suivant :
+            Tu es un assistant qui répond aux questions en utilisant le contenu  suivant :
             ---
             {DOCUMENT_TEXT[:1000]}  # 🔥 Envoi d’un extrait du document complet
             ---
             Question de l'utilisateur : {user_message}
-            Réponds de manière claire et concise.
+            Réponds de manière claire et concise à l'utilisateur qui est un simple utilisateur.
             """
 
             try:
@@ -131,7 +131,7 @@ class ActionRetrieveAnswer(Action):
         # Ajouter un bouton de retour
         dispatcher.utter_message(text="Que souhaitez-vous faire ?", buttons=[
             {"title": "Retour", "payload": "/go_back"},
-            {"title": "Obtenir de l'aide", "payload": "/ask_help"}
+            {"title": "Obtenir de l'aide", "payload": "/E_carriere"}
         ])
 
         return []

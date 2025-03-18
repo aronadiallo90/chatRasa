@@ -1,0 +1,53 @@
+version: "3.1"
+
+rules:
+
+- rule: Répondre à la demande d'aide
+  steps:
+  - intent: ask_help
+  - action: utter_ask_help
+
+- rule: Répondre à la question des horaires
+  steps:
+  - intent: ask_hours
+  - action: utter_ask_hours
+
+- rule: Expliquer la création de compte
+  steps:
+  - intent: ask_account_creation
+  - action: utter_ask_account_creation
+
+- rule: Expliquer la connexion
+  steps:
+  - intent: ask_login
+  - action: utter_ask_login
+
+- rule: Donner le lien du tutoriel
+  steps:
+  - intent: ask_tutorial_link
+  - action: utter_ask_tutorial_link
+
+- rule: Décrire l'inscription à la fonction publique
+  steps:
+  - intent: ask_public_service_application
+  - action: utter_ask_public_service_application
+
+- rule: Décrire les étapes d'inscription
+  steps:
+  - intent: ask_public_service_steps
+  - action: utter_ask_public_service_steps
+
+- rule: Lister les documents nécessaires
+  steps:
+  - intent: ask_public_service_documents
+  - action: utter_ask_public_service_documents
+
+- rule: Expliquer la soumission du dossier
+  steps:
+  - intent: ask_public_service_submission
+  - action: utter_ask_public_service_submission
+
+- rule: Expliquer la confirmation de candidature
+  steps:
+  - intent: ask_public_service_confirmation
+  - action: utter_ask_public_service_confirmation

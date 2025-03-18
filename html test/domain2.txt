@@ -1,0 +1,106 @@
+version: "3.1"
+
+intents:
+  - greet
+  - ask_help
+  - ask_hours
+  - ask_account_creation    
+  - ask_login
+  - ask_tutorial_link
+  - ask_public_service_application
+  - ask_public_service_steps
+  - ask_public_service_documents
+  - ask_public_service_submission
+  - ask_public_service_confirmation
+  - fallback  
+  - go_back  
+
+entities:
+  - service
+  - user_type
+
+
+responses:
+  utter_ask_public_service_confirmation:
+    - text: "Une fois votre candidature soumise, vous recevrez une confirmation par email."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_greet:
+    - text: "Bonjour, comment puis-je vous aider ?"
+      buttons:
+        - title: "Obtenir de l'aide"
+          payload: "/ask_help"
+
+  utter_ask_help:
+    - text: "Voici les options disponibles :"
+      buttons:
+        - title: "Horaires"
+          payload: "/ask_hours"
+        - title: "Créer un compte"
+          payload: "/ask_account_creation"
+        - title: "Se connecter"
+          payload: "/ask_login"
+        - title: "Tutoriel"
+          payload: "/ask_tutorial_link"
+        - title: "Postuler à la fonction publique"
+          payload: "/ask_public_service_application"
+
+  utter_ask_hours:
+    - text: "Nos horaires sont du lundi au vendredi de 9h à 16h."
+
+  utter_ask_account_creation:
+    - text: "Pour créer un compte, allez sur notre site et remplissez le formulaire."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_login:
+    - text: "Pour vous connecter, entrez vos identifiants sur la page de connexion."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_tutorial_link:
+    - text: "Voici le tutoriel : [Lien du tutoriel]"
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_public_service_application:
+    - text: "Pour postuler à la fonction publique, suivez ces étapes :"
+      buttons:
+        - title: "Voir les étapes"
+          payload: "/ask_public_service_steps"
+        - title: "Documents requis"
+          payload: "/ask_public_service_documents"
+        
+
+  utter_ask_public_service_steps:
+    - text: "Les étapes de candidature sont..."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_public_service_documents:
+    - text: "Les documents nécessaires sont : carte d'identité, CV, lettre de motivation, etc."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_public_service_submission:
+    - text: "Pour soumettre votre candidature, veuillez suivre les instructions sur notre portail."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_fallback:
+    - text: "Je suis désolé, je ne connais pas la réponse à cette question."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+actions:
+  - action_ask_help
+  - action_test

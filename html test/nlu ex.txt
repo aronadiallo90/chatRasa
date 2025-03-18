@@ -1,0 +1,69 @@
+version: "3.1"
+nlu:
+  - intent: greet
+    examples: |
+      - Bonjour
+      - Salut
+      - Salut, comment ça va ?
+      - Hello
+
+  - intent: ask_help
+    examples: |
+      - Comment puis-je vous aider ?
+      - Aidez-moi
+      - Que puis-je faire ?
+      - J'ai besoin d'aide
+
+  - intent: ask_hours
+    examples: |
+      - Quels sont vos horaires ?
+      - Quand êtes-vous ouvert ?
+      - À quelle heure vous ouvrez ?
+
+  - intent: ask_account_creation
+    examples: |
+      - Comment avoir un compte sur le site ?
+      - Comment créer un compte ?
+      - Comment m'inscrire ?
+
+  - intent: ask_login
+    examples: |
+      - Comment se connecter ?
+      - Comment puis-je me connecter ?
+      - Où puis-je me connecter ?
+
+  - intent: ask_tutorial_link
+    examples: |
+      - Donne-moi le lien du tutoriel pour me connecter.
+      - Où puis-je trouver le tutoriel pour me connecter ?
+      - Quel est le lien du tutoriel ?
+
+  - intent: ask_public_service_application
+    examples: |
+      - Quel est le processus d'inscription pour postuler à la fonction publique ?
+      - Comment postuler à la fonction publique ?
+      - Quelles sont les étapes pour postuler à la fonction publique ?
+
+  - intent: ask_public_service_steps
+    examples: |
+      - Quelles sont les étapes pour postuler à la fonction publique ?
+      - Comment je procède pour postuler ?
+      - Quelles démarches faut-il faire pour postuler ?
+
+  - intent: ask_public_service_documents
+    examples: |
+      - Quels sont les documents nécessaires pour postuler à la fonction publique ?
+      - Quels documents faut-il pour postuler ?
+      - De quels papiers ai-je besoin pour postuler ?
+
+  - intent: ask_public_service_submission
+    examples: |
+      - Quand puis-je soumettre ma candidature ?
+      - Comment soumettre mon dossier de candidature ?
+      - Que faire après avoir rempli ma candidature ?
+
+  - intent: ask_public_service_confirmation
+    examples: |
+      - Quand recevrai-je la confirmation de ma candidature ?
+      - Vais-je recevoir un email de confirmation ?
+      - Comment savoir si ma candidature a bien été reçue ?

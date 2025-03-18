@@ -4,8 +4,18 @@ rules:
 
 - rule: Répondre à la demande d'aide
   steps:
-  - intent: ask_help
-  - action: utter_ask_help
+  - intent: E_carriere
+  - action: utter_E_carriere
+
+- rule: Répondre à la question sur le suivi des actes administratifs
+  steps:
+  - intent: ask_acte_followup
+  - action: utter_ask_acte_followup
+
+- rule: Répondre à la soumission d’une réclamation
+  steps:
+  - intent: ask_claim_submission
+  - action: utter_ask_claim_submission
 
 - rule: Répondre à la question des horaires
   steps:
@@ -21,6 +31,16 @@ rules:
   steps:
   - intent: ask_login
   - action: utter_ask_login
+
+- rule: Répondre à la réinitialisation de mot de passe
+  steps:
+  - intent: ask_password_reset
+  - action: utter_ask_password_reset
+
+- rule: Répondre aux questions sur les fonctionnalités de la plateforme
+  steps:
+  - intent: ask_platform_features
+  - action: utter_ask_platform_features
 
 - rule: Donner le lien du tutoriel
   steps:
@@ -57,9 +77,6 @@ rules:
   - intent: fallback
   - action: utter_fallback
 
-
-
-
 - rule: Répondre avec le document via LLaMA
   steps:
   - intent: ask_document_info
@@ -70,3 +87,7 @@ rules:
   - intent: nlu_fallback
   - action: action_retrieve_answer
 
+- rule: Gérer le retour utilisateur
+  steps:
+  - intent: go_back
+  - action: utter_E_carriere
