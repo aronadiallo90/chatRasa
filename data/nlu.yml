@@ -2,9 +2,7 @@ version: "3.1"
 nlu:
   - intent: ask_document_info
     examples: |
-
       - Quelle est l'utilité de [E-Carrière](service) ?
-  
       - Quels sont les objectifs de [E-Carrière](service) ?
       - Que fait [E-Carrière](service) ?  
       - Peux-tu me donner des infos sur [E-Carrière](service) ?
@@ -12,131 +10,101 @@ nlu:
       - À quoi sert [E-Carrière](service) ?
       - Quelle est la mission de [E-Carrière](service) ?
       - Comment utiliser la plateforme [E-Carrière](service) ?
-      - Quels services offre [E-Carrière](service) ?
-      - Comment fonctionne [E-Carrière](service) ?
-      - Où trouver plus d’informations sur [E-Carrière](service) ?
-      - Peux-tu me donner des infos sur [les horaires]{"entity": "service"}
-      - J’aimerais en savoir plus sur [les tarifs](service)
-      - Où puis-je trouver des informations sur [la création de compte](service) ?
-      - Quels sont les documents nécessaires pour [la fonction publique](service) ?
-      - Je veux des détails sur [le dossier à soumettre](service)
-      - Quels sont les [horaires](service) d’ouverture ?
-      - Je veux tout savoir sur [le tutoriel](service)
-      - Comment fonctionne [le chatbot](service) ?
-      - Explique-moi comment faire une [inscription](service)
-      - Quelle est la procédure d'[inscription](service) pour un [étudiant](user_type) ?
-      - Comment [un professionnel](user_type) peut-il s’inscrire ?
       - Comment les [étudiants](user_type) peuvent s’enregistrer ?
 
   - intent: greet
     examples: |
       - Bonjour
-      - Salut
-      - Salut, comment ça va ?
       - Hello
+      
+  - intent: choose_platform
+    examples: |
+      - Je veux voir [E-Carrière](platform)
+      - Explorer [Autre plateforme](platform)
+      - Montre-moi [PGDE](platform)
+      - J’aimerais voir [PGDE](platform)
 
-  - intent: ask_help
+  - intent: E_carriere
     examples: |
       - Comment puis-je vous aider ?
-      - Aidez-moi
-      - Que puis-je faire ?
       - J'ai besoin d'aide
 
   - intent: ask_hours
     examples: |
       - Quels sont vos horaires sur [E-Carrière](service) ?
-      - Quand êtes-vous ouverts sur [E-Carrière](service) ?
       - À quelle heure commencez-vous ?
 
   - intent: ask_account_creation
     examples: |
       - Comment créer un compte sur [E-Carrière](service) ?
-      - Je veux m'inscrire, comment faire ?
-      - Où créer mon compte sur [E-Carrière](service) ?
-      - Quelles sont les étapes pour l'inscription sur [E-Carrière](service) ?
-      - Comment [un étudiant](user_type) peut-il créer un compte ?
       - Quels documents sont nécessaires pour l'inscription sur [E-Carrière](service) ?
 
   - intent: ask_acte_followup
     examples: |
       - Comment suivre l’évolution de mes actes administratifs sur [E-Carrière](service) ?
-      - Où puis-je voir mes actes administratifs sur [E-Carrière](service) ?
       - Comment consulter mes documents sur [E-Carrière](service) ?
 
   - intent: ask_claim_submission
     examples: |
       - Comment soumettre une réclamation sur [E-Carrière](service) ?
-      - Où déposer une réclamation sur [E-Carrière](service) ?
       - Je veux faire une réclamation, comment procéder sur [E-Carrière](service) ?
 
   - intent: ask_login
     examples: |
       - Comment me connecter à mon compte sur [E-Carrière](service) ?
-      - Où puis-je entrer mes identifiants sur [E-Carrière](service) ?
       - Je ne trouve pas la page de connexion sur [E-Carrière](service) ?
 
   - intent: ask_password_reset
     examples: |
       - J’ai oublié mon mot de passe, comment le réinitialiser sur [E-Carrière](service) ?
-      - Comment récupérer mon mot de passe sur [E-Carrière](service) ?
       - J’ai perdu mes accès, que faire sur [E-Carrière](service) ?
   
   - intent: ask_platform_features
     examples: |
       - Quelles sont les fonctionnalités de la plateforme [E-Carrière](service) ?
-      - Que peut-on faire avec [E-Carrière](service) ?
-      - Quels services propose [E-Carrière](service) ?
       - Quels services sont proposés pour [un étudiant](user_type) ?
 
   - intent: ask_tutorial_link
     examples: |
       - Donne-moi un lien vers le tutoriel d’inscription sur [E-Carrière](service).
-      - Où trouver un guide pour m’inscrire sur [E-Carrière](service) ?
       - Y a-t-il une vidéo explicative pour [E-Carrière](service) ?
 
   - intent: ask_public_service_application
     examples: |
       - Comment postuler à la fonction publique sur [E-Carrière](service) ?
-      - Quelles sont les démarches pour postuler à la fonction publique ?
       - Où déposer ma candidature pour [la fonction publique](service) ?
 
   - intent: ask_public_service_steps
     examples: |
       - Quelles sont les étapes du processus de candidature pour [la fonction publique](service) ?
-      - Comment se passe l’inscription pour [la fonction publique](service) ?
-      - Quelles sont les phases de candidature pour [la fonction publique](service) ?
-      - Quelles sont les étapes pour postuler à la fonction publique ?
-      - Comment je procède pour postuler ?
       - Quelles démarches faut-il faire pour postuler ?
 
   - intent: ask_public_service_documents
     examples: |
       - Quels sont les documents nécessaires pour postuler à [la fonction publique](service) ?
-      - Quelles pièces fournir pour une candidature à [la fonction publique](service) ?
       - De quoi ai-je besoin pour postuler à [la fonction publique](service) ?
 
   - intent: ask_public_service_submission
     examples: |
       - Comment soumettre ma candidature à [la fonction publique](service) ?
-      - Où déposer mon dossier de candidature pour [la fonction publique](service) ?
-      - Que faire après avoir rempli ma demande pour [la fonction publique](service) ?
-      - Quand puis-je soumettre ma candidature ?
-      - Comment soumettre mon dossier de candidature ?
       - Que faire après avoir rempli ma candidature ?
 
   - intent: ask_public_service_confirmation
     examples: |
       - Vais-je recevoir une confirmation de ma candidature pour [la fonction publique](service) ?
-      - Comment savoir si ma candidature a été acceptée pour [la fonction publique](service) ?
-      - Y a-t-il un email de confirmation pour [la fonction publique](service) ?
-      - Quand recevrai-je la confirmation de ma candidature ?
-      - Vais-je recevoir un email de confirmation ?
       - Comment savoir si ma candidature a bien été reçue ?
 
   - intent: fallback
     examples: |
       - Je ne comprends pas
-      - C'est quoi ?
-      - Pouvez-vous répéter ?
       - Je ne sais pas
-  
+
+  - intent: PGDE  # Added intent
+    examples: |
+      - Je veux voir PGDE
+      - Montre-moi PGDE
+
+  - intent: go_back  # Added intent
+    examples: |
+      - Retour
+      - Revenir en arrière

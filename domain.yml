@@ -3,6 +3,7 @@ version: "3.1"
 intents:
   - greet
   - E_carriere
+  - PGDE
   - ask_hours
   - ask_account_creation    
   - ask_login
@@ -19,10 +20,19 @@ intents:
   - ask_claim_submission
   - ask_acte_followup
   - ask_platform_features
+  - choose_platform  # Ensure this intent is included
 
 entities:
   - service
-  - user_type
+  - platform  # Ensure this entity is included
+
+slots:
+  platform:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: platform
 
 responses:
   utter_no_info:
@@ -38,16 +48,18 @@ responses:
           payload: "/go_back"
 
   utter_greet:
-    - text: "Bonjour, comment puis-je vous aider ?"
+    - text: "Bonjour, quelle plateforme souhaitez vous consulter ?"
       buttons:
-        - title: "E carrière"
-          payload: "/E_carriere"
+        - title: "E-Carrière"
+          payload: "/choose_platform{\"platform\": \"E-Carrière\"}"
+        - title: "PGDE"
+          payload: "/choose_platform{\"platform\": \"PGDE\"}"
+        - title: "Autre plateforme"
+          payload: "/choose_platform{\"platform\": \"Autre\"}"
 
   utter_E_carriere:
     - text: "Voici les options disponibles :"
       buttons:
-        # - title: "Horaires"
-        #   payload: "/ask_hours"
         - title: "Voir les fonctionnalités"
           payload: "/ask_platform_features"
         - title: "Créer un compte"
@@ -56,15 +68,12 @@ responses:
           payload: "/ask_login"
         - title: "Tutoriel"
           payload: "/ask_tutorial_link"
-        # - title: "Postuler à la fonction publique"
-        #   payload: "/ask_public_service_application"
         - title: "Réinitialiser mot de passe"
           payload: "/ask_password_reset"
         - title: "Suivi des actes administratifs"
           payload: "/ask_acte_followup"
         - title: "Déposer une réclamation"
           payload: "/ask_claim_submission"
-        
 
   utter_ask_hours:
     - text: "Nos horaires sont du lundi au vendredi de 9h à 16h."
@@ -85,7 +94,7 @@ responses:
           payload: "/go_back"
 
   utter_ask_tutorial_link:
-    - text: "Voici le tutoriel : [Lien du tutoriel]"
+    - text: "Voici le tutoriel : [https://www.youtube.com/watch?v=xuPkjiRKuiY]"
       buttons:
         - title: "Retour"
           payload: "/go_back"
@@ -158,3 +167,4 @@ actions:
   - action_E_carriere
   - action_test
   - action_retrieve_answer
+  - action_redirect_platform  # Ensure this action is included

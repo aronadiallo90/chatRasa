@@ -45,6 +45,28 @@ faiss_index, DOCUMENT_SECTIONS = create_faiss_index(DOCUMENT_TEXT)
 
 print("✅ FAISS est prêt. Nombre de sections indexées :", len(DOCUMENT_SECTIONS))
 
+
+class ActionRedirectPlatform(Action):
+    def name(self) -> Text:
+        return "action_redirect_platform"
+
+    def run(self, dispatcher, tracker, domain):
+        platform = tracker.get_slot("platform")
+
+        if platform == "E-Carrière":
+            dispatcher.utter_message(response="utter_E_carriere")
+        elif platform == "PGDE":
+            dispatcher.utter_message(text="Bienvenue sur PGDE. Comment puis-je vous aider ?", buttons=[
+                {"title": "Créer un compte", "payload": "/ask_pgde_account_creation"},
+                {"title": "Se connecter", "payload": "/ask_pgde_login"},
+                {"title": "Retour au menu principal", "payload": "/greet"}
+            ])
+        else:
+            dispatcher.utter_message(text="Cette plateforme n'est pas encore disponible.")
+
+        return []
+
+
 class ActionRetrieveAnswer(Action):
     """ Action pour chercher une réponse dans le document PDF avec cache, FAISS et LLaMA """
 

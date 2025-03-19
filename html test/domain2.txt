@@ -2,7 +2,8 @@ version: "3.1"
 
 intents:
   - greet
-  - ask_help
+  - E_carriere
+  - PGDE
   - ask_hours
   - ask_account_creation    
   - ask_login
@@ -14,13 +15,24 @@ intents:
   - ask_public_service_confirmation
   - fallback  
   - go_back  
+  - ask_document_info
+  - ask_password_reset
+  - ask_claim_submission
+  - ask_acte_followup
+  - ask_platform_features
+  - choose_platform  # Added intent
 
 entities:
   - service
   - user_type
 
-
 responses:
+  utter_no_info:
+    - text: "Désolé, je n’ai pas trouvé d’information pertinente dans mes documents."
+      buttons:
+        - title: "Retour"
+          payload: "/E_carriere"
+
   utter_ask_public_service_confirmation:
     - text: "Une fois votre candidature soumise, vous recevrez une confirmation par email."
       buttons:
@@ -28,42 +40,53 @@ responses:
           payload: "/go_back"
 
   utter_greet:
-    - text: "Bonjour, comment puis-je vous aider ?"
+    - text: "Bonjour, quelle plateforme souhaitez vous consulter ?"
       buttons:
-        - title: "Obtenir de l'aide"
-          payload: "/ask_help"
+        - title: "E-Carrière"
+          payload: "/choose_platform{'platform': 'E-Carrière'}"
+        - title: "PGDE"
+          payload: "/choose_platform{'platform': 'PGDE'}"
+        - title: "Autre plateforme"
+          payload: "/choose_platform{'platform': 'Autre'}"
 
-  utter_ask_help:
+  utter_E_carriere:
     - text: "Voici les options disponibles :"
       buttons:
-        - title: "Horaires"
-          payload: "/ask_hours"
+        - title: "Voir les fonctionnalités"
+          payload: "/ask_platform_features"
         - title: "Créer un compte"
           payload: "/ask_account_creation"
         - title: "Se connecter"
           payload: "/ask_login"
         - title: "Tutoriel"
           payload: "/ask_tutorial_link"
-        - title: "Postuler à la fonction publique"
-          payload: "/ask_public_service_application"
+        - title: "Réinitialiser mot de passe"
+          payload: "/ask_password_reset"
+        - title: "Suivi des actes administratifs"
+          payload: "/ask_acte_followup"
+        - title: "Déposer une réclamation"
+          payload: "/ask_claim_submission"
 
   utter_ask_hours:
     - text: "Nos horaires sont du lundi au vendredi de 9h à 16h."
+      buttons:
+        - title: "Retour"
+          payload: "/E_carriere"
 
   utter_ask_account_creation:
-    - text: "Pour créer un compte, allez sur notre site et remplissez le formulaire."
+    - text: "Pour créer un compte, rendez-vous sur notre site,\ncliquez sur 'Créer un compte' et suivez les instructions.\n\nVoici un tutoriel : [lien du tutoriel]"
       buttons:
         - title: "Retour"
           payload: "/go_back"
 
   utter_ask_login:
-    - text: "Pour vous connecter, entrez vos identifiants sur la page de connexion."
+    - text: "Pour vous connecter, allez sur notre site cliquez  sur la page de connexion et entrez vos identifiants voici un tutoriel[]."
       buttons:
         - title: "Retour"
           payload: "/go_back"
 
   utter_ask_tutorial_link:
-    - text: "Voici le tutoriel : [Lien du tutoriel]"
+    - text: "Voici le tutoriel : [https://www.youtube.com/watch?v=xuPkjiRKuiY]"
       buttons:
         - title: "Retour"
           payload: "/go_back"
@@ -75,16 +98,15 @@ responses:
           payload: "/ask_public_service_steps"
         - title: "Documents requis"
           payload: "/ask_public_service_documents"
-        
 
   utter_ask_public_service_steps:
-    - text: "Les étapes de candidature sont..."
+    - text: "Voici les étapes :\n1. Créer un compte\n2. Compléter les infos\n3. Sélectionner un poste\n4. Ajouter les documents\n5. Soumettre la candidature."
       buttons:
         - title: "Retour"
           payload: "/go_back"
 
   utter_ask_public_service_documents:
-    - text: "Les documents nécessaires sont : carte d'identité, CV, lettre de motivation, etc."
+    - text: "Documents nécessaires :\n- Carte d'identité\n- CV\n- Lettre de motivation\n- Diplômes\n- Autres pièces demandées."
       buttons:
         - title: "Retour"
           payload: "/go_back"
@@ -95,12 +117,46 @@ responses:
         - title: "Retour"
           payload: "/go_back"
 
+  utter_ask_password_reset:
+    - text: "Pour réinitialiser votre mot de passe, allez sur la page de connexion, cliquez sur 'Mot de passe oublié' et suivez les instructions."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_claim_submission:
+    - text: "Pour soumettre une réclamation, connectez-vous à E-Carrière, allez dans 'Dépôt et suivi des réclamations', remplissez le formulaire et téléchargez les pièces justificatives."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_acte_followup:
+    - text: "Pour suivre l’évolution de vos actes administratifs, connectez-vous à E-Carrière et consultez la section 'Mes Projets d’Actes'."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
+  utter_ask_platform_features:
+    - text: "E-Carrière vous permet de suivre l’évolution de vos actes administratifs, télécharger vos documents, soumettre des réclamations et modifier vos informations personnelles."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back"
+
   utter_fallback:
     - text: "Je suis désolé, je ne connais pas la réponse à cette question."
       buttons:
         - title: "Retour"
           payload: "/go_back"
 
+  utter_ask_public_service_confirmation_2:
+    - text: "Êtes-vous sûr de vouloir soumettre votre candidature à la fonction publique ?"
+      buttons:
+        - title: "Oui"
+          payload: "/ask_public_service_submission"
+        - title: "Non"
+          payload: "/ask_public_service_application"
+
 actions:
-  - action_ask_help
+  - action_E_carriere
   - action_test
+  - action_retrieve_answer
+  - action_redirect_platform  # Added action

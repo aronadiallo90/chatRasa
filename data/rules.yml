@@ -2,6 +2,11 @@ version: "3.1"
 
 rules:
 
+- rule: Répondre au salut de l'utilisateur
+  steps:
+    - intent: greet
+    - action: utter_greet
+
 - rule: Répondre à la demande d'aide
   steps:
   - intent: E_carriere
@@ -91,3 +96,8 @@ rules:
   steps:
   - intent: go_back
   - action: utter_E_carriere
+
+- rule: Rediriger vers la plateforme choisie
+  steps:
+    - intent: choose_platform
+    - action: action_redirect_platform
