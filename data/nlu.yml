@@ -108,3 +108,26 @@ nlu:
     examples: |
       - Retour
       - Revenir en arrière
+
+
+# PGDE
+  - intent: ask_pgde_account_creation
+    examples: |
+      - Comment créer un compte sur [PGDE](platform) ?
+      - Quels sont les documents nécessaires pour l'inscription sur [PGDE](platform) ?
+      - Quelle est la procédure d’inscription sur [PGDE](platform) ?
+      - Où créer un compte pour [PGDE](platform) ?
+
+  - intent: ask_pgde_login
+    examples: |
+      - Comment me connecter à mon compte sur [PGDE](platform) ?
+      - Où puis-je me connecter à [PGDE](platform) ?
+      - Je ne trouve pas la page de connexion sur [PGDE](platform).
+      - J’ai des problèmes de connexion sur [PGDE](platform), que faire ?
+
+  - intent: ask_pgde_documents
+    examples: |
+      - Quels documents sont requis pour s’inscrire sur [PGDE](platform) ?
+      - De quels papiers ai-je besoin pour m’inscrire sur [PGDE](platform) ?
+      - Quels sont les justificatifs demandés pour [PGDE](platform) ?
+      - Faut-il une carte d’identité pour [PGDE](platform) ?

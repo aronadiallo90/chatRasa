@@ -2,6 +2,7 @@
 "# chatRasa" 
 
 -pour entrainer le modele
+rasa train
 
 -pour lancer l'api rasa
 rasa run -m models --enable-api --cors "*" --debug

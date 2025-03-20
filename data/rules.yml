@@ -9,93 +9,103 @@ rules:
 
 - rule: Répondre à la demande d'aide
   steps:
-  - intent: E_carriere
-  - action: utter_E_carriere
+    - intent: E_carriere
+    - action: utter_E_carriere
 
 - rule: Répondre à la question sur le suivi des actes administratifs
   steps:
-  - intent: ask_acte_followup
-  - action: utter_ask_acte_followup
+    - intent: ask_acte_followup
+    - action: utter_ask_acte_followup
 
 - rule: Répondre à la soumission d’une réclamation
   steps:
-  - intent: ask_claim_submission
-  - action: utter_ask_claim_submission
+    - intent: ask_claim_submission
+    - action: utter_ask_claim_submission
 
 - rule: Répondre à la question des horaires
   steps:
-  - intent: ask_hours
-  - action: utter_ask_hours
+    - intent: ask_hours
+    - action: utter_ask_hours
 
 - rule: Expliquer la création de compte
   steps:
-  - intent: ask_account_creation
-  - action: utter_ask_account_creation
+    - intent: ask_account_creation
+    - action: utter_ask_account_creation
 
 - rule: Expliquer la connexion
   steps:
-  - intent: ask_login
-  - action: utter_ask_login
+    - intent: ask_login
+    - action: utter_ask_login
 
 - rule: Répondre à la réinitialisation de mot de passe
   steps:
-  - intent: ask_password_reset
-  - action: utter_ask_password_reset
+    - intent: ask_password_reset
+    - action: utter_ask_password_reset
 
 - rule: Répondre aux questions sur les fonctionnalités de la plateforme
   steps:
-  - intent: ask_platform_features
-  - action: utter_ask_platform_features
+    - intent: ask_platform_features
+    - action: utter_ask_platform_features
 
 - rule: Donner le lien du tutoriel
   steps:
-  - intent: ask_tutorial_link
-  - action: utter_ask_tutorial_link
+    - intent: ask_tutorial_link
+    - action: utter_ask_tutorial_link
 
 - rule: Décrire l'inscription à la fonction publique
   steps:
-  - intent: ask_public_service_application
-  - action: utter_ask_public_service_application
+    - intent: ask_public_service_application
+    - action: utter_ask_public_service_application
 
 - rule: Décrire les étapes d'inscription
   steps:
-  - intent: ask_public_service_steps
-  - action: utter_ask_public_service_steps
+    - intent: ask_public_service_steps
+    - action: utter_ask_public_service_steps
 
 - rule: Lister les documents nécessaires
   steps:
-  - intent: ask_public_service_documents
-  - action: utter_ask_public_service_documents
+    - intent: ask_public_service_documents
+    - action: utter_ask_public_service_documents
 
 - rule: Expliquer la soumission du dossier
   steps:
-  - intent: ask_public_service_submission
-  - action: utter_ask_public_service_submission
+    - intent: ask_public_service_submission
+    - action: utter_ask_public_service_submission
 
 - rule: Expliquer la confirmation de candidature
   steps:
-  - intent: ask_public_service_confirmation
-  - action: utter_ask_public_service_confirmation
+    - intent: ask_public_service_confirmation
+    - action: utter_ask_public_service_confirmation
 
 - rule: Gérer une réponse inconnue
   steps:
-  - intent: fallback
-  - action: utter_fallback
+    - intent: fallback
+    - action: utter_fallback
 
 - rule: Répondre avec le document via LLaMA
   steps:
-  - intent: ask_document_info
-  - action: action_retrieve_answer
+    - intent: ask_document_info
+    - action: action_retrieve_answer
 
 - rule: Rediriger `nlu_fallback` vers `action_retrieve_answer`
   steps:
-  - intent: nlu_fallback
-  - action: action_retrieve_answer
+    - intent: nlu_fallback
+    - action: action_retrieve_answer
 
-- rule: Gérer le retour utilisateur
+- rule: Gérer le retour utilisateur vers E-Carrière
   steps:
-  - intent: go_back
-  - action: utter_E_carriere
+    - intent: go_back_ecarriere
+    - action: utter_E_carriere
+
+- rule: Gérer le retour utilisateur vers PGDE
+  steps:
+    - intent: go_back_pgde
+    - action: utter_pgde_menu
+
+- rule: Gérer le retour utilisateur vers Autres plateformes
+  steps:
+    - intent: go_back_autres
+    - action: utter_greet
 
 - rule: Rediriger vers la plateforme choisie
   steps:

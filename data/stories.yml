@@ -3,10 +3,10 @@ version: "3.1"
 stories:
 - story: User greets and asks for help
   steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: choose_platform
-  - action: action_redirect_platform
+    - intent: greet
+    - action: utter_greet
+    - intent: choose_platform
+    - action: action_redirect_platform
 
 - story: User asks about account creation
   steps:
@@ -30,12 +30,30 @@ stories:
 
 - story: User asks about submission
   steps:
-  - intent: ask_public_service_submission
-  - action: utter_ask_public_service_submission
-  - intent: go_back
-  - action: utter_E_carriere
+    - intent: ask_public_service_submission
+    - action: utter_ask_public_service_submission
+    - intent: go_back_ecarriere
+    - action: utter_E_carriere
 
-- story: User asks about login
+# pgde
+
+- story: User asks about PGDE account creation
   steps:
-    - intent: ask_login
-    - action: utter_ask_login
+    - intent: ask_pgde_account_creation
+    - action: utter_ask_pgde_account_creation
+    - intent: go_back_pgde
+    - action: utter_pgde_menu
+
+- story: User asks about PGDE login
+  steps:
+    - intent: ask_pgde_login
+    - action: utter_ask_pgde_login
+    - intent: go_back_pgde
+    - action: utter_pgde_menu
+
+- story: User asks about PGDE documents
+  steps:
+    - intent: ask_pgde_documents
+    - action: utter_ask_pgde_documents
+    - intent: go_back_pgde
+    - action: utter_pgde_menu
