@@ -146,13 +146,20 @@
     let lastButtons = [];
 
     function appendMessage(text, sender) {
-        let chatBox = document.getElementById("chat-box");
-        let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : "user-message");
-        messageDiv.innerText = text;
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    }
+    let chatBox = document.getElementById("chat-box");
+    let messageDiv = document.createElement("div");
+    messageDiv.classList.add("message", sender === "bot" ? "bot-message" : "user-message");
+
+    // Transformer les liens Markdown en liens HTML cliquables
+    let formattedText = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+    // Insérer du HTML au lieu de texte brut
+    messageDiv.innerHTML = formattedText;
+    
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
 
     function appendButtons(buttons) {
         let chatBox = document.getElementById("chat-box");

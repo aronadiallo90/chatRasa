@@ -1,11 +1,10 @@
 body {
     font-family: Arial, sans-serif;
 }
-
 #chat-container {
     width: 350px;
     height: 500px;
-    border: 1px solid #28a745;
+    border: 1px solid #28a745; /* Vert */
     border-radius: 10px;
     padding: 10px;
     display: flex;
@@ -16,11 +15,10 @@ body {
     bottom: 20px;
     right: 20px;
     background: white;
-    display: none;
+    display: none; /* Caché au départ */
 }
-
 #chat-header {
-    background: #28a745;
+    background: #28a745; /* Vert */
     color: white;
     padding: 10px;
     font-size: 16px;
@@ -28,12 +26,10 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-
 #header-actions {
     display: flex;
     gap: 10px;
 }
-
 #chat-box {
     flex-grow: 1;
     overflow-y: auto;
@@ -41,25 +37,39 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 .message {
     padding: 8px;
     margin: 5px;
     border-radius: 8px;
     max-width: 80%;
 }
-
 .bot-message {
     background-color: #e6e6e6;
     align-self: flex-start;
 }
-
 .user-message {
-    background-color: #28a745;
+    background-color: #28a745; /* Bleu */
     color: white;
     align-self: flex-end;
 }
-
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.chat-button {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745; /* Vert */
+    color: white;
+    cursor: pointer;
+}
+.chat-button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
 .chat-actions {
     position: fixed;
     bottom: 20px;
@@ -67,9 +77,8 @@ body {
     display: flex;
     gap: 10px;
 }
-
 .chat-icon {
-    background: #28a745;
+    background: #28a745; /* Vert */
     color: white;
     border-radius: 50%;
     width: 50px;
@@ -81,20 +90,17 @@ body {
     cursor: pointer;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
 }
-
 #input-container {
     display: flex;
     padding: 10px;
     border-top: 1px solid #28a745;
 }
-
 #user-input {
     flex-grow: 1;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
 #send-button {
     background: #28a745;
     color: white;

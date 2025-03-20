@@ -34,7 +34,7 @@ entities:
 slots:
   platform:
     type: text
-    influence_conversation: false
+    influence_conversation: true
     mappings:
       - type: from_entity
         entity: platform
@@ -90,19 +90,19 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_ask_account_creation:
-    - text: "Pour créer un compte, rendez-vous sur notre site,\ncliquez sur 'Créer un compte' et suivez les instructions.\n\nVoici un tutoriel : [lien du tutoriel]"
+    - text: "Pour créer un compte, rendez-vous sur notre site,\ncliquez sur 'Créer un compte' et suivez les instructions.\n\nVoici un tutoriel : [lien du tutoriel](https://www.example.com/tutoriel)"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_login:
-    - text: "Pour vous connecter, allez sur notre site cliquez sur la page de connexion et entrez vos identifiants. Voici un tutoriel[]."
+    - text: "Pour vous connecter, allez sur notre site, cliquez sur la page de connexion et entrez vos identifiants. Voici un tutoriel : [lien du tutoriel](https://www.example.com/tutoriel)"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_tutorial_link:
-    - text: "Voici le tutoriel : [https://www.youtube.com/watch?v=xuPkjiRKuiY]"
+    - text: "Voici le tutoriel : [https://www.youtube.com/watch?v=xuPkjiRKuiY](https://www.youtube.com/watch?v=xuPkjiRKuiY)"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
