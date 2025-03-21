@@ -117,6 +117,7 @@ nlu:
       - Quels sont les documents nécessaires pour l'inscription sur [PGDE](platform) ?
       - Quelle est la procédure d’inscription sur [PGDE](platform) ?
       - Où créer un compte pour [PGDE](platform) ?
+      - [PGDE](platform) créer un compte
 
   - intent: ask_pgde_login
     examples: |
@@ -124,6 +125,7 @@ nlu:
       - Où puis-je me connecter à [PGDE](platform) ?
       - Je ne trouve pas la page de connexion sur [PGDE](platform).
       - J’ai des problèmes de connexion sur [PGDE](platform), que faire ?
+      - [PGDE](platform) se connecter
 
   - intent: ask_pgde_documents
     examples: |

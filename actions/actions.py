@@ -56,11 +56,12 @@ class ActionRedirectPlatform(Action):
         if platform == "E-Carrière":
             dispatcher.utter_message(response="utter_E_carriere")
         elif platform == "PGDE":
-            dispatcher.utter_message(text="Bienvenue sur PGDE. Comment puis-je vous aider ?", buttons=[
-                {"title": "Créer un compte", "payload": "/ask_pgde_account_creation"},
-                {"title": "Se connecter", "payload": "/ask_pgde_login"},
-                {"title": "Retour au menu principal", "payload": "/greet"}
-            ])
+            dispatcher.utter_message(response="utter_pgde_menu")
+            # dispatcher.utter_message(text="Bienvenue sur PGDE. Comment puis-je vous aider ?", buttons=[
+            #     {"title": "Créer un compte", "payload": "/ask_pgde_account_creation"},
+            #     {"title": "Se connecter", "payload": "/ask_pgde_login"},
+            #     {"title": "Retour au menu principal", "payload": "/greet"}
+            # ])
         else:
             dispatcher.utter_message(text="Cette plateforme n'est pas encore disponible.")
 

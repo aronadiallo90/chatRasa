@@ -26,10 +26,16 @@ intents:
   - ask_pgde_account_creation 
   - ask_pgde_login
   - ask_pgde_documents
+  - ask_pgde_features
+  - ask_pgde_password_reset
+  - ask_pgde_claim_submission
+  - ask_pgde_acte_followup
+  - ask_pgde_hours
 
 entities:
   - service
   - platform  # Ensure this entity is included
+  - action
 
 slots:
   platform:
@@ -38,6 +44,12 @@ slots:
     mappings:
       - type: from_entity
         entity: platform
+  action:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: action
 
 responses:
   utter_no_info:
@@ -64,7 +76,7 @@ responses:
         
 
   utter_E_carriere:
-    - text: "Voici les options disponibles :"
+    - text: " Bienvenue dans E-Carrière , que souhaitez-vous savoir ?"
       buttons:
         # - title: "Voir les fonctionnalités"
         #   payload: "/ask_platform_features"
@@ -90,13 +102,13 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_ask_account_creation:
-    - text: "Pour **activer** son compte, rendez-vous sur notre site,\nCliquez sur **'Activation compte' ** \nPuis saisissez votre **matricule** et **numéro de téléphone** sans tiret slash ou espace\nVous **recevrez** un mot de passe temporaire par SMS.\n**Suivez les instructions** pour terminer l'activation.\n\n[lien d'activation](https://e-carriere.sec.gouv.sn/#/login)"
+    - text: "Pour vous **activer** son compte :\n\n1️⃣ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n2️⃣ **Remplissez** les informations demandées avec attention :\n\n3️⃣ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n4️⃣ Votre **Nom** doit être en MAJUSCULES.\n\n5️⃣ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n6️⃣ Suivez ensuite suiver les instructions pour finaliser l’activation de votre compte."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_login:
-    - text: "Pour vous **connecter**, allez sur notre site, **cliquez** sur la page de connexion et **entrez vos identifiants.** \n[lien de la page](https://e-carriere.sec.gouv.sn/#/login)"
+    - text: "Pour vous **connecter** à E-Carrière :\n\n1️⃣ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)** \n\n2️⃣ **Cliquez** sur 'Connexion'.\n\n3️⃣ **Entrez vos identifiants** (Matricule et Mot de passe).\n\n4️⃣ Cliquez sur **'Se connecter'** pour accéder à votre espace personnel."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -180,7 +192,7 @@ responses:
           payload: "/go_back_pgde"
 
   utter_ask_pgde_login:
-    - text: "Pour vous **connecter à PGDE** :\n1. Accédez à la page **[Connexion](https://emploi-fpublique.sec.gouv.sn/login/).**\n2. **Saisissez** votre email et votre mot de passe.**\n3. **Cliquez** sur **'Se connecter'.**"
+    - text: "Pour vous connecter à PGDE :\n\n1️⃣ Accédez à la page **[Connexion](https://emploi-fpublique.sec.gouv.sn/login/).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
@@ -192,14 +204,14 @@ responses:
           payload: "/go_back_pgde"
 
   utter_pgde_menu:
-    - text: "Bienvenue sur **PGDE **. Comment puis-je vous aider ?"
+    - text: "Que souhaitez-vous savoir sur la Plateforme de Gestion des Demandes d’Emploi (**PGDE**) de la fonction publique ?"
       buttons:
         - title: "Créer un compte"
           payload: "/ask_pgde_account_creation"
         - title: "Se connecter"
           payload: "/ask_pgde_login"
-        - title: "Documents nécessaires"
-          payload: "/ask_pgde_documents"
+        # - title: "Documents nécessaires"
+        #   payload: "/ask_pgde_documents"
         - title: "Retour au menu principal"
           payload: "/greet"
 
