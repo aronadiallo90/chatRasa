@@ -68,7 +68,7 @@ responses:
       buttons:
         - title: "Voir les fonctionnalités"
           payload: "/ask_platform_features"
-        - title: "Créer un compte"
+        - title: "Activer son compte"
           payload: "/ask_account_creation"
         - title: "Se connecter"
           payload: "/ask_login"
@@ -90,19 +90,19 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_ask_account_creation:
-    - text: "Pour créer un compte, rendez-vous sur notre site,\ncliquez sur 'Créer un compte' et suivez les instructions.\n\nVoici un tutoriel : [lien du tutoriel](https://www.example.com/tutoriel)"
+    - text: "Pour **activer** son compte, rendez-vous sur notre site,\nCliquez sur **'Activation compte' ** \nPuis saisissez votre **matricule** et **numéro de téléphone** sans tiret slash ou espace\nVous **recevrez** un mot de passe temporaire par SMS.\n**Suivez les instructions** pour terminer l'activation.\n\n[lien d'activation](https://e-carriere.sec.gouv.sn/#/login)"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_login:
-    - text: "Pour vous connecter, allez sur notre site, cliquez sur la page de connexion et entrez vos identifiants. Voici un tutoriel : [lien du tutoriel](https://www.example.com/tutoriel)"
+    - text: "Pour vous **connecter**, allez sur notre site, **cliquez** sur la page de connexion et **entrez vos identifiants.** \n[lien de la page](https://e-carriere.sec.gouv.sn/#/login)"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_tutorial_link:
-    - text: "Voici le tutoriel : [https://www.youtube.com/watch?v=xuPkjiRKuiY](https://www.youtube.com/watch?v=xuPkjiRKuiY)"
+    - text: "**Voici le tutoriel :** [clic](https://www.youtube.com/watch?v=CDsj6Kbgblw)"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -118,13 +118,13 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_ask_public_service_steps:
-    - text: "Voici les étapes :\n1. Créer un compte\n2. Compléter les infos\n3. Sélectionner un poste\n4. Ajouter les documents\n5. Soumettre la candidature."
+    - text: "Voici les étapes :\n1. **Créer un compte**\n2. **Compléter les infos**\n3. **Sélectionner un poste**\n4. **Ajouter les documents**\n5. **Soumettre la candidature**."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_public_service_documents:
-    - text: "Documents nécessaires :\n- Carte d'identité\n- CV\n- Lettre de motivation\n- Diplômes\n- Autres pièces demandées."
+    - text: "Documents nécessaires :\n- **Carte d'identité**\n- **CV**\n- **Lettre de motivation**\n- **Diplômes**\n- **Autres pièces demandées**."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -136,25 +136,25 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_ask_password_reset:
-    - text: "Pour réinitialiser votre mot de passe, allez sur la page de connexion, cliquez sur 'Mot de passe oublié' et suivez les instructions."
+    - text: "1. **Se rendre** sur la page de connexion.\n2. **Cliquer** sur \"**Mot de passe oublié ?**\".\n3. **Saisir** son adresse email associée à son compte.\n4.Vous allez **Recevoir** un email et un message whatsapp contenant un **lien de réinitialisation**.\n5. **Cliquer** sur le lien reçu, **saisir un nouveau mot de passe**, et **confirmer.**\n✅Une fois réinitialisé, l’agent pourra se connecter avec son nouveau mot de passe."
       buttons:
         - title: "Retour"
-          payload: "/go_back_ecarriere"
+          payload: "/go_back_ecarriere" 
 
   utter_ask_claim_submission:
-    - text: "Pour soumettre une réclamation, connectez-vous à E-Carrière, allez dans 'Dépôt et suivi des réclamations', remplissez le formulaire et téléchargez les pièces justificatives."
+    - text: "Pour **soumettre** une **réclamation**, **connectez-vous** à E-Carrière, allez dans **'Dépôt et suivi des réclamations'**, **remplissez** le formulaire et **téléchargez** les **pièces justificatives**."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_acte_followup:
-    - text: "Pour suivre l’évolution de vos actes administratifs, connectez-vous à E-Carrière et consultez la section 'Mes Projets d’Actes'."
+    - text: "Pour **suivre** l’évolution de vos actes administratifs, **connectez-vous** à E-Carrière et **consultez** la section **'Mes Projets d’Actes',** puis suivre les instructions"
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
   utter_ask_platform_features:
-    - text: "E-Carrière vous permet de suivre l’évolution de vos actes administratifs, télécharger vos documents, soumettre des réclamations et modifier vos informations personnelles."
+    - text: " **E-Carrière** vous permet de : \n**Suivre** l’évolution de vos actes administratifs, \n**Télécharger** vos documents, \n**Soumettre** des réclamations \nEt **modifier** vos informations personnelles."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -174,25 +174,25 @@ responses:
           payload: "/ask_public_service_application"
   # concernant PGDE
   utter_ask_pgde_account_creation:
-    - text: "Pour créer un compte sur la plateforme PGDE, suivez ces étapes :\n1. Rendez-vous sur [PGDE](https://emploi-fpublique.sec.gouv.sn/register/).\n2. Cliquez sur 'Créer un compte'.\n3. Remplissez les informations demandées (Nom, Prénom, Email, etc.).\n4. Validez votre inscription via le mail de confirmation."
+    - text: "Pour **créer un compte** sur la plateforme **PGDE**, suivez ces étapes :\n1. **Rendez-vous sur [PGDE](https://emploi-fpublique.sec.gouv.sn/register/).**\n2. **Cliquez** sur **'Créer un compte'.**\n3. **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n4. **Validez votre inscription** via le mail de confirmation."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
 
   utter_ask_pgde_login:
-    - text: "Pour vous connecter à PGDE :\n1. Accédez à la page [Connexion](https://emploi-fpublique.sec.gouv.sn/login/).\n2. Saisissez votre email et votre mot de passe.\n3. Cliquez sur 'Se connecter'."
+    - text: "Pour vous **connecter à PGDE** :\n1. Accédez à la page **[Connexion](https://emploi-fpublique.sec.gouv.sn/login/).**\n2. **Saisissez** votre email et votre mot de passe.**\n3. **Cliquez** sur **'Se connecter'.**"
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
                
   utter_ask_pgde_documents:
-    - text: "Les documents nécessaires pour s’inscrire sur PGDE sont :\n- Une pièce d'identité valide.\n- Un CV mis à jour.\n- Une lettre de motivation (facultatif).\n- Vos diplômes et certificats scannés."
+    - text: "Les **documents nécessaires** pour s’inscrire sur PGDE sont :\n- Une **pièce d'identité** valide.\n- Un **CV** mis à jour.**\n- **Une lettre de motivation** (facultatif).\n- Vos **diplômes** et **certificats** scannés.**"
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
 
   utter_pgde_menu:
-    - text: "Bienvenue sur PGDE. Comment puis-je vous aider ?"
+    - text: "Bienvenue sur **PGDE **. Comment puis-je vous aider ?"
       buttons:
         - title: "Créer un compte"
           payload: "/ask_pgde_account_creation"

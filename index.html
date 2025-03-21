@@ -55,7 +55,7 @@
             align-self: flex-start;
         }
         .user-message {
-            background-color: #28a745; /* Bleu */
+            background-color: #28a745; /* Vert */
             color: white;
             align-self: flex-end;
         }
@@ -128,8 +128,6 @@
             <button onclick="restartChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;">🔄</button>
             <button onclick="fermerChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;">✖️</button>
         </div>
-        <!-- <button onclick="restartChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;">🔄</button>
-        <button onclick="fermerChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;">✖️</button> -->
     </div>
     <div id="chat-box"></div>
     <div id="input-container">
@@ -146,20 +144,22 @@
     let lastButtons = [];
 
     function appendMessage(text, sender) {
-    let chatBox = document.getElementById("chat-box");
-    let messageDiv = document.createElement("div");
-    messageDiv.classList.add("message", sender === "bot" ? "bot-message" : "user-message");
+        let chatBox = document.getElementById("chat-box");
+        let messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : "user-message");
 
-    // Transformer les liens Markdown en liens HTML cliquables
-    let formattedText = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+        // Transformer les liens Markdown en liens HTML cliquables et les retours à la ligne en <br>
+        let formattedText = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Mise en gras
+            .replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+            .replace(/\n/g, '<br>');
 
-    // Insérer du HTML au lieu de texte brut
-    messageDiv.innerHTML = formattedText;
-    
-    chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
+        // Insérer du HTML au lieu de texte brut
+        messageDiv.innerHTML = formattedText;
+        
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
     function appendButtons(buttons) {
         let chatBox = document.getElementById("chat-box");

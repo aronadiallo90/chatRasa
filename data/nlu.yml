@@ -36,8 +36,8 @@ nlu:
 
   - intent: ask_account_creation
     examples: |
-      - Comment créer un compte sur [E-Carrière](service) ?
-      - Quels documents sont nécessaires pour l'inscription sur [E-Carrière](service) ?
+      - Comment activer son  compte sur [E-Carrière](service) ?
+      - Quels documents sont nécessaires pour l'activation sur [E-Carrière](service) ?
 
   - intent: ask_acte_followup
     examples: |
