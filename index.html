@@ -117,6 +117,36 @@
             cursor: pointer;
             margin-left: 5px;
         }
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 20px;
+            margin: 5px;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            margin: 0 2px;
+            background-color: #28a745;
+            border-radius: 50%;
+            display: inline-block;
+            animation: dot-blink 1.4s infinite both;
+        }
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes dot-blink {
+            0%, 80%, 100% {
+                opacity: 0;
+            }
+            40% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -142,6 +172,7 @@
 
 <script>
     let lastButtons = [];
+    let loadingIndicator;
 
     function appendMessage(text, sender) {
         let chatBox = document.getElementById("chat-box");
@@ -188,7 +219,24 @@
         }
     }
 
+    function showLoadingIndicator() {
+        let chatBox = document.getElementById("chat-box");
+        loadingIndicator = document.createElement("div");
+        loadingIndicator.classList.add("loading-indicator");
+        loadingIndicator.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+        chatBox.appendChild(loadingIndicator);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function hideLoadingIndicator() {
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+            loadingIndicator = null;
+        }
+    }
+
     function sendMessage(payload) {
+        showLoadingIndicator();
         fetch("http://localhost:5005/webhooks/rest/webhook", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -196,6 +244,7 @@
         })
         .then(response => response.json())
         .then(data => {
+            hideLoadingIndicator();
             let foundButtons = false;
             data.forEach(res => {
                 if (res.text) appendMessage(res.text, "bot");
@@ -206,7 +255,10 @@
             });
             if (!foundButtons) appendButtons([{ title: "Retour", payload: "/go_back" }]);
         })
-        .catch(error => console.error("Erreur:", error));
+        .catch(error => {
+            hideLoadingIndicator();
+            console.error("Erreur:", error);
+        });
     }
 
     function sendUserMessage() {

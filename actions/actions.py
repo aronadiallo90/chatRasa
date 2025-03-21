@@ -89,6 +89,10 @@ class ActionRetrieveAnswer(Action):
         D, I = faiss_index.search(user_embedding, 1)  # Trouver la meilleure correspondance
 
         print(f"📌 Distance FAISS : {D[0][0]}, Index récupéré : {I[0][0]}")
+        if D[0][0] > 0.8:  # Seuil trop élevé = réponse non fiable
+            dispatcher.utter_message(response="utter_no_info")
+            return []
+        
         
         if D[0][0] < 0.8:  # 🔥 Seuil ajusté pour de meilleures réponses
             best_match = DOCUMENT_SECTIONS[I[0][0]]
@@ -117,9 +121,13 @@ class ActionRetrieveAnswer(Action):
                 )
                 bot_response = response["message"]["content"]
 
+                # Vérifier si la réponse d'Ollama est pertinente
+                if "je ne sais pas" in bot_response.lower() or "désolé" in bot_response.lower():
+                    bot_response = "Désolé, je n’ai pas trouvé d’information à ce sujet."
+
             except Exception as e:
                 print("❌ Erreur avec Ollama :", str(e))
-                bot_response = "Désolé, une erreur est survenue lors de la recherche."
+                bot_response = "Désolé, je n’ai pas trouvé d’information à ce sujet."
 
         else:
             # Construire la requête pour Ollama avec la section trouvée
@@ -141,9 +149,13 @@ class ActionRetrieveAnswer(Action):
                 )
                 bot_response = response["message"]["content"]
 
+                # Vérifier si la réponse d'Ollama est pertinente
+                if "je ne sais pas" in bot_response.lower() or "désolé" in bot_response.lower():
+                    bot_response = "Désolé, je n’ai pas trouvé d’information à ce sujet."
+
             except Exception as e:
                 print("❌ Erreur avec Ollama :", str(e))
-                bot_response = "Désolé, une erreur est survenue lors de la recherche."
+                bot_response = "Désolé, je n’ai pas trouvé d’information à ce sujet."
 
         # ✅ Stocker la réponse dans le cache pour accélérer les futures requêtes
         response_cache[user_message] = bot_response
@@ -152,8 +164,8 @@ class ActionRetrieveAnswer(Action):
 
         # Ajouter un bouton de retour
         dispatcher.utter_message(text="Que souhaitez-vous faire ?", buttons=[
-            {"title": "Retour", "payload": "/go_back"},
-            {"title": "Obtenir de l'aide", "payload": "/E_carriere"}
+            {"title": "Retour", "payload": "/greet"},
+            
         ])
 
         return []
