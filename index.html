@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
     <title>Chatbot Rasa</title>
+   
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +15,7 @@
         #chat-container {
             width: 350px;
             height: 500px;
-            border: 1px solid #28a745; /* Vert */
+            border: 1px solid #00843F; /* Vert */
             border-radius: 10px;
             padding: 10px;
             display: flex;
@@ -25,7 +29,7 @@
             display: none; /* Caché au départ */
         }
         #chat-header {
-            background: #28a745; /* Vert */
+            background: #00843F; /* Vert */
             color: white;
             padding: 10px;
             font-size: 16px;
@@ -55,7 +59,7 @@
             align-self: flex-start;
         }
         .user-message {
-            background-color: #28a745; /* Vert */
+            background-color: #00843F; /* Vert */
             color: white;
             align-self: flex-end;
         }
@@ -69,7 +73,7 @@
             padding: 8px 12px;
             border: none;
             border-radius: 5px;
-            background-color: #28a745; /* Vert */
+            background-color: #00843F; /* Vert */
             color: white;
             cursor: pointer;
         }
@@ -85,7 +89,7 @@
             gap: 10px;
         }
         .chat-icon {
-            background: #28a745; /* Vert */
+            background: #00843F; /* Vert */
             color: white;
             border-radius: 50%;
             width: 50px;
@@ -100,7 +104,7 @@
         #input-container {
             display: flex;
             padding: 10px;
-            border-top: 1px solid #28a745;
+            border-top: 1px solid #00843F;
         }
         #user-input {
             flex-grow: 1;
@@ -109,7 +113,7 @@
             border-radius: 5px;
         }
         #send-button {
-            background: #28a745;
+            background: #408aa9;
             color: white;
             border: none;
             border-radius: 5px;
@@ -128,7 +132,7 @@
             width: 6px;
             height: 6px;
             margin: 0 2px;
-            background-color: #28a745;
+            background-color: #00843F;
             border-radius: 50%;
             display: inline-block;
             animation: dot-blink 1.4s infinite both;
@@ -153,10 +157,13 @@
 
 <div id="chat-container">
     <div id="chat-header">
-        <span>🤖 Chatbot</span>
+        <span>🤖 Maty (MFPRSP)</span>
         <div id="header-actions">
-            <button onclick="restartChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;">🔄</button>
-            <button onclick="fermerChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;">✖️</button>
+            <button onclick="restartChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;"><i class="fas fa-sync" style="color:rgb(241, 214, 125);"></i>
+
+            </button>
+            <button onclick="fermerChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;"><i class="fas fa-times" style="color:rgb(228, 123, 97);font-size: 1.5rem;" ></i>
+            </button>
         </div>
     </div>
     <div id="chat-box"></div>

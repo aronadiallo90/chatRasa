@@ -53,33 +53,33 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_greet:
-    - text: "Bonjour, quelle plateforme souhaitez-vous consulter ?"
+    - text: "Bienvenue ! Je suis Maty, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public. En quoi puis-je vous aider aujourd'hui ?"
       buttons:
-        - title: "E-Carrière"
+        - title: "E-CARRIERE"
           payload: "/choose_platform{\"platform\": \"E-Carrière\"}"
-        - title: "PGDE"
+        - title: "Demande d'emploi (PGDE)"
           payload: "/choose_platform{\"platform\": \"PGDE\"}"
-        - title: "Autre plateforme"
+        - title: "GIRAFE"
           payload: "/choose_platform{\"platform\": \"Autre\"}"
         
 
   utter_E_carriere:
     - text: "Voici les options disponibles :"
       buttons:
-        - title: "Voir les fonctionnalités"
-          payload: "/ask_platform_features"
+        # - title: "Voir les fonctionnalités"
+        #   payload: "/ask_platform_features"
         - title: "Activer son compte"
           payload: "/ask_account_creation"
-        - title: "Se connecter"
+        - title: "J'arrive pas à me connecter"
           payload: "/ask_login"
-        - title: "Tutoriel"
-          payload: "/ask_tutorial_link"
-        - title: "Réinitialiser mot de passe"
-          payload: "/ask_password_reset"
-        - title: "Suivi des actes administratifs"
-          payload: "/ask_acte_followup"
-        - title: "Déposer une réclamation"
-          payload: "/ask_claim_submission"
+        # - title: "Tutoriel"
+        #   payload: "/ask_tutorial_link"
+        # - title: "Réinitialiser mot de passe"
+        #   payload: "/ask_password_reset"
+        # - title: "Suivi des actes administratifs"
+        #   payload: "/ask_acte_followup"
+        # - title: "Déposer une réclamation"
+        #   payload: "/ask_claim_submission"
         - title: "Retour au menu principal"
           payload: "/greet"
 
