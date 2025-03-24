@@ -63,7 +63,7 @@ class ActionRedirectPlatform(Action):
             #     {"title": "Retour au menu principal", "payload": "/greet"}
             # ])
         else:
-            dispatcher.utter_message(text="Cette plateforme n'est pas encore disponible.")
+            dispatcher.utter_message(response="utter_no_plateform_info")
 
         return []
 

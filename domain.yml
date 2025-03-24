@@ -31,6 +31,7 @@ intents:
   - ask_pgde_claim_submission
   - ask_pgde_acte_followup
   - ask_pgde_hours
+  - no_plateform_info
 
 entities:
   - service
@@ -76,7 +77,7 @@ responses:
         
 
   utter_E_carriere:
-    - text: " Bienvenue dans E-Carrière , que souhaitez-vous savoir ?"
+    - text: " Bienvenue dans **E-Carrière** , que souhaitez-vous savoir ?"
       buttons:
         # - title: "Voir les fonctionnalités"
         #   payload: "/ask_platform_features"
@@ -108,7 +109,7 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_ask_login:
-    - text: "Pour vous **connecter** à E-Carrière :\n\n1️⃣ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)** \n\n2️⃣ **Cliquez** sur 'Connexion'.\n\n3️⃣ **Entrez vos identifiants** (Matricule et Mot de passe).\n\n4️⃣ Cliquez sur **'Se connecter'** pour accéder à votre espace personnel."
+    - text: "Pour vous **connecter** à E-Carrière:\n\n1️⃣ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)** \n\n2️⃣ **Cliquez** sur 'Connexion'.\n\n3️⃣ **Entrez vos identifiants** (Matricule et Mot de passe).\n\n4️⃣ Cliquez sur **'Se connecter'** pour accéder à votre espace personnel."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -186,13 +187,13 @@ responses:
           payload: "/ask_public_service_application"
   # concernant PGDE
   utter_ask_pgde_account_creation:
-    - text: "Pour **créer un compte** sur la plateforme **PGDE**, suivez ces étapes :\n1. **Rendez-vous sur [PGDE](https://emploi-fpublique.sec.gouv.sn/register/).**\n2. **Cliquez** sur **'Créer un compte'.**\n3. **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n4. **Validez votre inscription** via le mail de confirmation."
+    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆.](https://emploi-fpublique.sec.gouv.sn/login/).**\n\n2️⃣ Cliquez sur 'Créer un compte'.\n\n3️⃣ Remplissez les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
 
   utter_ask_pgde_login:
-    - text: "Pour vous connecter à PGDE :\n\n1️⃣ Accédez à la page **[Connexion](https://emploi-fpublique.sec.gouv.sn/login/).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
+    - text: "Pour vous connecter à PGDE :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien](https://emploi-fpublique.sec.gouv.sn/login/).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
@@ -204,7 +205,7 @@ responses:
           payload: "/go_back_pgde"
 
   utter_pgde_menu:
-    - text: "Que souhaitez-vous savoir sur la Plateforme de Gestion des Demandes d’Emploi (**PGDE**) de la fonction publique ?"
+    - text: "Bienvenu sur la Plateforme de Gestion d'Emploi **(PGDE)** de la Fonction Publique !\n\n💼 Comment puis-je vous aider aujourd'hui ?"
       buttons:
         - title: "Créer un compte"
           payload: "/ask_pgde_account_creation"
@@ -214,7 +215,12 @@ responses:
         #   payload: "/ask_pgde_documents"
         - title: "Retour au menu principal"
           payload: "/greet"
-
+  utter_no_plateform_info:
+    - text: "Cette plateforme n'est pas encore disponible."
+      buttons:
+        - title: "Retour"
+          payload: "/greet"
+    
 actions:
   - action_E_carriere
   - action_test
