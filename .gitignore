@@ -1,4 +1,5 @@
 .idea/
 .rasa/cache/
 models/
+html test/
 .models/

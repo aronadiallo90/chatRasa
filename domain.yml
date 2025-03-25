@@ -187,14 +187,14 @@ responses:
           payload: "/ask_public_service_application"
   # concernant PGDE
   utter_ask_pgde_account_creation:
-    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆.](https://emploi-fpublique.sec.gouv.sn/login/).**\n\n2️⃣ Cliquez sur 'Créer un compte'.\n\n3️⃣ Remplissez les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
+    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur 'Créer un compte'.\n\n3️⃣ Remplissez les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
 
   utter_ask_pgde_login:
-    - text: "Pour vous connecter à PGDE :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien](https://emploi-fpublique.sec.gouv.sn/login/).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
-      buttons:
+    - text: "Pour vous connecter à PGDE :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
+      buttons:                                                                                          
         - title: "Retour"
           payload: "/go_back_pgde"
                

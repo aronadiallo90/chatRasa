@@ -1,0 +1,4400 @@
+-- DROP SCHEMA dbo;
+
+CREATE SCHEMA dbo;
+-- referentiel_fudpe_new.dbo.CT_agents_doublons definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.CT_agents_doublons;
+
+CREATE TABLE referentiel_fudpe_new.dbo.CT_agents_doublons (
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	nb_doublons int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.PARTICIPANTINSTANCE_140324 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.PARTICIPANTINSTANCE_140324;
+
+CREATE TABLE referentiel_fudpe_new.dbo.PARTICIPANTINSTANCE_140324 (
+	PART_INST_ID bigint NOT NULL,
+	PART_INST_DATE_CREATED datetime2 NULL,
+	PART_INST_DATE_UPDATED datetime2 NULL,
+	PART_INST_CODE_ACTION varchar(255) COLLATE French_CI_AS NULL,
+	PART_INST_CODE_FONCTION varchar(255) COLLATE French_CI_AS NULL,
+	PART_INST_CODE_STRUCTURE varchar(255) COLLATE French_CI_AS NULL,
+	ACT_INST_ID bigint NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.a_verifier_men definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.a_verifier_men;
+
+CREATE TABLE referentiel_fudpe_new.dbo.a_verifier_men (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.act_usr_code definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.act_usr_code;
+
+CREATE TABLE referentiel_fudpe_new.dbo.act_usr_code (
+	agt_id int NOT NULL,
+	act_usr_code bigint NULL,
+	username_id bigint NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	username varchar(255) COLLATE French_CI_AS NOT NULL,
+	usr_login varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	usr_prenom varchar(255) COLLATE French_CI_AS NULL,
+	usr_nom varchar(255) COLLATE French_CI_AS NULL,
+	usr_bon_code varchar(100) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.acteStable definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.acteStable;
+
+CREATE TABLE referentiel_fudpe_new.dbo.acteStable (
+	act_id int IDENTITY(50684612,1) NOT NULL,
+	act_is_projet bit NOT NULL,
+	act_numero_projet varchar(255) COLLATE French_CI_AS NULL,
+	act_date_projet date NULL,
+	act_numero_acte varchar(255) COLLATE French_CI_AS NULL,
+	act_date_acte date NULL,
+	act_observation varchar(255) COLLATE French_CI_AS NULL,
+	act_ref_GED varchar(255) COLLATE French_CI_AS NULL,
+	act_prise_en_compte_solde bit NOT NULL,
+	act_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	act_tac_id int NOT NULL,
+	act_act_lie int NULL,
+	act_initiateur_id int NULL,
+	act_process_instance_id int NULL,
+	act_date_created datetime2 NULL,
+	act_date_updated datetime2 NULL,
+	act_deleted bit NOT NULL,
+	act_date_deleted datetime2 NULL,
+	act_etat_id int NULL,
+	act_chemin_word varchar(255) COLLATE French_CI_AS NULL,
+	act_numero_etape_circuit int NULL,
+	act_str_parent_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_projet_acte varchar(100) COLLATE French_CI_AS NULL,
+	act_is_rejet numeric(38,0) NULL,
+	act_fonct_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_parent_projet_acte varchar(100) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.acte_a_certif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.acte_a_certif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.acte_a_certif (
+	act_id int NULL,
+	act_is_projet int NULL,
+	act_numero_projet varchar(5000) COLLATE French_CI_AS NULL,
+	act_date_projet varchar(5000) COLLATE French_CI_AS NULL,
+	act_numero_acte varchar(5000) COLLATE French_CI_AS NULL,
+	act_date_acte varchar(5000) COLLATE French_CI_AS NULL,
+	act_observation varchar(5000) COLLATE French_CI_AS NULL,
+	act_ref_GED varchar(5000) COLLATE French_CI_AS NULL,
+	act_prise_en_compte_solde int NULL,
+	act_ref_syst_externe varchar(5000) COLLATE French_CI_AS NULL,
+	act_tac_id int NULL,
+	act_act_lie varchar(5000) COLLATE French_CI_AS NULL,
+	act_initiateur_id varchar(5000) COLLATE French_CI_AS NULL,
+	act_process_instance_id varchar(5000) COLLATE French_CI_AS NULL,
+	act_date_created varchar(5000) COLLATE French_CI_AS NULL,
+	act_date_updated varchar(5000) COLLATE French_CI_AS NULL,
+	act_deleted int NULL,
+	act_date_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	act_etat_id int NULL,
+	act_chemin_word varchar(5000) COLLATE French_CI_AS NULL,
+	act_numero_etape_circuit varchar(5000) COLLATE French_CI_AS NULL,
+	act_str_parent_initiateur varchar(5000) COLLATE French_CI_AS NULL,
+	act_str_initiateur varchar(5000) COLLATE French_CI_AS NULL,
+	act_str_projet_acte varchar(5000) COLLATE French_CI_AS NULL,
+	act_is_rejet varchar(5000) COLLATE French_CI_AS NULL,
+	act_fonct_initiateur varchar(5000) COLLATE French_CI_AS NULL,
+	act_str_parent_projet_acte varchar(5000) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.acteagent_a_certif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.acteagent_a_certif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.acteagent_a_certif (
+	act_agt_id int NULL,
+	act_agt_act_id int NULL,
+	act_agt_agt_id int NULL,
+	act_agt_cce_id int NULL,
+	act_agt_fct_code varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_str_code varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_spe_code varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_pos_code varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_effet varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_created varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_updated varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_deleted int NULL,
+	act_agt_date_deleted varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_dip_code varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_session_diplome varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_obtention_diplome varchar(50) COLLATE French_CI_AS NULL,
+	act_poste_budgetaire_libere varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_entree_service varchar(50) COLLATE French_CI_AS NULL,
+	act_observations varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_pays_code varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_pays_id varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_avis_mutation varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_note_globale varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_taux_mensuel varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_agt_remplace_id varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_motif_remplacement varchar(50) COLLATE French_CI_AS NULL,
+	act_poste_budgetaire_accueil varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_debut varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_fin varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_duree varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_date_deces varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_lieu_deces varchar(50) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.actecircuit definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.actecircuit;
+
+CREATE TABLE referentiel_fudpe_new.dbo.actecircuit (
+	act_id int IDENTITY(50684612,1) NOT NULL,
+	act_is_projet bit NOT NULL,
+	act_numero_projet varchar(255) COLLATE French_CI_AS NULL,
+	act_date_projet date NULL,
+	act_numero_acte varchar(255) COLLATE French_CI_AS NULL,
+	act_date_acte date NULL,
+	act_observation varchar(255) COLLATE French_CI_AS NULL,
+	act_ref_GED varchar(255) COLLATE French_CI_AS NULL,
+	act_prise_en_compte_solde bit NOT NULL,
+	act_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	act_tac_id int NOT NULL,
+	act_act_lie int NULL,
+	act_initiateur_id int NULL,
+	act_process_instance_id int NULL,
+	act_date_created datetime2 NULL,
+	act_date_updated datetime2 NULL,
+	act_deleted bit NOT NULL,
+	act_date_deleted datetime2 NULL,
+	act_etat_id int NULL,
+	act_chemin_word varchar(255) COLLATE French_CI_AS NULL,
+	act_numero_etape_circuit int NULL,
+	act_str_parent_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_projet_acte varchar(100) COLLATE French_CI_AS NULL,
+	act_is_rejet numeric(38,0) NULL,
+	act_fonct_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_parent_projet_acte varchar(100) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.actes_pieces definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.actes_pieces;
+
+CREATE TABLE referentiel_fudpe_new.dbo.actes_pieces (
+	act_id bigint NULL,
+	chemin varchar(255) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.[action] definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.[action];
+
+CREATE TABLE referentiel_fudpe_new.dbo.[action] (
+	action_id int IDENTITY(1,1) NOT NULL,
+	action_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_action PRIMARY KEY (action_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_a_certif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_a_certif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_a_certif (
+	agt_id int NULL,
+	agt_matricule_solde varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cni varchar(5000) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_lieu_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(5000) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(5000) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(5000) COLLATE French_CI_AS NULL,
+	agt_email varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_situation varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_position varchar(5000) COLLATE French_CI_AS NULL,
+	agt_num_ordre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cce_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_pos_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_affectation_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_str_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_user_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_initiateur_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_entree_service varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_created varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_updated varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ministere_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	isUpdateAfterActivation varchar(5000) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_a_certif_doublons_1_sans_projet definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_a_certif_doublons_1_sans_projet;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_a_certif_doublons_1_sans_projet (
+	agt_id int NULL,
+	agt_matricule_solde varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cni varchar(5000) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_lieu_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(5000) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(5000) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(5000) COLLATE French_CI_AS NULL,
+	agt_email varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_situation varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_position varchar(5000) COLLATE French_CI_AS NULL,
+	agt_num_ordre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cce_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_pos_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_affectation_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_str_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_user_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_initiateur_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_entree_service varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_created varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_updated varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ministere_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	isUpdateAfterActivation varchar(5000) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_a_certif_doublons_2_sans_projet definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_a_certif_doublons_2_sans_projet;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_a_certif_doublons_2_sans_projet (
+	agt_id int NULL,
+	agt_matricule_solde varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cni varchar(5000) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_lieu_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(5000) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(5000) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(5000) COLLATE French_CI_AS NULL,
+	agt_email varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_situation varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_position varchar(5000) COLLATE French_CI_AS NULL,
+	agt_num_ordre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cce_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_pos_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_affectation_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_str_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_user_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_initiateur_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_entree_service varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_created varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_updated varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ministere_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	isupdateafteractivation varchar(5000) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_a_certif_doublons_3_avec_projet definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_a_certif_doublons_3_avec_projet;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_a_certif_doublons_3_avec_projet (
+	agt_matricule_solde varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cni varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	nombre int NULL,
+	projets int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_bkp26102024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_bkp26102024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_bkp26102024 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_matricule_temp definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_matricule_temp;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_matricule_temp (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_matricule_temp2 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_matricule_temp2;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_matricule_temp2 (
+	agt_id int NOT NULL,
+	COD_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_men_exixt_mat definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_men_exixt_mat;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_men_exixt_mat (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_propre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_propre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_propre (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_propre29102024BackUp definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_propre29102024BackUp;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_propre29102024BackUp (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_propre_070125 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_propre_070125;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_propre_070125 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_propre_100125_matricule definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_propre_100125_matricule;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_propre_100125_matricule (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_propre_100125_matricule_interne definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_propre_100125_matricule_interne;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_propre_100125_matricule_interne (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agent_propre_110125_matricule_interne definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_propre_110125_matricule_interne;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_propre_110125_matricule_interne (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentgirafe definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentgirafe;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentgirafe (
+	agt_id int NULL,
+	agt_matricule_solde varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cni varchar(5000) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_lieu_naissance varchar(5000) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(5000) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(5000) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(5000) COLLATE French_CI_AS NULL,
+	agt_email varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(5000) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_situation varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_derniere_position varchar(5000) COLLATE French_CI_AS NULL,
+	agt_num_ordre varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(5000) COLLATE French_CI_AS NULL,
+	agt_cce_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_pos_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_affectation_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_str_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_user_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_initiateur_id varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_entree_service varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_created varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_updated varchar(5000) COLLATE French_CI_AS NULL,
+	agt_ministere_code varchar(5000) COLLATE French_CI_AS NULL,
+	agt_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	agt_date_deleted varchar(5000) COLLATE French_CI_AS NULL,
+	isUpdateAfterActivation varchar(5000) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentmen definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentmen;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentmen (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentmen_actif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentmen_actif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentmen_actif (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentmen_non_propre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentmen_non_propre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentmen_non_propre (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentmenbackup27102024to1145 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentmenbackup27102024to1145;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentmenbackup27102024to1145 (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentmentToDelete definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentmentToDelete;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentmentToDelete (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentmsas definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentmsas;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentmsas (
+	[Numérod'identification] varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	Sexe varchar(250) COLLATE French_CI_AS NULL,
+	[Catégorie socio-professionnelle] varchar(250) COLLATE French_CI_AS NULL,
+	[Statut de l'agent] varchar(250) COLLATE French_CI_AS NULL,
+	[Nom de la Structure] varchar(250) COLLATE French_CI_AS NULL,
+	Région varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_actifs definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_actifs;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_actifs (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_actifs_end26102024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_actifs_end26102024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_actifs_end26102024 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_actifs_end28102024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_actifs_end28102024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_actifs_end28102024 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_actifs_temp1 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_actifs_temp1;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_actifs_temp1 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL,
+	cce_id int NOT NULL,
+	cce_cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cce_cls_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cce_ech_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cce_duree int NOT NULL,
+	cce_fin_grade bit NOT NULL,
+	cce_fin_echelon bit NOT NULL,
+	cce_operation char(1) COLLATE French_CI_AS NOT NULL,
+	cce_appelation_grade varchar(255) COLLATE French_CI_AS NULL,
+	cce_appelation_echelon varchar(255) COLLATE French_CI_AS NULL,
+	cce_suivant int NULL,
+	cce_fisrt bit NULL,
+	cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cps_libelle varchar(255) COLLATE French_CI_AS NOT NULL,
+	cps_age_retraite int NOT NULL,
+	cps_description varchar(255) COLLATE French_CI_AS NULL,
+	cps_hierarchie_code varchar(10) COLLATE French_CI_AS NULL,
+	cps_cadre_code varchar(10) COLLATE French_CI_AS NULL,
+	cps_typecorps_code varchar(15) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_actifs_temp2 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_actifs_temp2;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_actifs_temp2 (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_cont_girafe definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_cont_girafe;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_cont_girafe (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_contract definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_contract;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_contract (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agents_mirador_matdiff definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agents_mirador_matdiff;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agents_mirador_matdiff (
+	Matricule_men varchar(250) COLLATE French_CI_AS NULL,
+	Matricule_girafe varchar(15) COLLATE French_CI_AS NULL,
+	CNI_men varchar(250) COLLATE French_CI_AS NULL,
+	CNI_girafe varchar(25) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentsolde definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentsolde;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentsolde (
+	COD_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	PRE_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	NOM_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	DAT_NAI_EMPL nvarchar(50) COLLATE French_CI_AS NULL,
+	NUM_PIE_IDE_EMPL nvarchar(50) COLLATE French_CI_AS NULL,
+	SEX_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.agentsoldebackup definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agentsoldebackup;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agentsoldebackup (
+	COD_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	PRE_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	NOM_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	DAT_NAI_EMPL nvarchar(50) COLLATE French_CI_AS NULL,
+	NUM_PIE_IDE_EMPL nvarchar(50) COLLATE French_CI_AS NULL,
+	SEX_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.armes_services definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.armes_services;
+
+CREATE TABLE referentiel_fudpe_new.dbo.armes_services (
+	arm_code nvarchar(10) COLLATE French_CI_AS NOT NULL,
+	arm_description nvarchar(255) COLLATE French_CI_AS NULL,
+	arm_libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_armes_services PRIMARY KEY (arm_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.backup_agent_propre18112024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.backup_agent_propre18112024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.backup_agent_propre18112024 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.backupagent_actif_18112024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.backupagent_actif_18112024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.backupagent_actif_18112024 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.backupagentpropre16112024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.backupagentpropre16112024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.backupagentpropre16112024 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.backupagentpropre1611202412h45 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.backupagentpropre1611202412h45;
+
+CREATE TABLE referentiel_fudpe_new.dbo.backupagentpropre1611202412h45 (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.bataillons definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.bataillons;
+
+CREATE TABLE referentiel_fudpe_new.dbo.bataillons (
+	code nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	bat_ssec_code nvarchar(3) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_bataillons PRIMARY KEY (code)
+);
+
+
+-- referentiel_fudpe_new.dbo.categorie definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.categorie;
+
+CREATE TABLE referentiel_fudpe_new.dbo.categorie (
+	cat_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cat_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_categorie PRIMARY KEY (cat_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.classe definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.classe;
+
+CREATE TABLE referentiel_fudpe_new.dbo.classe (
+	cls_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cls_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	cls_description varchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_classe PRIMARY KEY (cls_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.cni_girafe definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.cni_girafe;
+
+CREATE TABLE referentiel_fudpe_new.dbo.cni_girafe (
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.cni_men definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.cni_men;
+
+CREATE TABLE referentiel_fudpe_new.dbo.cni_men (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.college_groupes definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.college_groupes;
+
+CREATE TABLE referentiel_fudpe_new.dbo.college_groupes (
+	cg_clg_id bigint NOT NULL,
+	cg_grp_id nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_college_groupes PRIMARY KEY (cg_clg_id,cg_grp_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.colleges definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.colleges;
+
+CREATE TABLE referentiel_fudpe_new.dbo.colleges (
+	clg_id bigint NOT NULL,
+	clg_code nvarchar(255) COLLATE French_CI_AS NULL,
+	clg_description nvarchar(255) COLLATE French_CI_AS NULL,
+	clg_libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	clg_cps_code nvarchar(7) COLLATE French_CI_AS NULL,
+	clg_hier_id nvarchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_colleges PRIMARY KEY (clg_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.colleges_fonction definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.colleges_fonction;
+
+CREATE TABLE referentiel_fudpe_new.dbo.colleges_fonction (
+	cf_fctj_code nvarchar(7) COLLATE French_CI_AS NOT NULL,
+	cf_clg_code bigint NOT NULL,
+	CONSTRAINT PK_colleges_fonction PRIMARY KEY (cf_fctj_code,cf_clg_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.complement_CNI_FP definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.complement_CNI_FP;
+
+CREATE TABLE referentiel_fudpe_new.dbo.complement_CNI_FP (
+	Matricule varchar(50) COLLATE French_CI_AS NULL,
+	CNI real NULL,
+	Prenom varchar(50) COLLATE French_CI_AS NULL,
+	Nom varchar(50) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(50) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(50) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(50) COLLATE French_CI_AS NULL,
+	telephone int NULL,
+	Email varchar(50) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.configagentstructure definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.configagentstructure;
+
+CREATE TABLE referentiel_fudpe_new.dbo.configagentstructure (
+	CONFIG_DATE_CREATED datetime2 NULL,
+	CONFIG_DATE_UPDATED datetime2 NULL,
+	CODE_STRUCTURE varchar(100) COLLATE French_CI_AS NULL,
+	CONFIG_ID int IDENTITY(1,1) NOT NULL,
+	ID_ACCOUNT_AGENT int NOT NULL,
+	CONSTRAINT configagentstructure_PK PRIMARY KEY (CONFIG_ID)
+);
+
+
+-- referentiel_fudpe_new.dbo.configurations definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.configurations;
+
+CREATE TABLE referentiel_fudpe_new.dbo.configurations (
+	config_id int NOT NULL,
+	config_fieldid varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	config_fieldvalue varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	CONSTRAINT PK__configur__4AD1BFF18971780C PRIMARY KEY (config_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.contractuels_manquants definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.contractuels_manquants;
+
+CREATE TABLE referentiel_fudpe_new.dbo.contractuels_manquants (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.contractuels_men definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.contractuels_men;
+
+CREATE TABLE referentiel_fudpe_new.dbo.contractuels_men (
+	Matricule varchar(250) COLLATE French_CI_AS NULL,
+	CNI varchar(250) COLLATE French_CI_AS NULL,
+	Prénom varchar(250) COLLATE French_CI_AS NULL,
+	Nom varchar(250) COLLATE French_CI_AS NULL,
+	[Date de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Lieu de naissance] varchar(250) COLLATE French_CI_AS NULL,
+	[Corps/Grade] varchar(250) COLLATE French_CI_AS NULL,
+	téléphone varchar(250) COLLATE French_CI_AS NULL,
+	Email varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.corps_classe_echelon_old definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.corps_classe_echelon_old;
+
+CREATE TABLE referentiel_fudpe_new.dbo.corps_classe_echelon_old (
+	cce_id int IDENTITY(1,1) NOT NULL,
+	cce_cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cce_cls_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cce_ech_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cce_duree int NOT NULL,
+	cce_fin_grade bit NOT NULL,
+	cce_fin_echelon bit NOT NULL,
+	cce_operation char(1) COLLATE French_CI_AS NOT NULL,
+	cce_appelation_grade varchar(255) COLLATE French_CI_AS NULL,
+	cce_appelation_echelon varchar(255) COLLATE French_CI_AS NULL,
+	cce_suivant int NULL,
+	cce_fisrt bit NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.delegation definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.delegation;
+
+CREATE TABLE referentiel_fudpe_new.dbo.delegation (
+	delegation_date_created datetime2 NULL,
+	delegation_date_updated datetime2 NULL,
+	id_account_agent int NULL,
+	id_agent int NULL,
+	nom_agent varchar(100) COLLATE French_CI_AS NULL,
+	id_account_agent_delegate int NULL,
+	id_agent_delegate int NULL,
+	nom_agent_delegate varchar(100) COLLATE French_CI_AS NULL,
+	code_structure varchar(100) COLLATE French_CI_AS NULL,
+	code_fonction varchar(100) COLLATE French_CI_AS NULL,
+	nom_structure varchar(100) COLLATE French_CI_AS NULL,
+	nom_fonction varchar(100) COLLATE French_CI_AS NULL,
+	etat bit NULL,
+	delegation_id int IDENTITY(1,1) NOT NULL,
+	user_id int NULL,
+	CONSTRAINT delegation_PK PRIMARY KEY (delegation_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.differencematricule definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.differencematricule;
+
+CREATE TABLE referentiel_fudpe_new.dbo.differencematricule (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.differencematriculeagarder definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.differencematriculeagarder;
+
+CREATE TABLE referentiel_fudpe_new.dbo.differencematriculeagarder (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.disciplines_enseignees definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.disciplines_enseignees;
+
+CREATE TABLE referentiel_fudpe_new.dbo.disciplines_enseignees (
+	de_id bigint NOT NULL,
+	de_code nvarchar(10) COLLATE French_CI_AS NULL,
+	description nvarchar(255) COLLATE French_CI_AS NULL,
+	de_libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_disciplines_enseignees PRIMARY KEY (de_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.document_administratif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.document_administratif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.document_administratif (
+	doc_id int IDENTITY(1,1) NOT NULL,
+	doc_date date DEFAULT NULL NULL,
+	doc_description varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	doc_nature varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	doc_numauto varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	doc_objet varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	cheminDossier varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	doc_structure_origine varchar(20) COLLATE French_CI_AS DEFAULT NULL NULL,
+	actif bit DEFAULT NULL NULL,
+	doc_ministere_origine varchar(20) COLLATE French_CI_AS DEFAULT NULL NULL,
+	CONSTRAINT PK__document__8AD029245149495F PRIMARY KEY (doc_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_agent_propre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_agent_propre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_agent_propre (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_cni_agt_propre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_cni_agt_propre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_cni_agt_propre (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_id_agent_propre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_id_agent_propre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_id_agent_propre (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_matricule_agent definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_matricule_agent;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_matricule_agent (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_matricule_agent_men definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_matricule_agent_men;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_matricule_agent_men (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_matricule_agt_propre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_matricule_agt_propre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_matricule_agt_propre (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_temp definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_temp;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_temp (
+	Nbre int NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublon_temp_verif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublon_temp_verif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublon_temp_verif (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.doublons_matricule_aa_ap definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.doublons_matricule_aa_ap;
+
+CREATE TABLE referentiel_fudpe_new.dbo.doublons_matricule_aa_ap (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.echelon definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.echelon;
+
+CREATE TABLE referentiel_fudpe_new.dbo.echelon (
+	ech_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	ech_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	ech_description varchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__echelon__C68B6C69ABA0E6E8 PRIMARY KEY (ech_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.enseigants_non_propres definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.enseigants_non_propres;
+
+CREATE TABLE referentiel_fudpe_new.dbo.enseigants_non_propres (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.enseignant definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.enseignant;
+
+CREATE TABLE referentiel_fudpe_new.dbo.enseignant (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.etat_acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.etat_acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.etat_acte (
+	eta_act_id int IDENTITY(1,1) NOT NULL,
+	eta_act_code varchar(32) COLLATE French_CI_AS NOT NULL,
+	eta_act_libelle varchar(255) COLLATE French_CI_AS NOT NULL,
+	eta_act_is_rejete bit DEFAULT NULL NULL,
+	eta_act_is_disponible bit DEFAULT NULL NULL,
+	eta_act_structure_traitant varchar(100) COLLATE French_CI_AS NULL,
+	eta_act_fonction_traitant varchar(100) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_etat_acte PRIMARY KEY (eta_act_id),
+	CONSTRAINT UC_etat_acte_code UNIQUE (eta_act_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.etat_acte_action definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.etat_acte_action;
+
+CREATE TABLE referentiel_fudpe_new.dbo.etat_acte_action (
+	action_id int NOT NULL,
+	eta_act_id int NOT NULL,
+	CONSTRAINT PK_etat_acte_action PRIMARY KEY (action_id,eta_act_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.etat_projet definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.etat_projet;
+
+CREATE TABLE referentiel_fudpe_new.dbo.etat_projet (
+	etp_id int IDENTITY(1,1) NOT NULL,
+	etp_code varchar(50) COLLATE French_CI_AS NULL,
+	etp_libelle varchar(100) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_etat_projet PRIMARY KEY (etp_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.fichier definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.fichier;
+
+CREATE TABLE referentiel_fudpe_new.dbo.fichier (
+	act_id bigint NULL,
+	chemin varchar(255) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.genre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.genre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.genre (
+	code varchar(10) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_genre PRIMARY KEY (code)
+);
+
+
+-- referentiel_fudpe_new.dbo.grands_services_commandements definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.grands_services_commandements;
+
+CREATE TABLE referentiel_fudpe_new.dbo.grands_services_commandements (
+	id bigint NOT NULL,
+	libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_grands_services_commandements PRIMARY KEY (id)
+);
+
+
+-- referentiel_fudpe_new.dbo.groupe_classes definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.groupe_classes;
+
+CREATE TABLE referentiel_fudpe_new.dbo.groupe_classes (
+	gc_grp_id nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	gc_cls_id nvarchar(7) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_groupe_classes PRIMARY KEY (gc_grp_id,gc_cls_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.groupe_echelons definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.groupe_echelons;
+
+CREATE TABLE referentiel_fudpe_new.dbo.groupe_echelons (
+	ge_grp_id nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	ge_ech_id nvarchar(7) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_groupe_echelons PRIMARY KEY (ge_grp_id,ge_ech_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.groupe_fonctions definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.groupe_fonctions;
+
+CREATE TABLE referentiel_fudpe_new.dbo.groupe_fonctions (
+	gf_grp_id nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	gf_fct_id nvarchar(7) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_groupe_fonctions PRIMARY KEY (gf_grp_id,gf_fct_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.groupes definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.groupes;
+
+CREATE TABLE referentiel_fudpe_new.dbo.groupes (
+	grp_code nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	grp_description nvarchar(255) COLLATE French_CI_AS NULL,
+	grp_libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	grpe_hier_id nvarchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_groupes PRIMARY KEY (grp_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.hierarchie definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.hierarchie;
+
+CREATE TABLE referentiel_fudpe_new.dbo.hierarchie (
+	hier_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	hier_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	hier_description varchar(255) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__hierarch__DE0EF1D6C6826CE1 PRIMARY KEY (hier_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.historique_dossier_agent definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.historique_dossier_agent;
+
+CREATE TABLE referentiel_fudpe_new.dbo.historique_dossier_agent (
+	hist_da_id int IDENTITY(1,1) NOT NULL,
+	hist_da_agt_id int NULL,
+	hist_da_type_action varchar(100) COLLATE French_CI_AS NOT NULL,
+	hist_da_libelle_action varchar(100) COLLATE French_CI_AS NOT NULL,
+	hist_da_date_created datetime2 NOT NULL,
+	hist_da_agt_name varchar(100) COLLATE French_CI_AS NULL,
+	hist_da_agt_acteur_id int NULL,
+	hist_da_agt_acteur_name varchar(100) COLLATE French_CI_AS NULL,
+	CONSTRAINT historique_dossier_agent_PK PRIMARY KEY (hist_da_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.historique_rejets definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.historique_rejets;
+
+CREATE TABLE referentiel_fudpe_new.dbo.historique_rejets (
+	id bigint IDENTITY(1,1) NOT NULL,
+	hist_act_id bigint NOT NULL,
+	hist_rejected_by varchar(100) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__historiq__3213E83F32CBFD0E PRIMARY KEY (id)
+);
+
+
+-- referentiel_fudpe_new.dbo.historique_transaction_signature definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.historique_transaction_signature;
+
+CREATE TABLE referentiel_fudpe_new.dbo.historique_transaction_signature (
+	hta_id int IDENTITY(1,1) NOT NULL,
+	hta_id_user_principal int DEFAULT NULL NULL,
+	hta_id_user_sentrust varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	hta_token text COLLATE French_CI_AS DEFAULT NULL NULL,
+	hta_date_created datetime DEFAULT NULL NULL,
+	hta_date_updated datetime DEFAULT NULL NULL,
+	hta_state varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	hta_eventInstanceName varchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_historique_transaction_signature PRIMARY KEY (hta_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.indemnite_retraite definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.indemnite_retraite;
+
+CREATE TABLE referentiel_fudpe_new.dbo.indemnite_retraite (
+	ind_ret_id int NOT NULL,
+	int_ret_tranche_1 int NULL,
+	ind_ret_date_debut_t1 date NULL,
+	ind_ret_date_fin_t1 date NULL,
+	int_ret_tranche_2 int NULL,
+	ind_ret_date_debut_t2 date NULL,
+	ind_ret_date_fin_t2 date NULL,
+	int_ret_tranche_3 int NULL,
+	ind_ret_date_debut_t3 date NULL,
+	ind_ret_date_fin_t3 date NULL,
+	CONSTRAINT PK__indemnit__6586C93E56AF169A PRIMARY KEY (ind_ret_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.interface_solde definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.interface_solde;
+
+CREATE TABLE referentiel_fudpe_new.dbo.interface_solde (
+	id int IDENTITY(1,1) NOT NULL,
+	matricule_solde varchar(20) COLLATE French_CI_AS NOT NULL,
+	cni varchar(15) COLLATE French_CI_AS NOT NULL,
+	critere varchar(255) COLLATE French_CI_AS NOT NULL,
+	ancienne_valeur varchar(255) COLLATE French_CI_AS NOT NULL,
+	nouvelle_valeur varchar(255) COLLATE French_CI_AS NOT NULL,
+	date_acte date NOT NULL,
+	numero_acte varchar(255) COLLATE French_CI_AS NOT NULL,
+	ref_GED varchar(255) COLLATE French_CI_AS NOT NULL,
+	date_effet_acte date NOT NULL,
+	type_acte varchar(255) COLLATE French_CI_AS NOT NULL,
+	date_reception date NOT NULL,
+	date_maj date NOT NULL,
+	motif_rejet varchar(255) COLLATE French_CI_AS NOT NULL,
+	prise_en_compte_matricule varchar(255) COLLATE French_CI_AS NOT NULL,
+	code_retour varchar(255) COLLATE French_CI_AS NOT NULL,
+	etat varchar(20) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_interface_solde PRIMARY KEY (id)
+);
+
+
+-- referentiel_fudpe_new.dbo.legions definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.legions;
+
+CREATE TABLE referentiel_fudpe_new.dbo.legions (
+	code nvarchar(255) COLLATE French_CI_AS NOT NULL,
+	libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	leg_ssec_code nvarchar(3) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_legions PRIMARY KEY (code)
+);
+
+
+-- referentiel_fudpe_new.dbo.lieux_naissance definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.lieux_naissance;
+
+CREATE TABLE referentiel_fudpe_new.dbo.lieux_naissance (
+	lieu_code nvarchar(15) COLLATE French_CI_AS NOT NULL,
+	lieu_libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_lieux_naissance PRIMARY KEY (lieu_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.mettrearemettre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.mettrearemettre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.mettrearemettre (
+	agt_id int NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.miradoresolde definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.miradoresolde;
+
+CREATE TABLE referentiel_fudpe_new.dbo.miradoresolde (
+	agt_matricule_solde varchar(250) COLLATE French_CI_AS NULL,
+	agt_cni varchar(250) COLLATE French_CI_AS NULL,
+	agt_matricule_interne int NULL,
+	agt_prenom varchar(250) COLLATE French_CI_AS NULL,
+	agt_nom varchar(250) COLLATE French_CI_AS NULL,
+	agt_date_naissance varchar(250) COLLATE French_CI_AS NULL,
+	agt_lieu_naissance varchar(250) COLLATE French_CI_AS NULL,
+	agt_adresse int NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NOT NULL,
+	agt_situation_matrimoiniale int NULL,
+	agt_telephone varchar(250) COLLATE French_CI_AS NULL,
+	agt_email varchar(250) COLLATE French_CI_AS NULL,
+	agt_cce_id int NOT NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.parametrage_template_acte_bkp definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.parametrage_template_acte_bkp;
+
+CREATE TABLE referentiel_fudpe_new.dbo.parametrage_template_acte_bkp (
+	id int NOT NULL,
+	is_individuel bit NOT NULL,
+	nature varchar(50) COLLATE French_CI_AS NULL,
+	type_corps varchar(15) COLLATE French_CI_AS NULL,
+	ref_model varchar(255) COLLATE French_CI_AS NULL,
+	sous_secteur varchar(7) COLLATE French_CI_AS NULL,
+	type_acte int NOT NULL,
+	json_data varchar(1500) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.parametres_supplementaires definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.parametres_supplementaires;
+
+CREATE TABLE referentiel_fudpe_new.dbo.parametres_supplementaires (
+	param_gen_id int IDENTITY(1,1) NOT NULL,
+	param_gen_code varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	param_gen_valeur varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	CONSTRAINT PK__parametr__93991B8B2118124A PRIMARY KEY (param_gen_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.pays definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.pays;
+
+CREATE TABLE referentiel_fudpe_new.dbo.pays (
+	PAYS_ID int IDENTITY(1,1) NOT NULL,
+	PAYS_NAME varchar(80) COLLATE French_CI_AS NOT NULL,
+	PAYS_CODE char(2) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__pays__9C401D82D6B990FE PRIMARY KEY (PAYS_ID)
+);
+
+
+-- referentiel_fudpe_new.dbo.pieces_jointes definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.pieces_jointes;
+
+CREATE TABLE referentiel_fudpe_new.dbo.pieces_jointes (
+	id bigint NULL,
+	chemin varchar(255) COLLATE French_CI_AS NULL,
+	reference varchar(255) COLLATE French_CI_AS NULL,
+	agent_agt_id bigint NULL,
+	type_code varchar(255) COLLATE French_CI_AS NULL,
+	dateActe datetime2 NULL,
+	dateEffet datetime2 NULL,
+	numeroActe varchar(255) COLLATE French_CI_AS NULL,
+	statut int NOT NULL,
+	act_tac_code bigint NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.premiere_table_agents_actifs definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.premiere_table_agents_actifs;
+
+CREATE TABLE referentiel_fudpe_new.dbo.premiere_table_agents_actifs (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.reference definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.reference;
+
+CREATE TABLE referentiel_fudpe_new.dbo.reference (
+	ref_id int IDENTITY(1,1) NOT NULL,
+	ref_description varchar(4000) COLLATE French_CI_AS NOT NULL,
+	ref_lienFichier varchar(4000) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__referenc__BDA5A86980791DA4 PRIMARY KEY (ref_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.reservations_numeros definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.reservations_numeros;
+
+CREATE TABLE referentiel_fudpe_new.dbo.reservations_numeros (
+	res_id int IDENTITY(1,1) NOT NULL,
+	res_date date DEFAULT NULL NULL,
+	res_description varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	res_from int DEFAULT NULL NULL,
+	res_value int DEFAULT NULL NULL,
+	res_nature varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	CONSTRAINT PK__reservat__2090B50D92BF238E PRIMARY KEY (res_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.secteur definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.secteur;
+
+CREATE TABLE referentiel_fudpe_new.dbo.secteur (
+	sec_code varchar(5) COLLATE French_CI_AS NOT NULL,
+	sec_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	sec_description varchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__secteur__9B822886E7EDE323 PRIMARY KEY (sec_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.service definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.service;
+
+CREATE TABLE referentiel_fudpe_new.dbo.service (
+	id int DEFAULT NULL NULL,
+	numberid varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	firstname varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	lastname varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	username varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	email varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	date_inscription varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	enabled int DEFAULT NULL NULL,
+	password varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	salt varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	username_canonical varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	email_canonical varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	last_login varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	confirmation_token varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	password_requested_at varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	roles varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL,
+	recruted varchar(5000) COLLATE French_CI_AS DEFAULT NULL NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.soldeagent definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.soldeagent;
+
+CREATE TABLE referentiel_fudpe_new.dbo.soldeagent (
+	COD_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	PRE_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	NOM_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	DAT_NAI_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	NUM_PIE_IDE_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	SEX_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	FONCTIONNAIRE varchar(250) COLLATE French_CI_AS NULL,
+	POS_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	LIBELLE varchar(250) COLLATE French_CI_AS NULL,
+	DATE_RADIATION varchar(250) COLLATE French_CI_AS NULL,
+	INDICE_CORPS varchar(250) COLLATE French_CI_AS NULL,
+	COD_CORPS varchar(250) COLLATE French_CI_AS NULL,
+	GROUPE_HIERARCHIE varchar(250) COLLATE French_CI_AS NULL,
+	DES_CORPS varchar(250) COLLATE French_CI_AS NULL,
+	APPELLATION varchar(250) COLLATE French_CI_AS NULL,
+	COD_ECHELON varchar(250) COLLATE French_CI_AS NULL,
+	COD_EM_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	DES_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	COD_SERVICE varchar(250) COLLATE French_CI_AS NULL,
+	LIB_SERVICE varchar(250) COLLATE French_CI_AS NULL,
+	COD_ORG_NIV1 varchar(250) COLLATE French_CI_AS NULL,
+	LIB_ORG_NIV1 varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.soldeagentBackup definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.soldeagentBackup;
+
+CREATE TABLE referentiel_fudpe_new.dbo.soldeagentBackup (
+	COD_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	PRE_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	NOM_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL,
+	DAT_NAI_EMPL nvarchar(50) COLLATE French_CI_AS NULL,
+	NUM_PIE_IDE_EMPL nvarchar(50) COLLATE French_CI_AS NULL,
+	SEX_EMPL nvarchar(50) COLLATE French_CI_AS NOT NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.soldeagent_actif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.soldeagent_actif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.soldeagent_actif (
+	COD_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	PRE_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	NOM_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	DAT_NAI_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	NUM_PIE_IDE_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	SEX_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	FONCTIONNAIRE varchar(250) COLLATE French_CI_AS NULL,
+	POS_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	LIBELLE varchar(250) COLLATE French_CI_AS NULL,
+	DATE_RADIATION varchar(250) COLLATE French_CI_AS NULL,
+	INDICE_CORPS varchar(250) COLLATE French_CI_AS NULL,
+	COD_CORPS varchar(250) COLLATE French_CI_AS NULL,
+	GROUPE_HIERARCHIE varchar(250) COLLATE French_CI_AS NULL,
+	DES_CORPS varchar(250) COLLATE French_CI_AS NULL,
+	APPELLATION varchar(250) COLLATE French_CI_AS NULL,
+	COD_ECHELON varchar(250) COLLATE French_CI_AS NULL,
+	COD_EM_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	DES_EMPL varchar(250) COLLATE French_CI_AS NULL,
+	COD_SERVICE varchar(250) COLLATE French_CI_AS NULL,
+	LIB_SERVICE varchar(250) COLLATE French_CI_AS NULL,
+	COD_ORG_NIV1 varchar(250) COLLATE French_CI_AS NULL,
+	LIB_ORG_NIV1 varchar(250) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.specialite definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.specialite;
+
+CREATE TABLE referentiel_fudpe_new.dbo.specialite (
+	spe_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	spe_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	spe_description varchar(255) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__speciali__6B470C85B4FCF9EE PRIMARY KEY (spe_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_corps definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_corps;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_corps (
+	id int IDENTITY(1,1) NOT NULL,
+	codeCadre varchar(50) COLLATE French_CI_AS NULL,
+	codeCorps varchar(50) COLLATE French_CI_AS NULL,
+	libCorps varchar(255) COLLATE French_CI_AS NULL,
+	total int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_corps_genre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_corps_genre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_corps_genre (
+	id int IDENTITY(1,1) NOT NULL,
+	codeCadre varchar(50) COLLATE French_CI_AS NULL,
+	codeCorps varchar(50) COLLATE French_CI_AS NULL,
+	libCorps varchar(255) COLLATE French_CI_AS NULL,
+	genre varchar(5) COLLATE French_CI_AS NULL,
+	total int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_hierarchie_genre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_hierarchie_genre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_hierarchie_genre (
+	id int IDENTITY(1,1) NOT NULL,
+	codeCadre varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeHier varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libHier varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	genre varchar(5) COLLATE French_CI_AS DEFAULT NULL NULL,
+	total int DEFAULT NULL NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_position definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_position;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_position (
+	id int IDENTITY(1,1) NOT NULL,
+	codecorps varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codePos varchar(5) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libPos varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	total int DEFAULT NULL NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_previsions_avancements definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_previsions_avancements;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_previsions_avancements (
+	id int IDENTITY(1,1) NOT NULL,
+	agtId int NOT NULL,
+	matricule varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	prenom varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	nom varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	dateNaissance date DEFAULT NULL NULL,
+	codeCorps varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libCorps varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeClasse varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libClasse varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeEchelon varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libEchelon varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	dateDerniereSituation date DEFAULT NULL NULL,
+	ancieneteRequise int DEFAULT NULL NULL,
+	finGrade bit DEFAULT NULL NULL,
+	cceId int DEFAULT NULL NULL,
+	idTypeActe int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_projet_acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_projet_acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_projet_acte (
+	id int IDENTITY(1,1) NOT NULL,
+	idEtat int NULL,
+	libEtat varchar(255) COLLATE French_CI_AS NULL,
+	idActeur int NULL,
+	libActeur varchar(255) COLLATE French_CI_AS NULL,
+	total int NULL,
+	CONSTRAINT PK__statisti__3213E83F3B4997F1 PRIMARY KEY (id)
+);
+ CREATE NONCLUSTERED INDEX Statistiques_ProjetActe_idActeur ON referentiel_fudpe_new.dbo.statistiques_projet_acte (  idActeur ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX Statistiques_Projet_idEtat ON referentiel_fudpe_new.dbo.statistiques_projet_acte (  idEtat ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.statistiques_pyramide_age definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_pyramide_age;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_pyramide_age (
+	id int IDENTITY(1,1) NOT NULL,
+	codeCorps varchar(50) COLLATE French_CI_AS NULL,
+	plageAge varchar(15) COLLATE French_CI_AS NULL,
+	total int NULL,
+	CONSTRAINT PK_statistiques_pyramide_age PRIMARY KEY (id)
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_retraites_annee_courante definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_retraites_annee_courante;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_retraites_annee_courante (
+	id int IDENTITY(1,1) NOT NULL,
+	agtId int NOT NULL,
+	matricule varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	prenom varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	nom varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	dateNaissance date DEFAULT NULL NULL,
+	codeCorps varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libCorps varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeClasse varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libClasse varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeEchelon varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libEchelon varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	idTypeActe int NULL,
+	[INSERT INTO [SELECT a.agt_id] varchar(129) COLLATE French_CI_AS NULL,
+	[a.agt_matricule_solde] varchar(26) COLLATE French_CI_AS NULL,
+	[ a.agt_prenom] varchar(30) COLLATE French_CI_AS NULL,
+	[ a.agt_nom] varchar(37) COLLATE French_CI_AS NULL,
+	[a.agt_date_naissance] varchar(20) COLLATE French_CI_AS NULL,
+	[ co.cps_code] varchar(42) COLLATE French_CI_AS NULL,
+	[ co.cps_libelle] varchar(18) COLLATE French_CI_AS NULL,
+	[cl.cls_code] varchar(38) COLLATE French_CI_AS NULL,
+	[ cl.cls_libelle] varchar(15) COLLATE French_CI_AS NULL,
+	[ec.ech_code] varchar(17) COLLATE French_CI_AS NULL,
+	[ ec.ech_libelle] varchar(15) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statistiques_retraites_annee_prochaine definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statistiques_retraites_annee_prochaine;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statistiques_retraites_annee_prochaine (
+	id int IDENTITY(1,1) NOT NULL,
+	agtId int NOT NULL,
+	matricule varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	prenom varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	nom varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	dateNaissance date DEFAULT NULL NULL,
+	codeCorps varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libCorps varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeClasse varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libClasse varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	codeEchelon varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	libEchelon varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.statut_signature definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.statut_signature;
+
+CREATE TABLE referentiel_fudpe_new.dbo.statut_signature (
+	code varchar(10) COLLATE French_CI_AS NOT NULL,
+	satut varchar(50) COLLATE French_CI_AS DEFAULT NULL NULL,
+	id int DEFAULT 0 NOT NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.structure_bkp30042024 definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.structure_bkp30042024;
+
+CREATE TABLE referentiel_fudpe_new.dbo.structure_bkp30042024 (
+	str_code varchar(20) COLLATE French_CI_AS NULL,
+	str_libelle varchar(255) COLLATE French_CI_AS NULL,
+	str_description varchar(255) COLLATE French_CI_AS NULL,
+	str_type_code varchar(10) COLLATE French_CI_AS NULL,
+	str_parent_code varchar(20) COLLATE French_CI_AS NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.trush_agent_actif definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.trush_agent_actif;
+
+CREATE TABLE referentiel_fudpe_new.dbo.trush_agent_actif (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit NOT NULL,
+	agt_date_deleted datetime2 NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.trush_agents_actifs definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.trush_agents_actifs;
+
+CREATE TABLE referentiel_fudpe_new.dbo.trush_agents_actifs (
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	count int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.trush_doublon_matricule definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.trush_doublon_matricule;
+
+CREATE TABLE referentiel_fudpe_new.dbo.trush_doublon_matricule (
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	count int NULL
+);
+
+
+-- referentiel_fudpe_new.dbo.type_corps definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_corps;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_corps (
+	typc_code varchar(15) COLLATE French_CI_AS NOT NULL,
+	typc_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__typecorp__06C0DEAA81CE4D4D PRIMARY KEY (typc_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.type_diplome definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_diplome;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_diplome (
+	typdpl_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	typdpl_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_type_diplome PRIMARY KEY (typdpl_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.type_position definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_position;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_position (
+	typos_code varchar(30) COLLATE French_CI_AS NOT NULL,
+	typos_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK_type_position PRIMARY KEY (typos_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.type_sanction definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_sanction;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_sanction (
+	tpsanc_id int IDENTITY(1,1) NOT NULL,
+	tpsanc_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	tpsanc_duree int NOT NULL,
+	tpsanc_nbRenouvellement int NOT NULL,
+	CONSTRAINT PK__typesanc__C4497F18D479E769 PRIMARY KEY (tpsanc_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.unites definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.unites;
+
+CREATE TABLE referentiel_fudpe_new.dbo.unites (
+	unit_code nvarchar(10) COLLATE French_CI_AS NOT NULL,
+	unit_description nvarchar(255) COLLATE French_CI_AS NULL,
+	unit_libelle nvarchar(255) COLLATE French_CI_AS NULL,
+	unit_str_code nvarchar(10) COLLATE French_CI_AS NULL,
+	unit_ssec_code nvarchar(3) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_unites PRIMARY KEY (unit_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.diplome definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.diplome;
+
+CREATE TABLE referentiel_fudpe_new.dbo.diplome (
+	dip_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	dip_libelle varchar(255) COLLATE French_CI_AS NOT NULL,
+	dip_description varchar(255) COLLATE French_CI_AS NULL,
+	dip_typdpl_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__diplome__6BF8517BEA23C25A PRIMARY KEY (dip_code),
+	CONSTRAINT FK_diplome_type_diplome FOREIGN KEY (dip_typdpl_code) REFERENCES referentiel_fudpe_new.dbo.type_diplome(typdpl_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.fonction definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.fonction;
+
+CREATE TABLE referentiel_fudpe_new.dbo.fonction (
+	fct_code varchar(20) COLLATE French_CI_AS NOT NULL,
+	fct_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	fct_description varchar(255) COLLATE French_CI_AS NOT NULL,
+	fct_superieur_code varchar(20) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__fonction__F89F7988ADA5F97D PRIMARY KEY (fct_code),
+	CONSTRAINT FK_fonction_fonction FOREIGN KEY (fct_superieur_code) REFERENCES referentiel_fudpe_new.dbo.fonction(fct_code)
+);
+ CREATE NONCLUSTERED INDEX FCT_CODE_INDEX ON referentiel_fudpe_new.dbo.fonction (  fct_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.[position] definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.[position];
+
+CREATE TABLE referentiel_fudpe_new.dbo.[position] (
+	pos_code varchar(3) COLLATE French_CI_AS NOT NULL,
+	pos_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	pos_description varchar(255) COLLATE French_CI_AS NULL,
+	pos_type_position_code varchar(30) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__position__15CE528F6AE21522 PRIMARY KEY (pos_code),
+	CONSTRAINT FK_position_type_position FOREIGN KEY (pos_type_position_code) REFERENCES referentiel_fudpe_new.dbo.type_position(typos_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.sous_secteur definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.sous_secteur;
+
+CREATE TABLE referentiel_fudpe_new.dbo.sous_secteur (
+	ssec_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	ssec_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	ssec_description varchar(255) COLLATE French_CI_AS NULL,
+	ssec_secteur_code varchar(5) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__soussect__44469758C8CFBE1C PRIMARY KEY (ssec_code),
+	CONSTRAINT FK_sous_secteur_secteur FOREIGN KEY (ssec_secteur_code) REFERENCES referentiel_fudpe_new.dbo.secteur(sec_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.type_acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_acte (
+	tac_id int IDENTITY(201,1) NOT NULL,
+	tac_code varchar(10) COLLATE French_CI_AS NULL,
+	tac_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	tac_description varchar(255) COLLATE French_CI_AS NOT NULL,
+	tac_categorie_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	tac_secteur_code varchar(5) COLLATE French_CI_AS NULL,
+	tac_chemin_form varchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__typeacte__6A74B049F5982360 PRIMARY KEY (tac_id),
+	CONSTRAINT FK_type_acte_categorie FOREIGN KEY (tac_categorie_code) REFERENCES referentiel_fudpe_new.dbo.categorie(cat_code),
+	CONSTRAINT FK_type_acte_secteur FOREIGN KEY (tac_secteur_code) REFERENCES referentiel_fudpe_new.dbo.secteur(sec_code)
+);
+ CREATE NONCLUSTERED INDEX type_acte_code ON referentiel_fudpe_new.dbo.type_acte (  tac_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX type_acte_secteur_code ON referentiel_fudpe_new.dbo.type_acte (  tac_secteur_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.type_sortie_temporaire definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_sortie_temporaire;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_sortie_temporaire (
+	tst_id int IDENTITY(1,1) NOT NULL,
+	tst_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	tst_duree int NOT NULL,
+	tst_nb_renouvellement int NOT NULL,
+	tst_tac_id int NULL,
+	CONSTRAINT PK__typesort__A92C56A762BABFEA PRIMARY KEY (tst_id),
+	CONSTRAINT FK_type_sortie_temporaire_type_acte FOREIGN KEY (tst_tac_id) REFERENCES referentiel_fudpe_new.dbo.type_acte(tac_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.type_structure definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_structure;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_structure (
+	typst_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	typst_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	typst_parent_code varchar(10) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK_type_structure PRIMARY KEY (typst_code),
+	CONSTRAINT FK_type_structure_type_structure FOREIGN KEY (typst_parent_code) REFERENCES referentiel_fudpe_new.dbo.type_structure(typst_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.acte (
+	act_id int IDENTITY(50684612,1) NOT NULL,
+	act_is_projet bit NOT NULL,
+	act_numero_projet varchar(255) COLLATE French_CI_AS NULL,
+	act_date_projet date NULL,
+	act_numero_acte varchar(255) COLLATE French_CI_AS NULL,
+	act_date_acte date NULL,
+	act_observation varchar(255) COLLATE French_CI_AS NULL,
+	act_ref_GED varchar(255) COLLATE French_CI_AS NULL,
+	act_prise_en_compte_solde bit NOT NULL,
+	act_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	act_tac_id int NOT NULL,
+	act_act_lie int NULL,
+	act_initiateur_id int NULL,
+	act_process_instance_id int NULL,
+	act_date_created datetime2 NULL,
+	act_date_updated datetime2 NULL,
+	act_deleted bit DEFAULT 0 NOT NULL,
+	act_date_deleted datetime2 NULL,
+	act_etat_id int NULL,
+	act_chemin_word varchar(255) COLLATE French_CI_AS NULL,
+	act_numero_etape_circuit int NULL,
+	act_str_parent_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_projet_acte varchar(100) COLLATE French_CI_AS NULL,
+	act_is_rejet numeric(38,0) NULL,
+	act_fonct_initiateur varchar(100) COLLATE French_CI_AS NULL,
+	act_str_parent_projet_acte varchar(100) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__acte__EBC8309582B3719C PRIMARY KEY (act_id),
+	CONSTRAINT FK_acte_acte_lie FOREIGN KEY (act_act_lie) REFERENCES referentiel_fudpe_new.dbo.acte(act_id),
+	CONSTRAINT FK_acte_etat_acte FOREIGN KEY (act_etat_id) REFERENCES referentiel_fudpe_new.dbo.etat_acte(eta_act_id),
+	CONSTRAINT FK_acte_type_acte FOREIGN KEY (act_tac_id) REFERENCES referentiel_fudpe_new.dbo.type_acte(tac_id)
+);
+ CREATE NONCLUSTERED INDEX act_numero_acte ON referentiel_fudpe_new.dbo.acte (  act_numero_acte ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [ACTE ] ;
+ CREATE NONCLUSTERED INDEX act_numero_projet ON referentiel_fudpe_new.dbo.acte (  act_numero_projet ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [ACTE ] ;
+ CREATE NONCLUSTERED INDEX acte_act_etat_id ON referentiel_fudpe_new.dbo.acte (  act_etat_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [ACTE ] ;
+ CREATE NONCLUSTERED INDEX acte_act_initiateur_id_idx ON referentiel_fudpe_new.dbo.acte (  act_initiateur_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [ACTE ] ;
+ CREATE NONCLUSTERED INDEX acte_tac_id ON referentiel_fudpe_new.dbo.acte (  act_tac_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [ACTE ] ;
+
+
+-- referentiel_fudpe_new.dbo.cadre definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.cadre;
+
+CREATE TABLE referentiel_fudpe_new.dbo.cadre (
+	cad_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cad_libelle varchar(100) COLLATE French_CI_AS NOT NULL,
+	cad_description varchar(255) COLLATE French_CI_AS NULL,
+	cad_sous_secteur varchar(7) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__cadre__B6910BDD6DD01C7D PRIMARY KEY (cad_code),
+	CONSTRAINT FK_cadre_sous_secteur FOREIGN KEY (cad_sous_secteur) REFERENCES referentiel_fudpe_new.dbo.sous_secteur(ssec_code)
+);
+ CREATE NONCLUSTERED INDEX cad_sous_secteur ON referentiel_fudpe_new.dbo.cadre (  cad_sous_secteur ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.corps definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.corps;
+
+CREATE TABLE referentiel_fudpe_new.dbo.corps (
+	cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cps_libelle varchar(255) COLLATE French_CI_AS NOT NULL,
+	cps_age_retraite int NOT NULL,
+	cps_description varchar(255) COLLATE French_CI_AS NULL,
+	cps_hierarchie_code varchar(10) COLLATE French_CI_AS NULL,
+	cps_cadre_code varchar(10) COLLATE French_CI_AS NULL,
+	cps_typecorps_code varchar(15) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__corps__62D14947484DB48F PRIMARY KEY (cps_code),
+	CONSTRAINT FK_corps_cadre FOREIGN KEY (cps_cadre_code) REFERENCES referentiel_fudpe_new.dbo.cadre(cad_code),
+	CONSTRAINT FK_corps_hierarchie FOREIGN KEY (cps_hierarchie_code) REFERENCES referentiel_fudpe_new.dbo.hierarchie(hier_code),
+	CONSTRAINT FK_corps_type_corps FOREIGN KEY (cps_typecorps_code) REFERENCES referentiel_fudpe_new.dbo.type_corps(typc_code)
+);
+ CREATE NONCLUSTERED INDEX corps_cadre_code ON referentiel_fudpe_new.dbo.corps (  cps_cadre_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX corps_hierarchie_code ON referentiel_fudpe_new.dbo.corps (  cps_hierarchie_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX corps_typecorps_code ON referentiel_fudpe_new.dbo.corps (  cps_typecorps_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.corps_classe_echelon definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.corps_classe_echelon;
+
+CREATE TABLE referentiel_fudpe_new.dbo.corps_classe_echelon (
+	cce_id int IDENTITY(1,1) NOT NULL,
+	cce_cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	cce_cls_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cce_ech_code varchar(7) COLLATE French_CI_AS NOT NULL,
+	cce_duree int NOT NULL,
+	cce_fin_grade bit NOT NULL,
+	cce_fin_echelon bit NOT NULL,
+	cce_operation char(1) COLLATE French_CI_AS DEFAULT '=' NOT NULL,
+	cce_appelation_grade varchar(255) COLLATE French_CI_AS NULL,
+	cce_appelation_echelon varchar(255) COLLATE French_CI_AS NULL,
+	cce_suivant int NULL,
+	cce_fisrt bit NULL,
+	CONSTRAINT PK__corps_cl__456535AD31F70BFC PRIMARY KEY (cce_id),
+	CONSTRAINT FK_corps_classe_echelon_classe FOREIGN KEY (cce_cls_code) REFERENCES referentiel_fudpe_new.dbo.classe(cls_code),
+	CONSTRAINT FK_corps_classe_echelon_corps FOREIGN KEY (cce_cps_code) REFERENCES referentiel_fudpe_new.dbo.corps(cps_code),
+	CONSTRAINT FK_corps_classe_echelon_corps_classe_echelon FOREIGN KEY (cce_suivant) REFERENCES referentiel_fudpe_new.dbo.corps_classe_echelon(cce_id),
+	CONSTRAINT FK_corps_classe_echelon_echelon FOREIGN KEY (cce_ech_code) REFERENCES referentiel_fudpe_new.dbo.echelon(ech_code)
+);
+ CREATE NONCLUSTERED INDEX cce_corps_classe_echelon ON referentiel_fudpe_new.dbo.corps_classe_echelon (  cce_cps_code ASC  , cce_cls_code ASC  , cce_ech_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX cce_suivant ON referentiel_fudpe_new.dbo.corps_classe_echelon (  cce_suivant ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.historique_piece_acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.historique_piece_acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.historique_piece_acte (
+	hpa_id int IDENTITY(1,1) NOT NULL,
+	hpa_act_id int NOT NULL,
+	hpa_code_piece_generee varchar(255) COLLATE French_CI_AS NOT NULL,
+	hpa_date_generation date NULL,
+	hpa_date_created datetime2 NULL,
+	hpa_date_updated datetime2 NULL,
+	hpa_num_etape_circuit int NULL,
+	CONSTRAINT PK_historique_piece_acte PRIMARY KEY (hpa_id),
+	CONSTRAINT FK_historique_piece_acte_acte FOREIGN KEY (hpa_act_id) REFERENCES referentiel_fudpe_new.dbo.acte(act_id)
+);
+ CREATE NONCLUSTERED INDEX hpa_act_id ON referentiel_fudpe_new.dbo.historique_piece_acte (  hpa_act_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX hpa_code_piece_generee ON referentiel_fudpe_new.dbo.historique_piece_acte (  hpa_code_piece_generee ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.parametrage_template_acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.parametrage_template_acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.parametrage_template_acte (
+	id int IDENTITY(1,1) NOT NULL,
+	is_individuel bit NOT NULL,
+	nature varchar(50) COLLATE French_CI_AS NOT NULL,
+	type_corps varchar(15) COLLATE French_CI_AS NOT NULL,
+	ref_model varchar(255) COLLATE French_CI_AS NOT NULL,
+	sous_secteur varchar(7) COLLATE French_CI_AS NOT NULL,
+	type_acte int NOT NULL,
+	json_data varchar(1500) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__parametr__3213E83F2BA94E41 PRIMARY KEY (id),
+	CONSTRAINT FK_parametrage_template_acte_sous_secteur FOREIGN KEY (sous_secteur) REFERENCES referentiel_fudpe_new.dbo.sous_secteur(ssec_code),
+	CONSTRAINT FK_parametrage_template_acte_type_acte FOREIGN KEY (type_acte) REFERENCES referentiel_fudpe_new.dbo.type_acte(tac_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.parametrage_type_acte_workflow definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.parametrage_type_acte_workflow;
+
+CREATE TABLE referentiel_fudpe_new.dbo.parametrage_type_acte_workflow (
+	id int IDENTITY(1,1) NOT NULL,
+	ref_engine varchar(15) COLLATE French_CI_AS NOT NULL,
+	nature varchar(50) COLLATE French_CI_AS NOT NULL,
+	type_acte int NOT NULL,
+	sous_secteur varchar(7) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__parametr__3213E83F4E635A44 PRIMARY KEY (id),
+	CONSTRAINT FK_parametrage_type_acte_workflow_sous_secteur FOREIGN KEY (sous_secteur) REFERENCES referentiel_fudpe_new.dbo.sous_secteur(ssec_code),
+	CONSTRAINT FK_parametrage_type_acte_workflow_type_acte FOREIGN KEY (type_acte) REFERENCES referentiel_fudpe_new.dbo.type_acte(tac_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.reference_corps definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.reference_corps;
+
+CREATE TABLE referentiel_fudpe_new.dbo.reference_corps (
+	ref_cps_cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	ref_cps_ref_id int NOT NULL,
+	CONSTRAINT PK__referenc__A22D54F6043B3007 PRIMARY KEY (ref_cps_cps_code,ref_cps_ref_id),
+	CONSTRAINT FK_reference_corps_corps FOREIGN KEY (ref_cps_cps_code) REFERENCES referentiel_fudpe_new.dbo.corps(cps_code),
+	CONSTRAINT FK_reference_corps_reference FOREIGN KEY (ref_cps_ref_id) REFERENCES referentiel_fudpe_new.dbo.reference(ref_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.[structure] definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.[structure];
+
+CREATE TABLE referentiel_fudpe_new.dbo.[structure] (
+	str_code varchar(20) COLLATE French_CI_AS NOT NULL,
+	str_libelle varchar(255) COLLATE French_CI_AS NOT NULL,
+	str_description varchar(255) COLLATE French_CI_AS NULL,
+	str_type_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	str_parent_code varchar(20) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__structur__03405BA7D2DE9EC4 PRIMARY KEY (str_code),
+	CONSTRAINT FK_structure_structure FOREIGN KEY (str_parent_code) REFERENCES referentiel_fudpe_new.dbo.[structure](str_code),
+	CONSTRAINT FK_structure_type_structure FOREIGN KEY (str_type_code) REFERENCES referentiel_fudpe_new.dbo.type_structure(typst_code)
+);
+ CREATE NONCLUSTERED INDEX str_parent_code ON referentiel_fudpe_new.dbo.structure (  str_parent_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.type_absence definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.type_absence;
+
+CREATE TABLE referentiel_fudpe_new.dbo.type_absence (
+	typabs_id int IDENTITY(1,1) NOT NULL,
+	typabs_motif varchar(255) COLLATE French_CI_AS NULL,
+	typabs_duree int NULL,
+	typabs_tac_id int NULL,
+	CONSTRAINT PK_type_absence PRIMARY KEY (typabs_id),
+	CONSTRAINT FK_type_absence_type_acte FOREIGN KEY (typabs_tac_id) REFERENCES referentiel_fudpe_new.dbo.type_acte(tac_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.absence definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.absence;
+
+CREATE TABLE referentiel_fudpe_new.dbo.absence (
+	abs_id int NOT NULL,
+	abs_date_debut date NULL,
+	abs_date_fin date NULL,
+	abs_typabs_id int NULL,
+	CONSTRAINT PK_absence PRIMARY KEY (abs_id),
+	CONSTRAINT FK_absence_type_absence FOREIGN KEY (abs_typabs_id) REFERENCES referentiel_fudpe_new.dbo.type_absence(typabs_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.affectation definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.affectation;
+
+CREATE TABLE referentiel_fudpe_new.dbo.affectation (
+	aff_id int IDENTITY(1,1) NOT NULL,
+	aff_str_code varchar(20) COLLATE French_CI_AS NOT NULL,
+	aff_fct_code varchar(20) COLLATE French_CI_AS NOT NULL,
+	aff_responsable bit NOT NULL,
+	CONSTRAINT PK_affectation PRIMARY KEY (aff_id),
+	CONSTRAINT FK_affectation_fonction FOREIGN KEY (aff_fct_code) REFERENCES referentiel_fudpe_new.dbo.fonction(fct_code),
+	CONSTRAINT FK_affectation_structure FOREIGN KEY (aff_str_code) REFERENCES referentiel_fudpe_new.dbo.[structure](str_code)
+);
+ CREATE UNIQUE NONCLUSTERED INDEX UNIQUE_FONCTION_STRUCTURE ON referentiel_fudpe_new.dbo.affectation (  aff_str_code ASC  , aff_fct_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.agent definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent (
+	agt_id int IDENTITY(51101201,1) NOT NULL,
+	agt_matricule_solde varchar(15) COLLATE French_CI_AS NULL,
+	agt_cni varchar(25) COLLATE French_CI_AS NULL,
+	agt_matricule_interne varchar(50) COLLATE French_CI_AS NULL,
+	agt_prenom varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom varchar(255) COLLATE French_CI_AS NULL,
+	agt_date_naissance date NULL,
+	agt_lieu_naissance varchar(255) COLLATE French_CI_AS NULL,
+	agt_adresse varchar(255) COLLATE French_CI_AS NULL,
+	agt_genre varchar(5) COLLATE French_CI_AS NULL,
+	agt_situation_matrimoniale varchar(50) COLLATE French_CI_AS NULL,
+	agt_telephone varchar(15) COLLATE French_CI_AS NULL,
+	agt_email varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_pere varchar(255) COLLATE French_CI_AS NULL,
+	agt_prenom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nom_mere varchar(255) COLLATE French_CI_AS NULL,
+	agt_nb_enfants_charge int NULL,
+	agt_date_derniere_situation date NULL,
+	agt_date_derniere_position date NULL,
+	agt_num_ordre varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_syst_externe varchar(255) COLLATE French_CI_AS NULL,
+	agt_ref_photo varchar(255) COLLATE French_CI_AS NULL,
+	agt_cce_id int NULL,
+	agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	agt_affectation_id int NULL,
+	agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_user_id int NULL,
+	agt_initiateur_id int NULL,
+	agt_date_entree_service date NULL,
+	agt_date_created datetime2 NULL,
+	agt_date_updated datetime2 NULL,
+	agt_ministere_code varchar(20) COLLATE French_CI_AS NULL,
+	agt_deleted bit DEFAULT 0 NOT NULL,
+	agt_date_deleted datetime2 NULL,
+	isUpdateAfterActivation varchar(50) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__agent__205F9281B1881CBE PRIMARY KEY (agt_id),
+	CONSTRAINT FK_agent_affectation FOREIGN KEY (agt_affectation_id) REFERENCES referentiel_fudpe_new.dbo.affectation(aff_id),
+	CONSTRAINT FK_agent_corps_classe_echelon FOREIGN KEY (agt_cce_id) REFERENCES referentiel_fudpe_new.dbo.corps_classe_echelon(cce_id),
+	CONSTRAINT FK_agent_ministere FOREIGN KEY (agt_ministere_code) REFERENCES referentiel_fudpe_new.dbo.[structure](str_code),
+	CONSTRAINT FK_agent_position FOREIGN KEY (agt_pos_code) REFERENCES referentiel_fudpe_new.dbo.[position](pos_code),
+	CONSTRAINT FK_agent_specialite FOREIGN KEY (agt_spe_code) REFERENCES referentiel_fudpe_new.dbo.specialite(spe_code)
+);
+ CREATE NONCLUSTERED INDEX UIX_AGENT_MATRICULE ON referentiel_fudpe_new.dbo.agent (  agt_matricule_solde ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+ CREATE NONCLUSTERED INDEX UIX_AGENT_USER_ID ON referentiel_fudpe_new.dbo.agent (  agt_user_id ASC  )  
+	 WHERE  ([agt_user_id] IS NOT NULL)
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+ CREATE NONCLUSTERED INDEX agent_recherche_multi_critere ON referentiel_fudpe_new.dbo.agent (  agt_nom ASC  , agt_matricule_solde ASC  , agt_cni ASC  , agt_prenom ASC  , agt_date_naissance ASC  , agt_cce_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT ] ;
+ CREATE NONCLUSTERED INDEX agt_affectation_id ON referentiel_fudpe_new.dbo.agent (  agt_affectation_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT ] ;
+ CREATE NONCLUSTERED INDEX agt_cce_id ON referentiel_fudpe_new.dbo.agent (  agt_cce_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT ] ;
+ CREATE NONCLUSTERED INDEX agt_ministere_code ON referentiel_fudpe_new.dbo.agent (  agt_ministere_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT ] ;
+ CREATE NONCLUSTERED INDEX agt_pos_code ON referentiel_fudpe_new.dbo.agent (  agt_pos_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT ] ;
+ CREATE NONCLUSTERED INDEX agt_spe_code ON referentiel_fudpe_new.dbo.agent (  agt_spe_code ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT ] ;
+
+
+-- referentiel_fudpe_new.dbo.agent_diplome definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.agent_diplome;
+
+CREATE TABLE referentiel_fudpe_new.dbo.agent_diplome (
+	dip_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	agent_id int NOT NULL,
+	CONSTRAINT PK__agent_di__FC5C070266B4BB19 PRIMARY KEY (dip_code,agent_id),
+	CONSTRAINT FK_agent_diplome_agent FOREIGN KEY (agent_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id),
+	CONSTRAINT FK_agent_diplome_diplome FOREIGN KEY (dip_code) REFERENCES referentiel_fudpe_new.dbo.diplome(dip_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.anciennete definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.anciennete;
+
+CREATE TABLE referentiel_fudpe_new.dbo.anciennete (
+	anc_id int IDENTITY(1,1) NOT NULL,
+	anc_valeur int NOT NULL,
+	anc_date_anciennete date NOT NULL,
+	anc_is_current bit NOT NULL,
+	anc_agent_id int NOT NULL,
+	CONSTRAINT PK__ancienne__3213E83F4AA0D14B PRIMARY KEY (anc_id),
+	CONSTRAINT FK_anciennete_agent FOREIGN KEY (anc_agent_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id)
+);
+ CREATE NONCLUSTERED INDEX anc_agent_id ON referentiel_fudpe_new.dbo.anciennete (  anc_agent_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.commentaire_agent definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.commentaire_agent;
+
+CREATE TABLE referentiel_fudpe_new.dbo.commentaire_agent (
+	cmt_id int IDENTITY(1,1) NOT NULL,
+	cmt_texte varchar(MAX) COLLATE French_CI_AS NULL,
+	cmt_type_commentaire varchar(20) COLLATE French_CI_AS NOT NULL,
+	cmt_agent_id int NOT NULL,
+	cmt_date_created datetime2 NULL,
+	cmt_date_updated datetime2 NULL,
+	cmt_deleted bit DEFAULT 0 NOT NULL,
+	cmt_date_deleted datetime2 NULL,
+	cmt_act_id int NOT NULL,
+	cmt_ref_GED varchar(255) COLLATE French_CI_AS NULL,
+	cmt_eta_act_id int NOT NULL,
+	CONSTRAINT PK__commenta__3213E83F8495873D PRIMARY KEY (cmt_id),
+	CONSTRAINT FK_commentaire_agent_acte FOREIGN KEY (cmt_act_id) REFERENCES referentiel_fudpe_new.dbo.acte(act_id),
+	CONSTRAINT FK_commentaire_agent_agent FOREIGN KEY (cmt_agent_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id),
+	CONSTRAINT FK_commentaire_agent_etat_acte FOREIGN KEY (cmt_eta_act_id) REFERENCES referentiel_fudpe_new.dbo.etat_acte(eta_act_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+ CREATE NONCLUSTERED INDEX cmt_act_id ON referentiel_fudpe_new.dbo.commentaire_agent (  cmt_act_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX cmt_agent_id ON referentiel_fudpe_new.dbo.commentaire_agent (  cmt_agent_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.corps_structure definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.corps_structure;
+
+CREATE TABLE referentiel_fudpe_new.dbo.corps_structure (
+	str_code varchar(20) COLLATE French_CI_AS NOT NULL,
+	cps_code varchar(10) COLLATE French_CI_AS NOT NULL,
+	CONSTRAINT PK__cadre_st__C8294B1A8A385FEF PRIMARY KEY (str_code,cps_code),
+	CONSTRAINT FK_corps_structure_corps FOREIGN KEY (cps_code) REFERENCES referentiel_fudpe_new.dbo.corps(cps_code),
+	CONSTRAINT FK_corps_structure_structure FOREIGN KEY (str_code) REFERENCES referentiel_fudpe_new.dbo.[structure](str_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.historique_avancement definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.historique_avancement;
+
+CREATE TABLE referentiel_fudpe_new.dbo.historique_avancement (
+	hist_id int IDENTITY(1,1) NOT NULL,
+	hist_act_id int DEFAULT NULL NULL,
+	hist_agt_id int DEFAULT NULL NULL,
+	hist_code_ech varchar(7) COLLATE French_CI_AS DEFAULT NULL NULL,
+	hist_code_classe varchar(7) COLLATE French_CI_AS DEFAULT NULL NULL,
+	hist_date_acte date DEFAULT NULL NULL,
+	hist_date_effet date DEFAULT NULL NULL,
+	hist_date_position date DEFAULT NULL NULL,
+	hist_anc_conserv int DEFAULT NULL NULL,
+	hist_lib_ech varchar(255) COLLATE French_CI_AS NULL,
+	hist_lib_grade varchar(255) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__historique_avancement PRIMARY KEY (hist_id),
+	CONSTRAINT FK_historique_avancement_acte FOREIGN KEY (hist_act_id) REFERENCES referentiel_fudpe_new.dbo.acte(act_id),
+	CONSTRAINT FK_historique_avancement_agent FOREIGN KEY (hist_agt_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id)
+);
+ CREATE NONCLUSTERED INDEX hist_act_id ON referentiel_fudpe_new.dbo.historique_avancement (  hist_act_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX hist_agt_id ON referentiel_fudpe_new.dbo.historique_avancement (  hist_agt_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.historique_projet_acte definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.historique_projet_acte;
+
+CREATE TABLE referentiel_fudpe_new.dbo.historique_projet_acte (
+	hist_id int IDENTITY(1,1) NOT NULL,
+	hist_act_id int NOT NULL,
+	hist_agent_id int NOT NULL,
+	hist_etat_projet_id int NOT NULL,
+	hist_date_created datetime2 NOT NULL,
+	hist_date_updated datetime2 NULL,
+	CONSTRAINT PK_historique_projet_acte PRIMARY KEY (hist_id),
+	CONSTRAINT FK_historique_projet_acte_acte FOREIGN KEY (hist_act_id) REFERENCES referentiel_fudpe_new.dbo.acte(act_id),
+	CONSTRAINT FK_historique_projet_acte_agent FOREIGN KEY (hist_agent_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id),
+	CONSTRAINT FK_historique_projet_acte_etat_projet FOREIGN KEY (hist_etat_projet_id) REFERENCES referentiel_fudpe_new.dbo.etat_projet(etp_id)
+);
+ CREATE NONCLUSTERED INDEX hist_act_id ON referentiel_fudpe_new.dbo.historique_projet_acte (  hist_act_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX hist_agent_id ON referentiel_fudpe_new.dbo.historique_projet_acte (  hist_agent_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.imputation definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.imputation;
+
+CREATE TABLE referentiel_fudpe_new.dbo.imputation (
+	imp_id int IDENTITY(1,1) NOT NULL,
+	imp_date_created datetime NULL,
+	imp_date_updated datetime NULL,
+	imp_avis varchar(10) COLLATE French_CI_AS NULL,
+	imp_commentaire_imputeur varchar(500) COLLATE French_CI_AS NULL,
+	imp_commentaire_impute varchar(MAX) COLLATE French_CI_AS NULL,
+	imp_date_avis datetime NULL,
+	imp_acte_id int NOT NULL,
+	imp_agent_impute_id int NOT NULL,
+	imp_agent_imputeur_id int NOT NULL,
+	imp_ref_GED varchar(255) COLLATE French_CI_AS NULL,
+	imp_traite bit DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_imputation PRIMARY KEY (imp_id),
+	CONSTRAINT FK_imputation_acte FOREIGN KEY (imp_acte_id) REFERENCES referentiel_fudpe_new.dbo.acte(act_id),
+	CONSTRAINT FK_imputation_agent_impute FOREIGN KEY (imp_agent_impute_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id),
+	CONSTRAINT FK_imputation_agent_imputeur FOREIGN KEY (imp_agent_imputeur_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id)
+);
+ CREATE NONCLUSTERED INDEX imp_acte_id ON referentiel_fudpe_new.dbo.imputation (  imp_acte_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX imp_agent_impute_id ON referentiel_fudpe_new.dbo.imputation (  imp_agent_impute_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+ CREATE NONCLUSTERED INDEX imp_agent_imputeur_id ON referentiel_fudpe_new.dbo.imputation (  imp_agent_imputeur_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.message definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.message;
+
+CREATE TABLE referentiel_fudpe_new.dbo.message (
+	msg_id int IDENTITY(1,1) NOT NULL,
+	msg_agent_id int NOT NULL,
+	msg_objet varchar(100) COLLATE French_CI_AS NOT NULL,
+	msg_texte varchar(MAX) COLLATE French_CI_AS NOT NULL,
+	msg_date_created datetime2 NOT NULL,
+	msg_date_updated datetime2 NULL,
+	msg_lu bit NOT NULL,
+	msg_deleted bit DEFAULT 0 NOT NULL,
+	msg_date_deleted datetime2 NULL,
+	CONSTRAINT PK_message PRIMARY KEY (msg_id),
+	CONSTRAINT FK_message_agent FOREIGN KEY (msg_agent_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id)
+);
+ CREATE NONCLUSTERED INDEX msg_agent_id ON referentiel_fudpe_new.dbo.message (  msg_agent_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [SECONDARY ] ;
+
+
+-- referentiel_fudpe_new.dbo.acte_agent definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.acte_agent;
+
+CREATE TABLE referentiel_fudpe_new.dbo.acte_agent (
+	act_agt_id int IDENTITY(1,1) NOT NULL,
+	act_agt_act_id int NOT NULL,
+	act_agt_agt_id int NOT NULL,
+	act_agt_cce_id int NULL,
+	act_agt_fct_code varchar(20) COLLATE French_CI_AS NULL,
+	act_agt_str_code varchar(20) COLLATE French_CI_AS NULL,
+	act_agt_spe_code varchar(7) COLLATE French_CI_AS NULL,
+	act_agt_pos_code varchar(3) COLLATE French_CI_AS NULL,
+	act_agt_date_effet date NOT NULL,
+	act_agt_date_created datetime2 NULL,
+	act_agt_date_updated datetime2 NULL,
+	act_agt_deleted bit DEFAULT 0 NOT NULL,
+	act_agt_date_deleted datetime2 NULL,
+	act_agt_dip_code varchar(10) COLLATE French_CI_AS NULL,
+	act_agt_session_diplome char(4) COLLATE French_CI_AS NULL,
+	act_agt_date_obtention_diplome date NULL,
+	act_poste_budgetaire_libere varchar(255) COLLATE French_CI_AS NULL,
+	act_agt_date_entree_service date NULL,
+	act_observations varchar(255) COLLATE French_CI_AS NULL,
+	act_agt_pays_code varchar(20) COLLATE French_CI_AS DEFAULT NULL NULL,
+	act_agt_pays_id int DEFAULT NULL NULL,
+	act_agt_date_avis_mutation date DEFAULT NULL NULL,
+	act_agt_note_globale varchar(255) COLLATE French_CI_AS DEFAULT NULL NULL,
+	act_agt_taux_mensuel decimal(10,0) DEFAULT NULL NULL,
+	act_agt_agt_remplace_id int DEFAULT NULL NULL,
+	act_agt_motif_remplacement varchar(250) COLLATE French_CI_AS DEFAULT NULL NULL,
+	act_poste_budgetaire_accueil varchar(255) COLLATE French_CI_AS NULL,
+	act_agt_date_debut date NULL,
+	act_agt_date_fin date NULL,
+	act_agt_duree int NULL,
+	act_agt_date_deces varchar(50) COLLATE French_CI_AS NULL,
+	act_agt_lieu_deces varchar(50) COLLATE French_CI_AS NULL,
+	CONSTRAINT PK__acte_age__F94478B7D2CAAC4D PRIMARY KEY (act_agt_id),
+	CONSTRAINT FK_acte_agent_acte FOREIGN KEY (act_agt_act_id) REFERENCES referentiel_fudpe_new.dbo.acte(act_id),
+	CONSTRAINT FK_acte_agent_agent FOREIGN KEY (act_agt_agt_id) REFERENCES referentiel_fudpe_new.dbo.agent(agt_id),
+	CONSTRAINT FK_acte_agent_corps_classe_echelon FOREIGN KEY (act_agt_cce_id) REFERENCES referentiel_fudpe_new.dbo.corps_classe_echelon(cce_id),
+	CONSTRAINT FK_acte_agent_diplome FOREIGN KEY (act_agt_dip_code) REFERENCES referentiel_fudpe_new.dbo.diplome(dip_code),
+	CONSTRAINT FK_acte_agent_fonction FOREIGN KEY (act_agt_fct_code) REFERENCES referentiel_fudpe_new.dbo.fonction(fct_code),
+	CONSTRAINT FK_acte_agent_position FOREIGN KEY (act_agt_pos_code) REFERENCES referentiel_fudpe_new.dbo.[position](pos_code),
+	CONSTRAINT FK_acte_agent_specialite FOREIGN KEY (act_agt_spe_code) REFERENCES referentiel_fudpe_new.dbo.specialite(spe_code),
+	CONSTRAINT FK_acte_agent_structure FOREIGN KEY (act_agt_str_code) REFERENCES referentiel_fudpe_new.dbo.[structure](str_code)
+);
+ CREATE NONCLUSTERED INDEX act_agt_act_id ON referentiel_fudpe_new.dbo.acte_agent (  act_agt_act_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT_ACTE ] ;
+ CREATE NONCLUSTERED INDEX act_agt_agt_id ON referentiel_fudpe_new.dbo.acte_agent (  act_agt_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT_ACTE ] ;
+ CREATE NONCLUSTERED INDEX act_agt_cce_id ON referentiel_fudpe_new.dbo.acte_agent (  act_agt_cce_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [AGENT_ACTE ] ;
+
+
+-- referentiel_fudpe_new.dbo.anciennetes definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.anciennetes;
+
+CREATE TABLE referentiel_fudpe_new.dbo.anciennetes (
+	ancs_id int NOT NULL,
+	ancs_date_debut date NULL,
+	ancs_date_fin date NULL,
+	ancs_anciennete int NULL,
+	ancs_code_corps varchar(10) COLLATE French_CI_AS NULL,
+	ancs_code_classe varchar(7) COLLATE French_CI_AS NULL,
+	ancs_code_echelon varchar(7) COLLATE French_CI_AS NULL,
+	ancs_date_debut_disponibilite date NULL,
+	ancs_date_fin_disponibilite date NULL,
+	CONSTRAINT PK_anciennetes PRIMARY KEY (ancs_id),
+	CONSTRAINT FK_anciennetes_acte_agent FOREIGN KEY (ancs_id) REFERENCES referentiel_fudpe_new.dbo.acte_agent(act_agt_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_anciennetes_classe FOREIGN KEY (ancs_code_classe) REFERENCES referentiel_fudpe_new.dbo.classe(cls_code),
+	CONSTRAINT FK_anciennetes_corps FOREIGN KEY (ancs_code_corps) REFERENCES referentiel_fudpe_new.dbo.corps(cps_code),
+	CONSTRAINT FK_anciennetes_echelon FOREIGN KEY (ancs_code_echelon) REFERENCES referentiel_fudpe_new.dbo.echelon(ech_code)
+);
+
+
+-- referentiel_fudpe_new.dbo.conge definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.conge;
+
+CREATE TABLE referentiel_fudpe_new.dbo.conge (
+	cng_id int NOT NULL,
+	cng_date_debut date NOT NULL,
+	cng_date_fin date NOT NULL,
+	CONSTRAINT PK_conge PRIMARY KEY (cng_id),
+	CONSTRAINT FK_conge_acte_agent FOREIGN KEY (cng_id) REFERENCES referentiel_fudpe_new.dbo.acte_agent(act_agt_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+-- referentiel_fudpe_new.dbo.sortie_temporaire definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.sortie_temporaire;
+
+CREATE TABLE referentiel_fudpe_new.dbo.sortie_temporaire (
+	st_id int NOT NULL,
+	st_dateDebut date NOT NULL,
+	st_dateFin date NULL,
+	st_duree int NULL,
+	st_renouvellement int NULL,
+	st_observations varchar(255) COLLATE French_CI_AS NULL,
+	st_poste_budgetaire_accueil varchar(255) COLLATE French_CI_AS NULL,
+	st_type_sortie_id int NOT NULL,
+	CONSTRAINT PK__sortiete__A85E81CFED2F28DB PRIMARY KEY (st_id),
+	CONSTRAINT FK_sortie_temporaire_acte_agent FOREIGN KEY (st_id) REFERENCES referentiel_fudpe_new.dbo.acte_agent(act_agt_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_sortie_temporaire_type_sortie_temporaire FOREIGN KEY (st_type_sortie_id) REFERENCES referentiel_fudpe_new.dbo.type_sortie_temporaire(tst_id)
+);
+
+
+-- referentiel_fudpe_new.dbo.validation_anciennete definition
+
+-- Drop table
+
+-- DROP TABLE referentiel_fudpe_new.dbo.validation_anciennete;
+
+CREATE TABLE referentiel_fudpe_new.dbo.validation_anciennete (
+	id int NOT NULL,
+	date_debut_volontariat date NULL,
+	date_fin_volontariat date NULL,
+	date_debut_contractuel date NULL,
+	date_fin_contractuel date NULL,
+	date_debut_sortie_temporaire date NULL,
+	date_fin_sortie_temporaire date NULL,
+	pourcentage_prise_en_compte decimal(5,0) NULL,
+	duree_sortie_temporaire int NULL,
+	anciennete_totale int NOT NULL,
+	anciennete_conservee int NOT NULL,
+	CONSTRAINT PK__validati__3213E83FCBBAA535 PRIMARY KEY (id),
+	CONSTRAINT FK_validation_anciennete_acte_agent FOREIGN KEY (id) REFERENCES referentiel_fudpe_new.dbo.acte_agent(act_agt_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+-- dbo.Nombre_projets_a_traiter_v source
+
+CREATE OR ALTER VIEW Nombre_projets_a_traiter_v
+AS
+SELECT 
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND (ea.act_numero_projet LIKE '%B13' OR ea.act_numero_projet LIKE '%B12' OR ea.act_numero_projet LIKE '%B10')
+       AND ea.act_etat_id IN (3, 30, 4, 492, 528)
+       AND ea.act_process_instance_id is not null
+    ) AS DENS,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND (ea.act_numero_projet LIKE '%B1' OR ea.act_numero_projet LIKE '%B3' OR ea.act_numero_projet LIKE '%B4' OR ea.act_numero_projet LIKE '%B4' OR ea.act_numero_projet LIKE '%B14')
+       AND ea.act_etat_id IN (3, 30, 4, 492, 528)
+       AND ea.act_process_instance_id is not null
+    ) AS DF,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND (ea.act_numero_projet LIKE '%B9' OR ea.act_numero_projet LIKE '%B10' OR ea.act_numero_projet LIKE '%B11' OR ea.act_numero_projet LIKE '%B18')
+       AND ea.act_etat_id IN (3, 30, 4, 492, 528)
+       AND ea.act_process_instance_id is not null
+    ) AS DNF,
+      (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND (ea.act_numero_projet LIKE '%B6')
+       AND ea.act_etat_id IN (3, 30, 4, 492, 528)
+       AND ea.act_process_instance_id is not null
+    ) AS DPR,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (8, 37, 39, 488, 495, 531, 546)
+       AND ea.act_process_instance_id is not null
+    ) AS DVISA,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (7, 498, 523, 542)
+       AND ea.act_process_instance_id is not null
+    ) AS DCEMS,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (9, 499, 529, 544)
+       AND ea.act_process_instance_id is not null
+    ) AS DPB,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (551, 553)
+       AND ea.act_process_instance_id is not null
+    ) AS DP,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (6, 500, 524, 543)
+       AND ea.act_process_instance_id is not null
+    ) AS CF,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (10, 33, 497, 501)
+       AND ea.act_process_instance_id is not null
+    ) AS DGFP,
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (23, 34, 503, 504, 560)
+       AND ea.act_process_instance_id is not null
+    ) AS SG_DC,
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (13, 35, 509, 533)
+       AND ea.act_process_instance_id is not null
+    ) AS MINISTRE,
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (11,36,  494, 510, 447, 549)
+       AND ea.act_process_instance_id is not null
+    ) AS SGG,
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_etat_id IN (12,38,532)
+       AND ea.act_process_instance_id is not null
+    ) AS NUMEROTEUR
+   ;
+
+
+-- dbo.Nombre_projets_rejetes_v source
+
+-- dbo.Nombre_projets_rejetes_v source
+
+-- dbo.Nombre_projets_rejetes_v source
+
+CREATE OR ALTER VIEW Nombre_projets_rejetes_v
+AS
+SELECT 
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_str_parent_initiateur  in  ('ST20003')      
+       AND ea.act_process_instance_id is not null
+       AND ea.act_etat_id IN (2, 493, 550, 22,541,517,19,540,502,21,539,516,18,538,40,552,14,537,496,17,16,536,15,535,20,534,557,558)
+    ) AS DIVISION_DNF,
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_str_parent_initiateur  in  ('ST20001')      
+       AND ea.act_process_instance_id is not null
+       AND ea.act_etat_id IN (2, 493, 550, 22,541,517,19,540,502,21,539,516,18,538,40,552,14,537,496,17,16,536,15,535,20,534,557,558)
+    ) AS DIVISION_DENS,
+     (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_str_parent_initiateur  in  ('ST20002')      
+       AND ea.act_process_instance_id is not null
+       AND ea.act_etat_id IN (2, 493, 550, 22,541,517,19,540,502,21,539,516,18,538,40,552,14,537,496,17,16,536,15,535,20,534,557,558)
+    ) AS DIVISION_DF,
+    (SELECT COUNT(*) 
+     FROM referentiel_fudpe_new.dbo.acte ea 
+     WHERE ea.act_is_projet = 1
+       AND ea.act_deleted = 0
+       AND ea.act_str_parent_initiateur  in  ('ST60006')      
+       AND ea.act_process_instance_id is not null
+       AND ea.act_etat_id IN (2, 493, 550, 22,541,517,19,540,502,21,539,516,18,538,40,552,14,537,496,17,16,536,15,535,20,534,557,558)
+    ) AS DIVISION_DPR;
