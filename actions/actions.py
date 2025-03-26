@@ -1,5 +1,6 @@
 import os
 import pdfplumber
+import pyodbc
 import ollama
 import faiss
 import numpy as np
@@ -7,11 +8,31 @@ from sentence_transformers import SentenceTransformer
 from typing import Text, Dict, Any
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import UserUtteranceReverted
+from rasa_sdk.events import SlotSet, FollowupAction
 
 # === Dictionnaire de cache pour stocker les réponses déjà calculées ===
 response_cache = {}
 
+# === Configuration de la connexion à la base de données SQL Server ===
+server = "10.4.116.87,1433"
+database = "referentiel_fudpe_new"
+username = "sa"
+password = "AdieAdie1"
+
+try:
+            # Connexion à la base de données SQL Server
+            conn = pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={server};"
+                f"DATABASE={database};"
+                f"UID={username};"
+                f"PWD={password}"
+            )
+            print("✅ Connexion réussie à la base de données SQL Server !")
+            cursor = conn.cursor()
+except pyodbc.Error as e:
+            print(f"Erreur de connexion à la base de données : {e}")
+            
 # === Chargement du document PDF ===
 DOCUMENT_PATH = "data/knowledge_base/faq.pdf"
 
@@ -57,11 +78,6 @@ class ActionRedirectPlatform(Action):
             dispatcher.utter_message(response="utter_E_carriere")
         elif platform == "PGDE":
             dispatcher.utter_message(response="utter_pgde_menu")
-            # dispatcher.utter_message(text="Bienvenue sur PGDE. Comment puis-je vous aider ?", buttons=[
-            #     {"title": "Créer un compte", "payload": "/ask_pgde_account_creation"},
-            #     {"title": "Se connecter", "payload": "/ask_pgde_login"},
-            #     {"title": "Retour au menu principal", "payload": "/greet"}
-            # ])
         else:
             dispatcher.utter_message(response="utter_no_plateform_info")
 
@@ -76,6 +92,12 @@ class ActionRetrieveAnswer(Action):
 
     def run(self, dispatcher, tracker, domain):
         user_message = tracker.latest_message.get("text", "").lower()
+
+        # Vérifier si le message ressemble à un matricule (ex: 654986b)
+        if user_message.isalnum() and len(user_message) >= 6:
+            print("🔍 Matricule détecté, redirection vers la base de données.")
+            return [SlotSet("matricule", user_message), FollowupAction("action_retrieve_user_info")]
+
         print("🟢 action_retrieve_answer déclenchée avec :", user_message)
 
         # ✅ Vérifier si la réponse est déjà dans le cache
@@ -170,3 +192,75 @@ class ActionRetrieveAnswer(Action):
         ])
 
         return []
+
+
+class ActionRetrieveUserInfo(Action):
+    def name(self) -> Text:
+        return "action_retrieve_user_info"
+
+    def run(self, dispatcher, tracker, domain):
+        user_matricule = tracker.get_slot("matricule")
+        if not user_matricule:
+            dispatcher.utter_message(text="Veuillez fournir votre matricule.")
+            return []
+
+        try:
+            # Connexion à la base de données SQL Server
+            # conn = pyodbc.connect(
+            #     f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+            #     f"SERVER={server};"
+            #     f"DATABASE={database};"
+            #     f"UID={username};"
+            #     f"PWD={password}"
+            # )
+            # print("✅ Connexion réussie à la base de données SQL Server !")
+            # cursor = conn.cursor()
+
+            # Exécuter la requête pour récupérer les informations de l'utilisateur
+            query = """
+            SELECT TOP 3
+                a.agt_nom,
+                a.agt_prenom,
+                ac.act_numero_projet,
+                ac.act_numero_acte,
+                ea.eta_act_code AS etat_projet,
+                ta.tac_libelle AS type_projet
+            FROM 
+                referentiel_fudpe_new.dbo.agent a
+            INNER JOIN 
+                referentiel_fudpe_new.dbo.acte_agent aa ON aa.act_agt_agt_id = a.agt_id
+            INNER JOIN 
+                referentiel_fudpe_new.dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+            LEFT JOIN 
+                referentiel_fudpe_new.dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+            LEFT JOIN 
+                referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+            WHERE 
+                a.agt_matricule_solde = ?
+                AND ac.act_is_projet = 1
+            ORDER BY ac.act_date_acte DESC;  -- Trier par date d'acte décroissante (du plus récent au plus ancien)
+        """
+            cursor.execute(query, user_matricule)
+            rows = cursor.fetchall()
+
+            if not rows:
+                dispatcher.utter_message(text="Aucune information trouvée pour ce matricule.")
+                return []
+
+            # Construire la réponse
+            response = f"Bienvenue **{rows[0].agt_prenom} {rows[0].agt_nom}!** \nVoici vos informations:\n\n"
+            for row in rows:
+                response += f" 📜 **Numéro Projet**: {row.act_numero_projet}\n 📄 **Numéro Acte**: {row.act_numero_acte}\n 📌 **État du projet** : {row.etat_projet}\n 🔹 **Type de projet**: {row.type_projet}\n\n\n"
+
+            dispatcher.utter_message(text=response)
+
+            # Effacer la question et la réponse du cache
+            if user_matricule in response_cache:
+                del response_cache[user_matricule]
+
+            return []
+
+        except pyodbc.Error as e:
+            print(f"Erreur de recupersation des données  à la base de données : {e}")
+            dispatcher.utter_message(text="Erreur de recupersation des données à la base de données.")
+            return []

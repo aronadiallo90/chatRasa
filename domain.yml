@@ -32,11 +32,16 @@ intents:
   - ask_pgde_acte_followup
   - ask_pgde_hours
   - no_plateform_info
+# interaction base de donnes girafe
+  - ask_user_info
+  - provide_matricule
 
 entities:
   - service
   - platform  # Ensure this entity is included
   - action
+# interaction base de donnes girafe
+  - matricule
 
 slots:
   platform:
@@ -51,6 +56,12 @@ slots:
     mappings:
       - type: from_entity
         entity: action
+  matricule:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: matricule
 
 responses:
   utter_no_info:
@@ -73,7 +84,7 @@ responses:
         - title: "Demande d'emploi (PGDE)"
           payload: "/choose_platform{\"platform\": \"PGDE\"}"
         - title: "GIRAFE"
-          payload: "/choose_platform{\"platform\": \"Autre\"}"
+          payload: "/choose_platform{\"platform\": \"GIRAFE\"}"
         
 
   utter_E_carriere:
@@ -220,9 +231,15 @@ responses:
       buttons:
         - title: "Retour"
           payload: "/greet"
+  utter_ask_matricule:
+    - text: "Veuillez entrer votre matricule."
+  utter_ask_no_info:
+    - text: "Desolé , j'ai pas trouvé d'information."
     
 actions:
   - action_E_carriere
   - action_test
   - action_retrieve_answer
   - action_redirect_platform  # Ensure this action is included
+  # interaction base de donnes girafe
+  - action_retrieve_user_info

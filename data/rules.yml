@@ -111,3 +111,15 @@ rules:
   steps:
     - intent: choose_platform
     - action: action_redirect_platform
+
+# GIRAFE
+
+- rule: Ask for matricule
+  steps:
+    - intent: ask_user_info
+    - action: utter_ask_matricule
+
+- rule: Provide user information
+  steps:
+    - intent: provide_matricule
+    - action: action_retrieve_user_info

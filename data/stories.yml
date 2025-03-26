@@ -57,3 +57,15 @@ stories:
     - action: utter_ask_pgde_documents
     - intent: go_back_pgde
     - action: utter_pgde_menu
+
+# GIRAFE
+- story: User asks for information
+  steps:
+    - intent: ask_user_info
+    - action: utter_ask_matricule
+    - intent: provide_matricule
+      entities:
+        - matricule: 741000D
+    - action: action_retrieve_user_info
+
+

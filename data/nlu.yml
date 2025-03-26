@@ -133,3 +133,22 @@ nlu:
       - De quels papiers ai-je besoin pour m’inscrire sur [PGDE](platform) ?
       - Quels sont les justificatifs demandés pour [PGDE](platform) ?
       - Faut-il une carte d’identité pour [PGDE](platform) ?
+
+# GIRAFE 
+  - intent: ask_user_info
+    examples: |
+      - Je veux voir mes informations
+      - Montre-moi mes actes
+      - Quels sont mes projets ?
+      - Je veux voir mes informations
+      - Montre-moi mes actes
+      - Quels sont mes projets ?
+      - Quels sont mes actes ?
+      - Quels sont mes projets en cours ?
+      - Quels sont mes actes administratifs ?
+  - intent: provide_matricule
+    examples: |
+      - Mon matricule est [741000D](matricule)
+      - [741000D](matricule)
+      - Voici mon matricule : [741000D](matricule)
+
