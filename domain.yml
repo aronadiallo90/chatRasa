@@ -77,7 +77,7 @@ responses:
           payload: "/go_back_ecarriere"
 
   utter_greet:
-    - text: "Bienvenue ! Je suis Maty, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public. En quoi puis-je vous aider aujourd'hui ?"
+    - text: "Bienvenue ! Je suis Amath, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public. En quoi puis-je vous aider aujourd'hui ?"
       buttons:
         - title: "E-CARRIERE"
           payload: "/choose_platform{\"platform\": \"E-Carrière\"}"
@@ -88,13 +88,13 @@ responses:
         
 
   utter_E_carriere:
-    - text: " Bienvenue dans **E-Carrière** , que souhaitez-vous savoir ?"
+    - text: " Que souhaitez-vous savoir dans **E-Carrière** ?"
       buttons:
         # - title: "Voir les fonctionnalités"
         #   payload: "/ask_platform_features"
         - title: "Activer son compte"
           payload: "/ask_account_creation"
-        - title: "J'arrive pas à me connecter"
+        - title: "Je n'arrive pas à me connecter"
           payload: "/ask_login"
         # - title: "Tutoriel"
         #   payload: "/ask_tutorial_link"
@@ -198,13 +198,13 @@ responses:
           payload: "/ask_public_service_application"
   # concernant PGDE
   utter_ask_pgde_account_creation:
-    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur 'Créer un compte'.\n\n3️⃣ Remplissez les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
+    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur **Créer un compte**.\n\n3️⃣ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
 
   utter_ask_pgde_login:
-    - text: "Pour vous connecter à PGDE :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
+    - text: "Pour vous **connecter** à **PGDE** :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
       buttons:                                                                                          
         - title: "Retour"
           payload: "/go_back_pgde"
@@ -216,7 +216,7 @@ responses:
           payload: "/go_back_pgde"
 
   utter_pgde_menu:
-    - text: "Bienvenu sur la Plateforme de Gestion d'Emploi **(PGDE)** de la Fonction Publique !\n\n💼 Comment puis-je vous aider aujourd'hui ?"
+    - text: "Que souhaitez-vous savoir sur la Plateforme de Gestion des Demandes d'Emploi 💼**(PGDE)** ? "
       buttons:
         - title: "Créer un compte"
           payload: "/ask_pgde_account_creation"
