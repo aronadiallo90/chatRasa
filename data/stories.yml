@@ -57,6 +57,16 @@ stories:
     - action: utter_ask_pgde_documents
     - intent: go_back_pgde
     - action: utter_pgde_menu
+- story: Test mot de passe oublié PGDE
+  steps:
+      - intent: forgot_password_pgde
+      - action: forgot_password_form
+      - active_loop: forgot_password_form
+      - slot_was_set:
+          - user_email: "exemple@domain.com"
+      - action: forgot_password_form
+      - active_loop: null
+      - action: action_pgde_handle_forgotten_password
 
 # GIRAFE
 - story: User asks for information

@@ -264,3 +264,15 @@ class ActionRetrieveUserInfo(Action):
             print(f"Erreur de recupersation des données  à la base de données : {e}")
             dispatcher.utter_message(text="Erreur de recupersation des données à la base de données.")
             return []
+
+
+class ValidateForgotPasswordForm(Action):
+    def name(self) -> Text:
+        return "validate_forgot_password_form"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]):
+        email = tracker.get_slot("user_email")
+        if not email or "@" not in email:
+            dispatcher.utter_message(text="Veuillez fournir une adresse e-mail valide.")
+            return [SlotSet("user_email", None)]
+        return []

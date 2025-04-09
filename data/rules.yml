@@ -37,10 +37,10 @@ rules:
     - intent: ask_login
     - action: utter_ask_login
 
-- rule: Répondre à la réinitialisation de mot de passe
-  steps:
-    - intent: ask_password_reset
-    - action: utter_ask_password_reset
+# - rule: Répondre à la réinitialisation de mot de passe
+#   steps:
+#     - intent: ask_password_reset
+#     - action: utter_ask_password_reset
 
 - rule: Répondre aux questions sur les fonctionnalités de la plateforme
   steps:
@@ -123,3 +123,28 @@ rules:
   steps:
     - intent: provide_matricule
     - action: action_retrieve_user_info
+
+
+# PGDE 
+
+- rule: L'utilisateur a oublié son mot de passe PGDE
+  steps:
+    - intent: forgot_password_pgde
+    - action: forgot_password_form
+    - active_loop: forgot_password_form
+
+- rule: Traitement du mot de passe oublié terminé
+  condition:
+    - active_loop: forgot_password_form
+  steps:
+    - action: forgot_password_form
+    - active_loop: null
+    - action: action_handle_forgotten_password
+
+# - rule: Réinitialisation du mot de passe PGDE
+#   steps:
+#       - intent: forgot_password_pgde
+#       - action: utter_ask_user_email
+#       - action: action_pgde_check_email_exist
+
+

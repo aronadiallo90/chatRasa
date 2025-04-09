@@ -54,10 +54,10 @@ nlu:
       - Comment me connecter à mon compte sur [E-Carrière](service) ?
       - Je ne trouve pas la page de connexion sur [E-Carrière](service) ?
 
-  - intent: ask_password_reset
-    examples: |
-      - J’ai oublié mon mot de passe, comment le réinitialiser sur [E-Carrière](service) ?
-      - J’ai perdu mes accès, que faire sur [E-Carrière](service) ?
+  # - intent: ask_password_reset
+  #   examples: |
+  #     - J’ai oublié mon mot de passe, comment le réinitialiser sur [E-Carrière](service) ?
+  #     - J’ai perdu mes accès, que faire sur [E-Carrière](service) ?
   
   - intent: ask_platform_features
     examples: |
@@ -133,6 +133,13 @@ nlu:
       - De quels papiers ai-je besoin pour m’inscrire sur [PGDE](platform) ?
       - Quels sont les justificatifs demandés pour [PGDE](platform) ?
       - Faut-il une carte d’identité pour [PGDE](platform) ?
+  
+  - intent: forgot_password_pgde
+    examples: |
+      - j'ai oublié mon mot de passe [PGDE](platform)
+      - mot de passe perdu [PGDE](platform)
+      - je n'arrive plus à me connecter à [PGDE](platform)
+      - reset mon mot de passe [PGDE](platform)
 
 # GIRAFE 
   - intent: ask_user_info

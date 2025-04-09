@@ -12,6 +12,9 @@ rasa run -m models --enable-api --cors "*" --debug
 
 rasa run actions --debug
 
+C:\Python313\Scripts\
+C:\Users\Arona\AppData\Local\Programs\Python\Python39\
+
 
 curl -X POST http://localhost:11434/api/generate -d '{"model":"mistral","prompt":"À qui est destinée la plateforme E-Carrière ?"}'
 # 🤖 Chatbot Rasa avec Ollama & FAISS

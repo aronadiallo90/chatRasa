@@ -17,7 +17,7 @@ intents:
   - go_back_pgde  # Ajout du nouvel intent
   - go_back_autres  # Ajout du nouvel intent
   - ask_document_info
-  - ask_password_reset
+  # - ask_password_reset
   - ask_claim_submission
   - ask_acte_followup
   - ask_platform_features
@@ -27,7 +27,8 @@ intents:
   - ask_pgde_login
   - ask_pgde_documents
   - ask_pgde_features
-  - ask_pgde_password_reset
+  - forgot_password_pgde
+  # - ask_pgde_password_reset
   - ask_pgde_claim_submission
   - ask_pgde_acte_followup
   - ask_pgde_hours
@@ -35,6 +36,11 @@ intents:
 # interaction base de donnes girafe
   - ask_user_info
   - provide_matricule
+
+forms:
+  forgot_password_form:
+    required_slots:
+      - user_email
 
 entities:
   - service
@@ -62,6 +68,10 @@ slots:
     mappings:
       - type: from_entity
         entity: matricule
+  user_email:
+    type: text
+    mappings:
+      - type: from_text
 
 responses:
   utter_no_info:
@@ -159,11 +169,11 @@ responses:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
-  utter_ask_password_reset:
-    - text: "1. **Se rendre** sur la page de connexion.\n2. **Cliquer** sur \"**Mot de passe oublié ?**\".\n3. **Saisir** son adresse email associée à son compte.\n4.Vous allez **Recevoir** un email et un message whatsapp contenant un **lien de réinitialisation**.\n5. **Cliquer** sur le lien reçu, **saisir un nouveau mot de passe**, et **confirmer.**\n✅Une fois réinitialisé, l’agent pourra se connecter avec son nouveau mot de passe."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere" 
+  # utter_ask_password_reset:
+  #   - text: "1. **Se rendre** sur la page de connexion.\n2. **Cliquer** sur \"**Mot de passe oublié ?**\".\n3. **Saisir** son adresse email associée à son compte.\n4.Vous allez **Recevoir** un email et un message whatsapp contenant un **lien de réinitialisation**.\n5. **Cliquer** sur le lien reçu, **saisir un nouveau mot de passe**, et **confirmer.**\n✅Une fois réinitialisé, l’agent pourra se connecter avec son nouveau mot de passe."
+  #     buttons:
+  #       - title: "Retour"
+  #         payload: "/go_back_ecarriere" 
 
   utter_ask_claim_submission:
     - text: "Pour **soumettre** une **réclamation**, **connectez-vous** à E-Carrière, allez dans **'Dépôt et suivi des réclamations'**, **remplissez** le formulaire et **téléchargez** les **pièces justificatives**."
@@ -226,6 +236,7 @@ responses:
         #   payload: "/ask_pgde_documents"
         - title: "Retour au menu principal"
           payload: "/greet"
+  
   utter_no_plateform_info:
     - text: "Cette plateforme n'est pas encore disponible."
       buttons:
@@ -235,6 +246,8 @@ responses:
     - text: "Veuillez entrer votre matricule."
   utter_ask_no_info:
     - text: "Desolé , j'ai pas trouvé d'information."
+  utter_ask_user_email:
+    - text: "Veuillez entrer votre adresse e-mail pour réinitialiser votre mot de passe."
     
 actions:
   - action_E_carriere
@@ -243,3 +256,5 @@ actions:
   - action_redirect_platform  # Ensure this action is included
   # interaction base de donnes girafe
   - action_retrieve_user_info
+  - action_handle_forgotten_password
+  - action_pgde_handle_forgotten_password
