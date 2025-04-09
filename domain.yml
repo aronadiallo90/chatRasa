@@ -35,6 +35,8 @@ intents:
 # interaction base de donnes girafe
   - ask_user_info
   - provide_matricule
+  - inform_email  # Add this line
+  
 
 entities:
   - service
@@ -268,3 +270,6 @@ actions:
   - action_redirect_platform  # Ensure this action is included
   # interaction base de donnes girafe
   - action_retrieve_user_info
+
+  - action_handle_email_input
+  - action_reset_pgde_password

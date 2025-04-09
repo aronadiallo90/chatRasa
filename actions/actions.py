@@ -4,11 +4,14 @@ import pyodbc
 import ollama
 import faiss
 import numpy as np
+import requests
 from sentence_transformers import SentenceTransformer
 from typing import Text, Dict, Any
+import mysql.connector
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction
+from typing import Text, Dict, Any, List  # Ensure List is imported
 
 # === Dictionnaire de cache pour stocker les réponses déjà calculées ===
 response_cache = {}
@@ -32,6 +35,14 @@ try:
             cursor = conn.cursor()
 except pyodbc.Error as e:
             print(f"Erreur de connexion à la base de données : {e}")
+mysql_config = {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "database": "PGDEPGDE",
+    "user": "root",
+    "password": "adieadie"
+}
+# 
             
 # === Chargement du document PDF ===
 DOCUMENT_PATH = "data/knowledge_base/faq.pdf"
@@ -195,6 +206,7 @@ class ActionRetrieveAnswer(Action):
 
 
 class ActionRetrieveUserInfo(Action):
+
     def name(self) -> Text:
         return "action_retrieve_user_info"
 
@@ -264,3 +276,117 @@ class ActionRetrieveUserInfo(Action):
             print(f"Erreur de recupersation des données  à la base de données : {e}")
             dispatcher.utter_message(text="Erreur de recupersation des données à la base de données.")
             return []
+
+
+    def name(self) -> Text:
+        return "action_handle_email_input"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Vérifier si nous attendons un email
+        awaiting_email = tracker.get_slot("awaiting_email")
+        
+        if awaiting_email:
+            # Récupérer le dernier message de l'utilisateur comme email
+            email = tracker.latest_message.get("text", "").strip()
+            
+            # Validation basique de l'email (vous pouvez améliorer cette validation)
+            if "@" in email and "." in email:
+                return [SlotSet("email", email), FollowupAction("action_reset_pgde_password")]
+            else:
+                dispatcher.utter_message(text="L'adresse email semble invalide. Veuillez fournir une adresse email valide.")
+                return []
+        
+        return []
+class ActionResetPGDEPassword(Action):
+    def name(self) -> Text:
+        return "action_reset_pgde_password"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Récupérer l'email fourni par l'utilisateur
+        email = tracker.get_slot("email")
+        
+        # Si l'email n'est pas encore fourni, demander à l'utilisateur
+        if not email:
+            dispatcher.utter_message(text="Veuillez fournir l'adresse email associée à votre compte PGDE.")
+            return [SlotSet("awaiting_email", True)]
+
+        try:
+            # Établir une connexion à la base de données MySQL de PGDE
+            connection = mysql.connector.connect(**mysql_config)
+            cursor = connection.cursor()
+            
+            # Vérifier si l'email existe dans la base de données
+            cursor.execute("SELECT id FROM utilisateur WHERE email = %s", (email,))
+            result = cursor.fetchone()
+            
+            # Fermer la connexion MySQL
+            cursor.close()
+            connection.close()
+            
+            if not result:
+                dispatcher.utter_message(text=f"Aucun compte n'est associé à l'email {email}. Veuillez vérifier votre adresse email ou créer un nouveau compte.")
+                return [SlotSet("email", None), SlotSet("awaiting_email", False)]
+            
+            # Si l'email existe, envoyer une demande de réinitialisation
+            try:
+                # Appel API pour déclencher l'envoi de l'email de réinitialisation
+                reset_url = "https://emploi-fpublique.sec.gouv.sn/resetting/request"
+                response = requests.post(
+                    reset_url, 
+                    json={"email": email}
+                )
+                
+                if response.status_code == 200:
+                    message = f"Un email de réinitialisation a été envoyé à {email}. Veuillez vérifier votre boîte de réception et suivre les instructions pour créer un nouveau mot de passe."
+                else:
+                    message = "Nous avons rencontré un problème lors de l'envoi de l'email de réinitialisation. Veuillez réessayer plus tard."
+            
+            except Exception as e:
+                print(f"Erreur lors de l'appel à l'API de réinitialisation : {e}")
+                message = "Un problème technique est survenu. Notre équipe a été notifiée et travaille à résoudre ce problème."
+            
+            dispatcher.utter_message(text=message)
+            
+            # Ajouter un bouton de retour
+            dispatcher.utter_message(text="Que souhaitez-vous faire maintenant ?", buttons=[
+                {"title": "Retour au menu PGDE", "payload": "/go_back_pgde"},
+                {"title": "Menu principal", "payload": "/greet"}
+            ])
+            
+            return [SlotSet("email", None), SlotSet("awaiting_email", False)]
+            
+        except mysql.connector.Error as db_error:
+            print(f"Erreur de connexion MySQL PGDE : {db_error}")
+            dispatcher.utter_message(text="Je rencontre un problème technique pour vérifier votre email. Veuillez réessayer plus tard.")
+            return [SlotSet("email", None), SlotSet("awaiting_email", False)]
+
+
+class ActionHandleEmailInput(Action):
+    def name(self) -> Text:
+        return "action_handle_email_input"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Vérifier si nous attendons un email
+        awaiting_email = tracker.get_slot("awaiting_email")
+        
+        if awaiting_email:
+            # Récupérer le dernier message de l'utilisateur comme email
+            email = tracker.latest_message.get("text", "").strip()
+            
+            # Validation basique de l'email (vous pouvez améliorer cette validation)
+            if "@" in email and "." in email:
+                return [SlotSet("email", email), FollowupAction("action_reset_pgde_password")]
+            else:
+                dispatcher.utter_message(text="L'adresse email semble invalide. Veuillez fournir une adresse email valide.")
+                return []
+        
+        return []

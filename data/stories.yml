@@ -66,14 +66,12 @@ stories:
     - action: utter_ask_pgde_password_reset
     - action: action_reset_pgde_password
     - slot_was_set:
-      - awaiting_email: true
-    - intent: nlu_fallback
-      entities:
-      - text: "utilisateur@example.com"
+        - awaiting_email: true
+    - intent: inform_email
     - action: action_handle_email_input
-    - action: action_reset_pgde_password
     - intent: go_back_pgde
     - action: utter_pgde_menu
+
 
 # GIRAFE
 - story: User asks for information

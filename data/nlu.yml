@@ -142,7 +142,13 @@ nlu:
       - Mot de passe oublié [PGDE](platform)
       - Reset password [PGDE](platform)
       - Récupérer mot de passe [PGDE](platform)
-
+  - intent: inform_email
+    examples: |
+      - utilisateur@example.com
+      - test@domain.sn
+      - aronadiallo90@gmail.com
+      
+ 
 # GIRAFE 
   - intent: ask_user_info
     examples: |
