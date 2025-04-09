@@ -133,6 +133,15 @@ nlu:
       - De quels papiers ai-je besoin pour m’inscrire sur [PGDE](platform) ?
       - Quels sont les justificatifs demandés pour [PGDE](platform) ?
       - Faut-il une carte d’identité pour [PGDE](platform) ?
+  # PGDE
+  - intent: ask_pgde_password_reset
+    examples: |
+      - J'ai oublié mon mot de passe PGDE
+      - Comment réinitialiser mon mot de passe sur [PGDE](platform) ?
+      - Je n'arrive pas à me connecter à [PGDE](platform), j'ai perdu mon mot de passe
+      - Mot de passe oublié [PGDE](platform)
+      - Reset password [PGDE](platform)
+      - Récupérer mot de passe [PGDE](platform)
 
 # GIRAFE 
   - intent: ask_user_info

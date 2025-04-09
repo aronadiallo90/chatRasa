@@ -112,6 +112,22 @@ rules:
     - intent: choose_platform
     - action: action_redirect_platform
 
+
+# PGDE
+- rule: Gérer la demande de réinitialisation du mot de passe PGDE
+  steps:
+    - intent: ask_pgde_password_reset
+    - action: utter_ask_pgde_password_reset
+    - action: action_reset_pgde_password
+
+- rule: Gérer l'entrée d'email pour la réinitialisation
+  steps:
+    - action: action_reset_pgde_password
+    - slot_was_set:
+      - awaiting_email: true
+    - intent: nlu_fallback  # Utiliser nlu_fallback pour capturer tout texte
+    - action: action_handle_email_input
+
 # GIRAFE
 
 - rule: Ask for matricule

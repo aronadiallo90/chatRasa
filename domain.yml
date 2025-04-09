@@ -62,6 +62,20 @@ slots:
     mappings:
       - type: from_entity
         entity: matricule
+  # Ajouter ces nouveaux slots
+  email:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+  awaiting_email:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+    initial_value: false
+
+
 
 responses:
   utter_no_info:
@@ -222,10 +236,21 @@ responses:
           payload: "/ask_pgde_account_creation"
         - title: "Se connecter"
           payload: "/ask_pgde_login"
+        - title: "Mot de passe oublié"  # Nouveau bouton
+          payload: "/ask_pgde_password_reset"
         # - title: "Documents nécessaires"
         #   payload: "/ask_pgde_documents"
         - title: "Retour au menu principal"
           payload: "/greet"
+  utter_ask_pgde_password_reset:
+    - text: "Pour réinitialiser votre mot de passe sur PGDE, je vais vous aider. Veuillez fournir l'adresse email associée à votre compte."
+  
+  
+  
+  
+  
+  
+  
   utter_no_plateform_info:
     - text: "Cette plateforme n'est pas encore disponible."
       buttons:
