@@ -3,3 +3,5 @@
 models/
 html test/
 .models/
+actions/__pycache__/__init__.cpython-39.pyc
+actions/__pycache__/actions.cpython-39.pyc
