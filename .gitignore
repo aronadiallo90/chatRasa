@@ -3,3 +3,4 @@
 models/
 html test/
 .models/
+actions/__pycache__/actions.cpython-39.pyc
