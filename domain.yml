@@ -92,15 +92,28 @@ responses:
         - title: "Retour"
           payload: "/go_back_ecarriere"
 
+  # utter_greet:
+  #   - text: "Bienvenue ! Je suis Amath, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public. En quoi puis-je vous aider aujourd'hui ?"
+  #     buttons:
+  #       - title: "E-CARRIERE"
+  #         payload: "/choose_platform{\"platform\": \"E-Carrière\"}"
+  #       - title: "Demande d'emploi (PGDE)"
+  #         payload: "/choose_platform{\"platform\": \"PGDE\"}"
+  #       - title: "GIRAFE"
+  #         payload: "/choose_platform{\"platform\": \"GIRAFE\"}"
   utter_greet:
-    - text: "Bienvenue ! Je suis Amath, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public. En quoi puis-je vous aider aujourd'hui ?"
+    - text: "Bienvenue ! Je suis Amath, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public,que souhaitez-vous savoir sur la Plateforme de Gestion des Demandes d'Emploi 💼**(PGDE)** ? "
       buttons:
-        - title: "E-CARRIERE"
-          payload: "/choose_platform{\"platform\": \"E-Carrière\"}"
-        - title: "Demande d'emploi (PGDE)"
-          payload: "/choose_platform{\"platform\": \"PGDE\"}"
-        - title: "GIRAFE"
-          payload: "/choose_platform{\"platform\": \"GIRAFE\"}"
+        - title: "Créer un compte"
+          payload: "/ask_pgde_account_creation"
+        - title: "Se connecter"
+          payload: "/ask_pgde_login"
+        - title: "Mot de passe oublié"  # Nouveau bouton
+          payload: "/ask_pgde_password_reset"
+        # - title: "Documents nécessaires"
+        #   payload: "/ask_pgde_documents"
+        - title: "Retour au menu principal"
+          payload: "/greet"
         
 
   utter_E_carriere:

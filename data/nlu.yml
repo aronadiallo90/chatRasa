@@ -16,6 +16,19 @@ nlu:
     examples: |
       - Bonjour
       - Hello
+      - Salut
+      - Coucou
+      - Hey
+      - Salam
+      - Naka nga def ?
+      - Jamm nga am ?
+      - Naka suba si ?
+      - Naka nga fanaane ?
+      - Nanga def ?
+      - Jàmm rekk
+      - Jërëjëf
+      - retour
+
       
   - intent: choose_platform
     examples: |

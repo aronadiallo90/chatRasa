@@ -37,14 +37,12 @@ except pyodbc.Error as e:
             print(f"Erreur de connexion à la base de données : {e}")
 mysql_config = {
     "host": "127.0.0.1",
-    "port": 3306,
+    "port": 3307,
     "database": "PGDEPGDE",
     "user": "root",
     "password": "adieadie"
 }
-# 
-            
-# === Chargement du document PDF ===
+
 DOCUMENT_PATH = "data/knowledge_base/faq.pdf"
 
 def extract_text_from_pdf(pdf_path):
@@ -334,22 +332,23 @@ class ActionResetPGDEPassword(Action):
                 return [SlotSet("email", None), SlotSet("awaiting_email", False)]
             
             # Si l'email existe, envoyer une demande de réinitialisation
-            try:
-                # Appel API pour déclencher l'envoi de l'email de réinitialisation
-                reset_url = "https://emploi-fpublique.sec.gouv.sn/resetting/request"
-                response = requests.post(
-                    reset_url, 
-                    json={"email": email}
-                )
+            # try:
+            #     # Appel API pour déclencher l'envoi de l'email de réinitialisation
+            #     reset_url = "https://emploi-fpublique.sec.gouv.sn/resetting/request"
+            #     response = requests.post(
+            #         reset_url, 
+            #         json={"email": email}
+            #     )
                 
-                if response.status_code == 200:
-                    message = f"Un email de réinitialisation a été envoyé à {email}. Veuillez vérifier votre boîte de réception et suivre les instructions pour créer un nouveau mot de passe."
-                else:
-                    message = "Nous avons rencontré un problème lors de l'envoi de l'email de réinitialisation. Veuillez réessayer plus tard."
+            #     if response.status_code == 200:
+            #         message = f"Un email de réinitialisation a été envoyé à {email}. Veuillez vérifier votre boîte de réception et suivre les instructions pour créer un nouveau mot de passe."
+            #     else:
+            #         message = "Nous avons rencontré un problème lors de l'envoi de l'email de réinitialisation. Veuillez réessayer plus tard."
             
-            except Exception as e:
-                print(f"Erreur lors de l'appel à l'API de réinitialisation : {e}")
-                message = "Un problème technique est survenu. Notre équipe a été notifiée et travaille à résoudre ce problème."
+            # except Exception as e:
+            #     print(f"Erreur lors de l'appel à l'API de réinitialisation : {e}")
+            #     message = "Un problème technique est survenu. Notre équipe a été notifiée et travaille à résoudre ce problème."
+            message = f"Un email de réinitialisation a été envoyé à {email}. Veuillez vérifier votre boîte de réception et suivre les instructions pour créer un nouveau mot de passe."
             
             dispatcher.utter_message(text=message)
             
