@@ -276,6 +276,7 @@ class ActionRetrieveUserInfo(Action):
             return []
 
 
+class ActionHandleEmailInput(Action):
     def name(self) -> Text:
         return "action_handle_email_input"
 
@@ -294,10 +295,13 @@ class ActionRetrieveUserInfo(Action):
             if "@" in email and "." in email:
                 return [SlotSet("email", email), FollowupAction("action_reset_pgde_password")]
             else:
+                # Message pour email invalide
                 dispatcher.utter_message(text="L'adresse email semble invalide. Veuillez fournir une adresse email valide.")
-                return []
+                return [SlotSet("email", None), SlotSet("awaiting_email", True)]
         
         return []
+
+
 class ActionResetPGDEPassword(Action):
     def name(self) -> Text:
         return "action_reset_pgde_password"
@@ -364,28 +368,3 @@ class ActionResetPGDEPassword(Action):
             print(f"Erreur de connexion MySQL PGDE : {db_error}")
             dispatcher.utter_message(text="Je rencontre un problème technique pour vérifier votre email. Veuillez réessayer plus tard.")
             return [SlotSet("email", None), SlotSet("awaiting_email", False)]
-
-
-class ActionHandleEmailInput(Action):
-    def name(self) -> Text:
-        return "action_handle_email_input"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        # Vérifier si nous attendons un email
-        awaiting_email = tracker.get_slot("awaiting_email")
-        
-        if awaiting_email:
-            # Récupérer le dernier message de l'utilisateur comme email
-            email = tracker.latest_message.get("text", "").strip()
-            
-            # Validation basique de l'email (vous pouvez améliorer cette validation)
-            if "@" in email and "." in email:
-                return [SlotSet("email", email), FollowupAction("action_reset_pgde_password")]
-            else:
-                dispatcher.utter_message(text="L'adresse email semble invalide. Veuillez fournir une adresse email valide.")
-                return []
-        
-        return []
