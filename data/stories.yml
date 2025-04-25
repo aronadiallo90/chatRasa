@@ -83,4 +83,20 @@ stories:
         - matricule: 741000D
     - action: action_retrieve_user_info
 
+# Dans data/stories.yml:
+- story: User asks for PGDE dossier number with separate credentials
+  steps:
+    - intent: ask_pgde_dossier_number
+    - action: utter_ask_pgde_email
+    - intent: provide_pgde_email
+      entities:
+        - email: "utilisateur@example.com"
+    - action: utter_ask_pgde_password
+    - intent: provide_pgde_password
+      entities:
+        - password: "motdepasse123"
+    - action: action_retrieve_pgde_dossier_number
+    - intent: go_back_pgde
+    - action: utter_pgde_menu
+
 

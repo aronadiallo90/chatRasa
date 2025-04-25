@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  rasa:
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - "5005:5005"
+    entrypoint: ["rasa", "run", "-m", "models", "--enable-api", "--cors", "*", "--debug"]
+
+  action-server:
+    image: rasa/rasa-sdk:3.6.2
+    volumes:
+      - ./actions:/app/actions
+    ports:
+      - "5055:5055"
+    command: rasa run actions --debug

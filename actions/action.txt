@@ -36,7 +36,7 @@ try:
 except pyodbc.Error as e:
             print(f"Erreur de connexion à la base de données : {e}")
 mysql_config = {
-    "host": "host.docker.internal",
+    "host": "127.0.0.1",
     "port": 3307,
     "database": "PGDEPGDE",
     "user": "root",
@@ -284,25 +284,72 @@ class ActionHandleEmailInput(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        # Vérifier si nous attendons un email
-        awaiting_email = tracker.get_slot("awaiting_email")
+        user_message = tracker.latest_message.get("text", "").strip()
+        latest_intent = tracker.latest_message.get("intent", {}).get("name")
         
-        if awaiting_email:
-            # Récupérer le dernier message de l'utilisateur comme email
-            email = tracker.latest_message.get("text", "").strip()
-            
-            # Validation basique de l'email (vous pouvez améliorer cette validation)
-            if "@" in email and "." in email:
-                return [SlotSet("email", email), FollowupAction("action_reset_pgde_password")]
-            else:
-                # Message pour email invalide
-                dispatcher.utter_message(text="L'adresse email semble invalide. Veuillez fournir une adresse email valide.")
+        # MySQL connection configuration
+        mysql_config = {
+            'host': '127.0.0.1',
+            'port': 3307,
+            'user': 'root',
+            'password': 'adieadie',
+            'database': 'PGDEPGDE'
+        }
+        
+        # Basic email validation
+        if "@" in user_message and "." in user_message:
+            try:
+                connection = mysql.connector.connect(**mysql_config)
+                cursor = connection.cursor(dictionary=True)
+                
+                cursor.execute("SELECT id, username FROM utilisateur WHERE email = %s", (user_message,))
+                result = cursor.fetchone()
+                
+                cursor.close()
+                connection.close()
+                
+                if result:
+                    if latest_intent == "ask_pgde_dossier_number":
+                        # For dossier number retrieval
+                        dispatcher.utter_message(
+                            text="Veuillez entrer votre mot de passe PGDE pour accéder à votre numéro de dossier.",
+                            buttons=[{"title": "Retour", "payload": "/go_back_pgde"}]
+                        )
+                        return [
+                            SlotSet("email", user_message),
+                            SlotSet("awaiting_email", False),
+                            SlotSet("awaiting_password", True)
+                        ]
+                    else:
+                        # For password reset
+                        return [
+                            SlotSet("email", user_message),
+                            FollowupAction("action_reset_pgde_password")
+                        ]
+                else:
+                    dispatcher.utter_message(
+                        text=f"Aucun compte n'est associé à l'email {user_message}.",
+                        buttons=[{"title": "Retour", "payload": "/go_back_pgde"}]
+                    )
+                    return [SlotSet("email", None), SlotSet("awaiting_email", True)]
+                    
+            except mysql.connector.Error as e:
+                print(f"MySQL Error: {e}")
+                dispatcher.utter_message(
+                    text="Une erreur technique est survenue. Veuillez réessayer plus tard.",
+                    buttons=[{"title": "Retour", "payload": "/go_back_pgde"}]
+                )
                 return [SlotSet("email", None), SlotSet("awaiting_email", True)]
-        
-        return []
+        else:
+            dispatcher.utter_message(
+                text="L'adresse email semble invalide. Veuillez fournir une adresse email valide.",
+                buttons=[{"title": "Retour", "payload": "/go_back_pgde"}]
+            )
+            return [SlotSet("email", None), SlotSet("awaiting_email", True)]
 
 
 class ActionResetPGDEPassword(Action):
+
     def name(self) -> Text:
         return "action_reset_pgde_password"
 
@@ -368,3 +415,78 @@ class ActionResetPGDEPassword(Action):
             print(f"Erreur de connexion MySQL PGDE : {db_error}")
             dispatcher.utter_message(text="Je rencontre un problème technique pour vérifier votre email. Veuillez réessayer plus tard.")
             return [SlotSet("email", None), SlotSet("awaiting_email", False)]
+        
+class ActionRetrievePgdeDossierNumber(Action):
+    def name(self) -> Text:
+        return "action_retrieve_pgde_dossier_number"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        email = tracker.get_slot("email")
+        password = tracker.get_slot("password")
+        
+        if not email or not password:
+            dispatcher.utter_message(text="Informations manquantes. Veuillez recommencer.")
+            return [SlotSet("email", None), SlotSet("password", None), FollowupAction("utter_ask_pgde_email")]
+
+        try:
+            connection = mysql.connector.connect(**mysql_config)
+            cursor = connection.cursor(dictionary=True)
+
+            query = """
+            SELECT id, email, username 
+            FROM utilisateur
+            WHERE email = %s AND password = %s
+            """
+            
+            cursor.execute(query, (email, password))
+            user = cursor.fetchone()
+
+            cursor.close()
+            connection.close()
+
+            if user:
+                response = (
+                    f"**Bonjour {user['username']}!**\n\n"
+                    f"Votre numéro de dossier PGDE est : **{user['id']}**\n\n"
+                    "Veuillez conserver ce numéro pour toutes vos démarches futures."
+                )
+                dispatcher.utter_message(text=response)
+                
+                # Ajouter des boutons de retour
+                dispatcher.utter_message(
+                    text="Que souhaitez-vous faire ?",
+                    buttons=[
+                        {"title": "Retour au menu PGDE", "payload": "/go_back_pgde"},
+                        {"title": "Menu principal", "payload": "/greet"}
+                    ]
+                )
+                
+                return [SlotSet("email", None), SlotSet("password", None)]
+            else:
+                dispatcher.utter_message(text="❌ Identifiants incorrects. Veuillez vérifier votre email et mot de passe.")
+                return [SlotSet("email", None), SlotSet("password", None), FollowupAction("utter_ask_pgde_email")]
+
+        except mysql.connector.Error as e:
+            print(f"Erreur de connexion MySQL : {e}")
+            dispatcher.utter_message(text="Une erreur est survenue. Veuillez réessayer plus tard.")
+            return [SlotSet("email", None), SlotSet("password", None)]
+
+class ActionHandlePasswordInput(Action):
+    def name(self) -> Text:
+        return "action_handle_password_input"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        password = tracker.latest_message.get("text", "").strip()
+        email = tracker.get_slot("email")
+        
+        if password and email:
+            return [SlotSet("password", password), FollowupAction("action_retrieve_pgde_dossier_number")]
+        else:
+            dispatcher.utter_message(text="Une erreur s'est produite. Veuillez recommencer.")
+            return [SlotSet("email", None), SlotSet("password", None), FollowupAction("utter_ask_pgde_email")]

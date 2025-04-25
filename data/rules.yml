@@ -139,3 +139,19 @@ rules:
   steps:
     - intent: provide_matricule
     - action: action_retrieve_user_info
+# Dans data/rules.yml:
+- rule: Demande de numéro de dossier PGDE
+  steps:
+    - intent: ask_pgde_dossier_number
+    - action: utter_ask_pgde_email
+
+- rule: Fournir l'email PGDE
+  steps:
+    - intent: provide_pgde_email
+    - action: utter_ask_pgde_password
+
+- rule: Fournir le mot de passe PGDE
+  steps:
+    - intent: provide_pgde_password
+    - action: action_retrieve_pgde_dossier_number
+

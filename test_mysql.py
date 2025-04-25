@@ -6,7 +6,7 @@ def test_mysql_connection():
         # Connexion à la base de données MySQL
         connection = mysql.connector.connect(
            host='127.0.0.1',
-            port=3306,
+            port=3307,
             user='root',
             password='adieadie',
             database='PGDEPGDE'
@@ -33,5 +33,5 @@ def test_mysql_connection():
 
 if __name__ == "__main__":
     test_mysql_connection()
-# ssh -L 3306:127.0.0.1:3306 adminadie@10.121.220.44 -p 3333
+# ssh  -L 3307:127.0.0.1:3306 adminadie@10.121.220.44 -p 3333
 # mysql -h 127.0.0.1 -P 3306 -u root -p

@@ -180,3 +180,40 @@ nlu:
       - [741000D](matricule)
       - Voici mon matricule : [741000D](matricule)
 
+
+
+  # Dans data/nlu.yml, modifiez pour séparer les entrées:
+  - intent: ask_pgde_dossier_number
+    examples: |
+      - Je veux connaître mon numéro de dossier PGDE
+      - Comment trouver mon numéro de dossier
+      - Quel est mon numéro de dossier PGDE
+      - Je veux récupérer mon ID de dossier
+      - Numéro de dossier PGDE
+      - Retrouver mon ID de dossier
+      - ID dossier PGDE
+
+  - intent: provide_pgde_email
+    examples: |
+      - Mon email est [utilisateur@example.com](email)
+      - [utilisateur@example.com](email)
+      - Voici mon email: [utilisateur@example.com](email)
+      - Email: [utilisateur@example.com](email)
+      
+  - intent: provide_pgde_password
+    examples: |
+      - Mon mot de passe est [motdepasse123](password)
+      - [motdepasse123](password)
+      - Voici mon mot de passe: [motdepasse123](password)
+      - Password: [motdepasse123](password)
+      - Mon mot de passe est [motdepasse123](password)
+      - [adie2024](password)
+      - Mot de passe : [admin@2023](password)
+      - [passPGDE!](password)
+      - [123456](password)
+      - Voici mon mot de passe : [azertyui](password)
+      - Mon mot de passe PGDE est [testpass](password)
+      - 771750849
+      - motdepasse123
+      - voici le mot de passe : 771750849
+      - c’est 771750849

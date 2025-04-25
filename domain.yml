@@ -36,6 +36,9 @@ intents:
   - ask_user_info
   - provide_matricule
   - inform_email  # Add this line
+  - ask_pgde_dossier_number
+  - provide_pgde_email
+  - provide_pgde_password
   
 
 entities:
@@ -76,6 +79,21 @@ slots:
     mappings:
       - type: custom
     initial_value: false
+  password:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
+  awaiting_password:
+    type: bool
+    influence_conversation: true
+    mappings:
+      - type: custom
+  user_id:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: custom
 
 
 
@@ -110,6 +128,8 @@ responses:
           payload: "/ask_pgde_login"
         - title: "Mot de passe oublié"  # Nouveau bouton
           payload: "/ask_pgde_password_reset"
+        - title: "Connaître mon numéro de dossier"  # Nouvelle option
+          payload: "/ask_pgde_dossier_number"  
         # - title: "Documents nécessaires"
         #   payload: "/ask_pgde_documents"
         - title: "Retour au menu principal"
@@ -259,6 +279,25 @@ responses:
           payload: "/greet"
   utter_ask_pgde_password_reset:
     - text: "Pour réinitialiser votre mot de passe sur PGDE, je vais vous aider. Veuillez fournir l'adresse email associée à votre compte."
+
+  
+  utter_ask_pgde_dossier_number:
+    - text: "Pour connaître votre numéro de dossier PGDE, je vais vous demander de vous authentifier."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back_pgde"
+
+  utter_ask_pgde_email:
+    - text: "Veuillez entrer l'email que vous avez utilisé lors de votre inscription sur la plateforme PGDE."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back_pgde"
+
+  utter_ask_pgde_password:
+    - text: "Veuillez entrer votre mot de passe PGDE."
+      buttons:
+        - title: "Retour"
+          payload: "/go_back_pgde"
   
   
   
@@ -286,3 +325,5 @@ actions:
 
   - action_handle_email_input
   - action_reset_pgde_password
+  - action_retrieve_pgde_dossier_number
+  - action_handle_password_input
