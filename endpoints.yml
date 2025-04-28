@@ -10,8 +10,20 @@
 # Server which runs your custom actions.
 # https://rasa.com/docs/rasa/custom-actions
 
-#action_endpoint:
-#  url: "http://localhost:5055/webhook"
+# action_endpoint:
+#   url: "http://localhost:5055/webhook"
+# tracker_store:
+#   type: sql
+#   url: mysql://root:adieadie@host.docker.internal:3307/PGDEPGDE
+
+
+## sans docker 
+action_endpoint:
+  url: "http://action-server:5055/webhook"
+
+# tracker_store:
+#   type: sql
+#   url: mysql+mysqlconnector://root:adieadie@host.docker.internal:3307/PGDEPGDE
 
 # Tracker store which is used to store the conversations.
 # By default the conversations are stored in memory.
@@ -50,8 +62,4 @@ rasa:
 cors:
     origins: ["*"]
     #- "http://localhost:3000"  # Ajoute l'URL de ton frontend ici
-  
 
-
-action_endpoint:
-  url: "http://localhost:5055/webhook"

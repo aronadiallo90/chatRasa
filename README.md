@@ -6,6 +6,7 @@ rasa train
 
 -pour lancer l'api rasa
 rasa run -m models --enable-api --cors "*" --debug
+ssh  -L 3307:127.0.0.1:3306 adminadie@10.121.220.44 -p 3333
 
 
 -pour actier les acrions et permettre une recherche intelligente 

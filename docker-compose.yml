@@ -7,12 +7,35 @@ services:
       - ./:/app
     ports:
       - "5005:5005"
-    entrypoint: ["rasa", "run", "-m", "models", "--enable-api", "--cors", "*", "--debug"]
+    environment:
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=adieadie
+      - MYSQL_DATABASE=PGDEPGDE
+    command: >
+      rasa run -m models --enable-api --cors "*" --debug
+    depends_on:
+      - action-server
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   action-server:
-    image: rasa/rasa-sdk:3.6.2
+    build: 
+      context: .
+      dockerfile: Dockerfile.actions
     volumes:
       - ./actions:/app/actions
+      - ./data:/app/data
     ports:
       - "5055:5055"
-    command: rasa run actions --debug
+    environment:
+      - PYTHONPATH=/app
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_PORT=3307
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=adieadie
+      - MYSQL_DATABASE=PGDEPGDE
+    command: ["start", "--actions", "actions"]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

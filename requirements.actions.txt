@@ -1,0 +1,5 @@
+mysql-connector-python==8.0.32
+sentence-transformers==2.2.2
+pyodbc==4.0.39
+pdfplumber==0.10.3
+faiss-cpu==1.7.4

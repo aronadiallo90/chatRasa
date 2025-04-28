@@ -17,30 +17,34 @@ from typing import Text, Dict, Any, List  # Ensure List is imported
 response_cache = {}
 
 # === Configuration de la connexion à la base de données SQL Server ===
-server = "10.4.116.87,1433"
-database = "referentiel_fudpe_new"
-username = "sa"
-password = "AdieAdie1"
+sql_server_config = {
+    "server": os.getenv("SQL_SERVER_HOST", "10.4.116.87"),
+    "port": os.getenv("SQL_SERVER_PORT", "1433"),
+    "database": os.getenv("SQL_SERVER_DB", "referentiel_fudpe_new"),
+    "username": os.getenv("SQL_SERVER_USER", "sa"),
+    "password": os.getenv("SQL_SERVER_PASSWORD", "AdieAdie1")
+}
 
 try:
             # Connexion à la base de données SQL Server
             conn = pyodbc.connect(
                 f"DRIVER={{ODBC Driver 17 for SQL Server}};"
-                f"SERVER={server};"
-                f"DATABASE={database};"
-                f"UID={username};"
-                f"PWD={password}"
+                f"SERVER={sql_server_config['server']},{sql_server_config['port']};"
+                f"DATABASE={sql_server_config['database']};"
+                f"UID={sql_server_config['username']};"
+                f"PWD={sql_server_config['password']}"
             )
             print("✅ Connexion réussie à la base de données SQL Server !")
             cursor = conn.cursor()
 except pyodbc.Error as e:
             print(f"Erreur de connexion à la base de données : {e}")
+
 mysql_config = {
-    "host": "host.docker.internal",
-    "port": 3307,
-    "database": "PGDEPGDE",
-    "user": "root",
-    "password": "adieadie"
+    "host": os.getenv("MYSQL_HOST", "host.docker.internal"),
+    "port": int(os.getenv("MYSQL_PORT", 3307)),
+    "database": os.getenv("MYSQL_DATABASE", "PGDEPGDE"),
+    "user": os.getenv("MYSQL_USER", "root"),
+    "password": os.getenv("MYSQL_PASSWORD", "adieadie")
 }
 
 DOCUMENT_PATH = "data/knowledge_base/faq.pdf"
