@@ -36,7 +36,7 @@ try:
 except pyodbc.Error as e:
             print(f"Erreur de connexion à la base de données : {e}")
 mysql_config = {
-    "host": "host.docker.internal",
+    "host": "127.0.0.1",
     "port": 3307,
     "database": "PGDEPGDE",
     "user": "root",
@@ -368,3 +368,47 @@ class ActionResetPGDEPassword(Action):
             print(f"Erreur de connexion MySQL PGDE : {db_error}")
             dispatcher.utter_message(text="Je rencontre un problème technique pour vérifier votre email. Veuillez réessayer plus tard.")
             return [SlotSet("email", None), SlotSet("awaiting_email", False)]
+
+class ActionRetrievePgdeDossierNumber(Action):
+    def name(self) -> Text:
+        return "action_retrieve_pgde_dossier_number"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        email = tracker.get_slot("email")
+        password = tracker.get_slot("password")
+
+        if not email or not password:
+            dispatcher.utter_message(text="Veuillez d'abord fournir votre email et votre mot de passe.")
+            return []
+
+        try:
+            # Connexion à la base de données MySQL de PGDE
+            connection = mysql.connector.connect(**mysql_config)
+            cursor = connection.cursor()
+            
+            # NOTE : La vérification du mot de passe en clair n'est pas sécurisée.
+            # Dans un vrai système, il faudrait utiliser des mots de passe hachés.
+            # Aussi, je suppose que les colonnes s'appellent 'numero_dossier' et 'mot_de_passe'
+            # et la table 'utilisateur'. A adapter si les noms sont différents.
+            query = "SELECT id FROM utilisateur WHERE email = %s AND mot_de_passe = %s"
+            cursor.execute(query, (email, password))
+            result = cursor.fetchone()
+            
+            cursor.close()
+            connection.close()
+            
+            if result:
+                dossier_number = result[0]
+                dispatcher.utter_message(text=f"Votre numéro de dossier PGDE est : {dossier_number}")
+            else:
+                dispatcher.utter_message(text="Aucun dossier trouvé pour cet email et ce mot de passe. Veuillez vérifier vos informations.")
+
+        except mysql.connector.Error as db_error:
+            print(f"Erreur de connexion MySQL PGDE : {db_error}")
+            dispatcher.utter_message(text="Je rencontre un problème technique pour vérifier vos informations. Veuillez réessayer plus tard.")
+        
+        # Vider les slots pour des raisons de sécurité
+        return [SlotSet("email", None), SlotSet("password", None)]

@@ -72,7 +72,8 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
+        entity: email
   awaiting_email:
     type: bool
     influence_conversation: true
@@ -83,7 +84,8 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_entity
+        entity: password
   awaiting_password:
     type: bool
     influence_conversation: true

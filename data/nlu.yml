@@ -217,3 +217,10 @@ nlu:
       - motdepasse123
       - voici le mot de passe : 771750849
       - c’est 771750849
+
+  - intent: go_back_pgde
+    examples: |
+      - Retour au menu PGDE
+      - Retour PGDE
+      - Menu PGDE
+      - Revenir au menu PGDE
