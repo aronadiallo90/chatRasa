@@ -1,17 +1,5 @@
 version: "3.1"
 nlu:
-  - intent: ask_document_info
-    examples: |
-      - Quelle est l'utilité de [E-Carrière](service) ?
-      - Quels sont les objectifs de [E-Carrière](service) ?
-      - Que fait [E-Carrière](service) ?  
-      - Peux-tu me donner des infos sur [E-Carrière](service) ?
-      - Qu'est-ce que [E-Carrière](service) ?
-      - À quoi sert [E-Carrière](service) ?
-      - Quelle est la mission de [E-Carrière](service) ?
-      - Comment utiliser la plateforme [E-Carrière](service) ?
-      - Comment les [étudiants](user_type) peuvent s’enregistrer ?
-
   - intent: greet
     examples: |
       - Bonjour
@@ -29,7 +17,6 @@ nlu:
       - Jërëjëf
       - retour
 
-      
   - intent: choose_platform
     examples: |
       - Je veux voir [E-Carrière](platform)
@@ -39,91 +26,43 @@ nlu:
 
   - intent: E_carriere
     examples: |
-      - Comment puis-je vous aider ?
-      - J'ai besoin d'aide
-
-  - intent: ask_hours
-    examples: |
-      - Quels sont vos horaires sur [E-Carrière](service) ?
-      - À quelle heure commencez-vous ?
+      - Je veux en savoir plus sur [E-Carrière](service)
+      - Parle-moi de [E-Carrière](service)
+      - J’ai des questions sur [E-Carrière](service)
+      - Que propose [E-Carrière](service) ?
+      - Informations sur [E-Carrière](service)(service)
+      - [E-Carrière](service) qu’est-ce que c’est ?
+      - [E-Carrière](service) c’est quoi ?
+      - [E-Carrière](service) de quoi s’agit-il ?
 
   - intent: ask_account_creation
     examples: |
       - Comment activer son  compte sur [E-Carrière](service) ?
       - Quels documents sont nécessaires pour l'activation sur [E-Carrière](service) ?
 
-  - intent: ask_acte_followup
-    examples: |
-      - Comment suivre l’évolution de mes actes administratifs sur [E-Carrière](service) ?
-      - Comment consulter mes documents sur [E-Carrière](service) ?
-
-  - intent: ask_claim_submission
-    examples: |
-      - Comment soumettre une réclamation sur [E-Carrière](service) ?
-      - Je veux faire une réclamation, comment procéder sur [E-Carrière](service) ?
-
   - intent: ask_login
     examples: |
       - Comment me connecter à mon compte sur [E-Carrière](service) ?
       - Je ne trouve pas la page de connexion sur [E-Carrière](service) ?
+      - J’ai des problèmes de connexion sur [E-Carrière](service), que faire ?
+      - Comment accéder à mon compte [E-Carrière](service) ?
+  - intent: go_back_ecarriere
+    examples: |
+      - Retour à [E-Carrière](service)
+      - Retour à la page d'accueil [E-Carrière](service)
+      - Revenir au menu [E-Carrière](service)
+      - Retourner à [E-Carrière](service)
 
   - intent: ask_password_reset
     examples: |
       - J’ai oublié mon mot de passe, comment le réinitialiser sur [E-Carrière](service) ?
       - J’ai perdu mes accès, que faire sur [E-Carrière](service) ?
   
-  - intent: ask_platform_features
-    examples: |
-      - Quelles sont les fonctionnalités de la plateforme [E-Carrière](service) ?
-      - Quels services sont proposés pour [un étudiant](user_type) ?
-
-  - intent: ask_tutorial_link
-    examples: |
-      - Donne-moi un lien vers le tutoriel d’inscription sur [E-Carrière](service).
-      - Y a-t-il une vidéo explicative pour [E-Carrière](service) ?
-
-  - intent: ask_public_service_application
-    examples: |
-      - Comment postuler à la fonction publique sur [E-Carrière](service) ?
-      - Où déposer ma candidature pour [la fonction publique](service) ?
-
-  - intent: ask_public_service_steps
-    examples: |
-      - Quelles sont les étapes du processus de candidature pour [la fonction publique](service) ?
-      - Quelles démarches faut-il faire pour postuler ?
-
-  - intent: ask_public_service_documents
-    examples: |
-      - Quels sont les documents nécessaires pour postuler à [la fonction publique](service) ?
-      - De quoi ai-je besoin pour postuler à [la fonction publique](service) ?
-
-  - intent: ask_public_service_submission
-    examples: |
-      - Comment soumettre ma candidature à [la fonction publique](service) ?
-      - Que faire après avoir rempli ma candidature ?
-
-  - intent: ask_public_service_confirmation
-    examples: |
-      - Vais-je recevoir une confirmation de ma candidature pour [la fonction publique](service) ?
-      - Comment savoir si ma candidature a bien été reçue ?
-
   - intent: fallback
     examples: |
       - Je ne comprends pas
       - Je ne sais pas
 
-  - intent: PGDE  # Added intent
-    examples: |
-      - Je veux voir PGDE
-      - Montre-moi PGDE
-
-  - intent: go_back  # Added intent
-    examples: |
-      - Retour
-      - Revenir en arrière
-
-
-# PGDE
   - intent: ask_pgde_account_creation
     examples: |
       - Comment créer un compte sur [PGDE](platform) ?
@@ -140,13 +79,6 @@ nlu:
       - J’ai des problèmes de connexion sur [PGDE](platform), que faire ?
       - [PGDE](platform) se connecter
 
-  - intent: ask_pgde_documents
-    examples: |
-      - Quels documents sont requis pour s’inscrire sur [PGDE](platform) ?
-      - De quels papiers ai-je besoin pour m’inscrire sur [PGDE](platform) ?
-      - Quels sont les justificatifs demandés pour [PGDE](platform) ?
-      - Faut-il une carte d’identité pour [PGDE](platform) ?
-  # PGDE
   - intent: ask_pgde_password_reset
     examples: |
       - J'ai oublié mon mot de passe PGDE
@@ -155,68 +87,6 @@ nlu:
       - Mot de passe oublié [PGDE](platform)
       - Reset password [PGDE](platform)
       - Récupérer mot de passe [PGDE](platform)
-  - intent: inform_email
-    examples: |
-      - utilisateur@example.com
-      - test@domain.sn
-      - aronadiallo90@gmail.com
-      
- 
-# GIRAFE 
-  - intent: ask_user_info
-    examples: |
-      - Je veux voir mes informations
-      - Montre-moi mes actes
-      - Quels sont mes projets ?
-      - Je veux voir mes informations
-      - Montre-moi mes actes
-      - Quels sont mes projets ?
-      - Quels sont mes actes ?
-      - Quels sont mes projets en cours ?
-      - Quels sont mes actes administratifs ?
-  - intent: provide_matricule
-    examples: |
-      - Mon matricule est [741000D](matricule)
-      - [741000D](matricule)
-      - Voici mon matricule : [741000D](matricule)
-
-
-
-  # Dans data/nlu.yml, modifiez pour séparer les entrées:
-  - intent: ask_pgde_dossier_number
-    examples: |
-      - Je veux connaître mon numéro de dossier PGDE
-      - Comment trouver mon numéro de dossier
-      - Quel est mon numéro de dossier PGDE
-      - Je veux récupérer mon ID de dossier
-      - Numéro de dossier PGDE
-      - Retrouver mon ID de dossier
-      - ID dossier PGDE
-
-  - intent: provide_pgde_email
-    examples: |
-      - Mon email est [utilisateur@example.com](email)
-      - [utilisateur@example.com](email)
-      - Voici mon email: [utilisateur@example.com](email)
-      - Email: [utilisateur@example.com](email)
-      
-  - intent: provide_pgde_password
-    examples: |
-      - Mon mot de passe est [motdepasse123](password)
-      - [motdepasse123](password)
-      - Voici mon mot de passe: [motdepasse123](password)
-      - Password: [motdepasse123](password)
-      - Mon mot de passe est [motdepasse123](password)
-      - [adie2024](password)
-      - Mot de passe : [admin@2023](password)
-      - [passPGDE!](password)
-      - [123456](password)
-      - Voici mon mot de passe : [azertyui](password)
-      - Mon mot de passe PGDE est [testpass](password)
-      - 771750849
-      - motdepasse123
-      - voici le mot de passe : 771750849
-      - c’est 771750849
 
   - intent: go_back_pgde
     examples: |
@@ -224,3 +94,92 @@ nlu:
       - Retour PGDE
       - Menu PGDE
       - Revenir au menu PGDE
+
+  - intent: go_back_greet_with_name
+    examples: |
+      - Retour au menu principal
+      - Retour à l'accueil
+      - Revenir au menu principal
+      - Retour accueil
+      - Accueil
+      - Retour au menu principal avec mon nom
+      - Je veux revenir au menu principal avec mon nom
+
+
+  - intent: provide_name
+    examples: |
+      - Je m'appelle [Pape Waly](nom)
+      - Je m'appelle [Ma Daguen](nom)
+      - Je m'appelle [Arona DIA](nom)
+      - Je m'appelle [Jean Paul Ndiaye](nom)
+      - Je m'appelle [El Hadji Fall](nom)
+      - Je m'appelle [Cheikh Tidiane Diop](nom)
+      - Je m'appelle [Mouhamed Aliou Sow](nom)
+      - Je m'appelle [Fatou Kiné Mbaye](nom)
+      - Je m'appelle [Serigne Mbacké Ndao](nom)
+      - Je m'appelle [Marième Diallo](nom)
+      - Mon nom est [Pape Waly](nom)
+      - Mon nom est [Ma Daguen](nom)
+      - Mon nom est [Arona DIA](nom)
+      - Mon nom est [Jean Paul Ndiaye](nom)
+      - Mon nom est [El Hadji Fall](nom)
+      - Mon nom est [Cheikh Tidiane Diop](nom)
+      - Mon nom est [Fatou Kiné Mbaye](nom)
+      - Mon nom est [Serigne Mbacké Ndao](nom)
+      - Mon nom est [Marième Diallo](nom)
+      - [Pape Waly](nom)
+      - [Ma Daguen](nom)
+      - [Arona DIA](nom)
+      - [DIA](nom)
+      - [Sy](nom)
+      - [la](nom)
+      - [Sow](nom)
+      - [Pa](nom)
+      - [Jean](nom)
+      - [Salif](nom)
+      - [Nd](nom)
+      - [Ndiaye Fe](nom)
+      - [El](nom)
+      - [Se we](nom)
+      - [Jean Paul Ndiaye](nom)
+      - [El Hadji Fall](nom)
+      - [Cheikh Tidiane Diop](nom)
+      - [Fatou Kiné Mbaye](nom)
+      - [Serigne Mbacké Ndao](nom)
+      - [Marième Diallo](nom)
+      - Moi c’est [Pape Waly](nom)
+      - Moi c’est [Ma Daguen](nom)
+      - On m’appelle [Cheikh Tidiane Diop](nom)
+      - Je suis [Fatou Kiné Mbaye](nom)
+      - Mon blaze c'est [Arona DIA](nom)
+      - Appelle-moi [Jean Paul Ndiaye](nom)
+      - Je m'appelle pas [Pape Waly](nom)
+      - Je crois que je m'appelle [El Hadji Fall](nom)
+      - Peut-être [Fatou Kiné Mbaye](nom)
+      - Mon nom est euh... [Serigne Mbacké Ndao](nom)
+      - Je suis le grand [Sow](nom)
+      - Moi c’est [N'importe quoi](nom)
+      - Je m'appelle [Pape Waly](nom)
+      - Mon nom est [Arona DIA](nom)
+      - Je suis [Fatou Kiné Mbaye](nom)
+      - On m'appelle [Cheikh Tidiane Diop](nom)
+      - Moi c'est [Marième Diallo](nom)
+      - Appelle-moi [El Hadji](nom)
+      - Mon prénom c'est [Ma Daguen](nom)
+      - Mon nom de famille est [Sow](nom)
+      - [Jean Paul Ndiaye](nom)
+      - C'est [Serigne Mbacké Ndao](nom)
+      - Je me nomme [Astou Ndiaye](nom)
+      - Vous pouvez m'appeler [Jean](nom)
+      - Mon nom, c'est [Aïssatou Diallo](nom)
+      - Je suis [Jean-Pierre](nom)
+      - Mon blaze c'est [Arona](nom)
+      - Il faut m'appeler [Fatou](nom)
+      - Mon nom est [Ousmane Sonko](nom)
+
+  - intent: go_back_autres
+    examples: |
+      - Retour aux autres plateformes
+      - Revenir aux autres plateformes
+      - Autres plateformes
+      - Retour autres plateformes

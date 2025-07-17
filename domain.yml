@@ -1,53 +1,24 @@
 version: "3.1"
 
 intents:
-  - greet # Au demarrage ou retour au menu principal
-  - E_carriere # concernant E-carriere
-  - ask_hours
-  - ask_account_creation    
+  - greet
+  - E_carriere
+  - ask_account_creation
   - ask_login
-  - ask_tutorial_link
-  - ask_public_service_application
-  - ask_public_service_steps
-  - ask_public_service_documents
-  - ask_public_service_submission
-  - ask_public_service_confirmation
-  - fallback  # si on ne connait pas la reponse
-  - go_back_ecarriere  # Ajout du nouvel intent
-  - go_back_pgde  # Ajout du nouvel intent
-  - go_back_autres  # Ajout du nouvel intent
-  - ask_document_info
+  - fallback
+  - go_back_pgde
+  - choose_platform
   - ask_password_reset
-  - ask_claim_submission
-  - ask_acte_followup
-  - ask_platform_features
-  - choose_platform  # Ensure this intent is included
-  - PGDE # concernant PGDE
-  - ask_pgde_account_creation 
+  - ask_pgde_account_creation
   - ask_pgde_login
-  - ask_pgde_documents
-  - ask_pgde_features
   - ask_pgde_password_reset
-  - ask_pgde_claim_submission
-  - ask_pgde_acte_followup
-  - ask_pgde_hours
-  - no_plateform_info
-# interaction base de donnes girafe
-  - ask_user_info
-  - provide_matricule
-  - inform_email  # Add this line
-  - ask_pgde_dossier_number
-  - provide_pgde_email
-  - provide_pgde_password
-  
-
+  - provide_name
+  - go_back_greet_with_name
+  - go_back_ecarriere
+  - go_back_autres
 entities:
-  - service
-  - platform  # Ensure this entity is included
-  - action
-# interaction base de donnes girafe
-  - matricule
-
+  - nom
+  - platform
 slots:
   platform:
     type: text
@@ -55,277 +26,82 @@ slots:
     mappings:
       - type: from_entity
         entity: platform
-  action:
+  nom:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
-        entity: action
-  matricule:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_entity
-        entity: matricule
-  # Ajouter ces nouveaux slots
-  email:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_entity
-        entity: email
-  awaiting_email:
-    type: bool
-    influence_conversation: true
-    mappings:
-      - type: custom
-    initial_value: false
-  password:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: from_entity
-        entity: password
-  awaiting_password:
-    type: bool
-    influence_conversation: true
-    mappings:
-      - type: custom
-  user_id:
-    type: text
-    influence_conversation: true
-    mappings:
-      - type: custom
-
-
-
+        entity: nom
+      # - type: from_text
+      #   conditions:
+      #     - active_loop: null
 responses:
-  utter_no_info:
-    - text: "Désolé, je n’ai pas trouvé d’information à ce sujet."
-      buttons:
-        - title: "Retour"
-          payload: "/greet"
-
-  utter_ask_public_service_confirmation:
-    - text: "Une fois votre candidature soumise, vous recevrez une confirmation par email."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
-  # utter_greet:
-  #   - text: "Bienvenue ! Je suis Amath, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public. En quoi puis-je vous aider aujourd'hui ?"
-  #     buttons:
-  #       - title: "E-CARRIERE"
-  #         payload: "/choose_platform{\"platform\": \"E-Carrière\"}"
-  #       - title: "Demande d'emploi (PGDE)"
-  #         payload: "/choose_platform{\"platform\": \"PGDE\"}"
-  #       - title: "GIRAFE"
-  #         payload: "/choose_platform{\"platform\": \"GIRAFE\"}"
   utter_greet:
-    - text: "Bienvenue ! Je suis Amath, le chatbot du Ministère de la Fonction Publique et de la Réforme du Service Public,que souhaitez-vous savoir sur la Plateforme de Gestion des Demandes d'Emploi 💼**(PGDE)** ? "
+    - text: "Bienvenue ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\n\n Dalal ak Jàmm 😊 !\n\n Pour commencer, puis-je connaître votre nom, s’il vous plaît ?"
+  utter_greet_with_name:
+    - text: "Bonjour {nom}.\n\n En quoi puis-je vous aider aujourd'hui ?"
       buttons:
-        - title: "Créer un compte"
-          payload: "/ask_pgde_account_creation"
-        - title: "Se connecter"
-          payload: "/ask_pgde_login"
-        - title: "Mot de passe oublié"  # Nouveau bouton
-          payload: "/ask_pgde_password_reset"
-        - title: "Connaître mon numéro de dossier"  # Nouvelle option
-          payload: "/ask_pgde_dossier_number"  
-        # - title: "Documents nécessaires"
-        #   payload: "/ask_pgde_documents"
-        - title: "Retour au menu principal"
-          payload: "/greet"
-        
-
+        - title: "E-CARRIERE"
+          payload: '/choose_platform{"platform": "E-Carrière"}'
+        - title: "Demande d'emploi (PGDE)"
+          payload: '/choose_platform{"platform": "PGDE"}'
   utter_E_carriere:
-    - text: " Que souhaitez-vous savoir dans **E-Carrière** ?"
+    - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique. Comment puis-je vous assister aujourd’hui ?"
       buttons:
-        # - title: "Voir les fonctionnalités"
-        #   payload: "/ask_platform_features"
         - title: "Activer son compte"
           payload: "/ask_account_creation"
         - title: "Je n'arrive pas à me connecter"
           payload: "/ask_login"
-        # - title: "Tutoriel"
-        #   payload: "/ask_tutorial_link"
-        # - title: "Réinitialiser mot de passe"
-        #   payload: "/ask_password_reset"
-        # - title: "Suivi des actes administratifs"
-        #   payload: "/ask_acte_followup"
-        # - title: "Déposer une réclamation"
-        #   payload: "/ask_claim_submission"
-        - title: "Retour au menu principal"
-          payload: "/greet"
-
-  utter_ask_hours:
-    - text: "Nos horaires sont du lundi au vendredi de 9h à 16h."
-      buttons:
         - title: "Retour"
-          payload: "/go_back_ecarriere"
-
+          payload: "/go_back_greet_with_name"
   utter_ask_account_creation:
-    - text: "Pour vous **activer** son compte :\n\n1️⃣ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n2️⃣ **Remplissez** les informations demandées avec attention :\n\n3️⃣ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n4️⃣ Votre **Nom** doit être en MAJUSCULES.\n\n5️⃣ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n6️⃣ Suivez ensuite suiver les instructions pour finaliser l’activation de votre compte."
+    - text: "Pour vous **activer** son compte :\n\n⭐ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n⭐ **Remplissez** les informations demandées avec attention :\n\n⭐ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n⭐ Votre **Nom** doit être en MAJUSCULES.\n\n⭐ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n⭐ Suivez ensuite suiver les instructions pour finaliser l’activation de votre compte."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
-
   utter_ask_login:
-    - text: "Pour vous **connecter** à E-Carrière:\n\n1️⃣ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)** \n\n2️⃣ **Cliquez** sur 'Connexion'.\n\n3️⃣ **Entrez vos identifiants** (Matricule et Mot de passe).\n\n4️⃣ Cliquez sur **'Se connecter'** pour accéder à votre espace personnel."
+    - text: "Pour vous **connecter** à E-Carrière:\n\n⭐ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)** \n\n⭐ **Cliquez** sur 'Connexion'.\n\n⭐ **Entrez vos identifiants** (Matricule et Mot de passe).\n\n⭐ Cliquez sur **'Se connecter'** pour accéder à votre espace personnel."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
-
-  utter_ask_tutorial_link:
-    - text: "**Voici le tutoriel :** [clic](https://www.youtube.com/watch?v=CDsj6Kbgblw)"
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
-  utter_ask_public_service_application:
-    - text: "Pour postuler à la fonction publique, suivez ces étapes :"
-      buttons:
-        - title: "Voir les étapes"
-          payload: "/ask_public_service_steps"
-        - title: "Documents requis"
-          payload: "/ask_public_service_documents"
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
-  utter_ask_public_service_steps:
-    - text: "Voici les étapes :\n1. **Créer un compte**\n2. **Compléter les infos**\n3. **Sélectionner un poste**\n4. **Ajouter les documents**\n5. **Soumettre la candidature**."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
-  utter_ask_public_service_documents:
-    - text: "Documents nécessaires :\n- **Carte d'identité**\n- **CV**\n- **Lettre de motivation**\n- **Diplômes**\n- **Autres pièces demandées**."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
-  utter_ask_public_service_submission:
-    - text: "Pour soumettre votre candidature, veuillez suivre les instructions sur notre portail."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
   utter_ask_password_reset:
     - text: "1. **Se rendre** sur la page de connexion.\n2. **Cliquer** sur \"**Mot de passe oublié ?**\".\n3. **Saisir** son adresse email associée à son compte.\n4.Vous allez **Recevoir** un email et un message whatsapp contenant un **lien de réinitialisation**.\n5. **Cliquer** sur le lien reçu, **saisir un nouveau mot de passe**, et **confirmer.**\n✅Une fois réinitialisé, l’agent pourra se connecter avec son nouveau mot de passe."
       buttons:
         - title: "Retour"
-          payload: "/go_back_ecarriere" 
-
-  utter_ask_claim_submission:
-    - text: "Pour **soumettre** une **réclamation**, **connectez-vous** à E-Carrière, allez dans **'Dépôt et suivi des réclamations'**, **remplissez** le formulaire et **téléchargez** les **pièces justificatives**."
-      buttons:
-        - title: "Retour"
           payload: "/go_back_ecarriere"
-
-  utter_ask_acte_followup:
-    - text: "Pour **suivre** l’évolution de vos actes administratifs, **connectez-vous** à E-Carrière et **consultez** la section **'Mes Projets d’Actes',** puis suivre les instructions"
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
-  utter_ask_platform_features:
-    - text: " **E-Carrière** vous permet de : \n**Suivre** l’évolution de vos actes administratifs, \n**Télécharger** vos documents, \n**Soumettre** des réclamations \nEt **modifier** vos informations personnelles."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_ecarriere"
-
   utter_fallback:
     - text: "Je suis désolé, je ne connais pas la réponse à cette question."
       buttons:
         - title: "Retour"
-          payload: "/greet"
-
-  utter_ask_public_service_confirmation_2:
-    - text: "Êtes-vous sûr de vouloir soumettre votre candidature à la fonction publique ?"
+          payload: "/go_back_greet_with_name"
+  utter_pgde_menu:
+    - text: "Vous souhaitez en savoir plus sur la **PGDE** 💼, la plateforme de gestion des demandes d’emploi à la fonction publique. En quoi puis-je vous aider ?"
       buttons:
-        - title: "Oui"
-          payload: "/ask_public_service_submission"
-        - title: "Non"
-          payload: "/ask_public_service_application"
-  # concernant PGDE
+        - title: "Je veux m'inscrire"
+          payload: "/ask_pgde_account_creation"
+        - title: "Se connecter"
+          payload: "/ask_pgde_login"
+        - title: "Mot de passe oublié?"
+          payload: "/ask_pgde_password_reset"
+        - title: "Retour"
+          payload: "/go_back_greet_with_name"
+
+
   utter_ask_pgde_account_creation:
-    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur **Créer un compte**.\n\n3️⃣ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
+    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n⭐ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n⭐ Cliquez sur **Créer un compte**.\n\n⭐ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n⭐ Validez votre inscription via le mail de confirmation."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
 
   utter_ask_pgde_login:
-    - text: "Pour vous **connecter** à **PGDE** :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**.\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
+    - text: "Pour vous **connecter** à **PGDE** :\n\n⭐ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n⭐ Saisissez votre **email** et votre **mot de passe**.\n\n⭐ Cliquez sur **'Se connecter'**."
       buttons:                                                                                          
         - title: "Retour"
           payload: "/go_back_pgde"
-               
-  utter_ask_pgde_documents:
-    - text: "Les **documents nécessaires** pour s’inscrire sur PGDE sont :\n- Une **pièce d'identité** valide.\n- Un **CV** mis à jour.**\n- **Une lettre de motivation** (facultatif).\n- Vos **diplômes** et **certificats** scannés.**"
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_pgde"
-
-  utter_pgde_menu:
-    - text: "Que souhaitez-vous savoir sur la Plateforme de Gestion des Demandes d'Emploi 💼**(PGDE)** ? "
-      buttons:
-        - title: "Créer un compte"
-          payload: "/ask_pgde_account_creation"
-        - title: "Se connecter"
-          payload: "/ask_pgde_login"
-        - title: "Mot de passe oublié"  # Nouveau bouton
-          payload: "/ask_pgde_password_reset"
-        # - title: "Documents nécessaires"
-        #   payload: "/ask_pgde_documents"
-        - title: "Retour au menu principal"
-          payload: "/greet"
   utter_ask_pgde_password_reset:
-    - text: "Pour réinitialiser votre mot de passe sur PGDE, je vais vous aider. Veuillez fournir l'adresse email associée à votre compte."
-
-  
-  utter_ask_pgde_dossier_number:
-    - text: "Pour connaître votre numéro de dossier PGDE, je vais vous demander de vous authentifier."
-      buttons:
+    - text: "Vous pouvez utiliser **[ce lien👆](https://emploi-fpublique.sec.gouv.sn/resetting/request)** pour réinitialiser votre mot de passe.\nEn cas de problèmes ou de difficultés, veuillez nous contacter à l'adresse **emploi@fonctionpublique.gouv.sn** en indiquant **Mot de passe oublié** comme objet du message."
+      buttons:                                                                                          
         - title: "Retour"
-          payload: "/go_back_pgde"
-
-  utter_ask_pgde_email:
-    - text: "Veuillez entrer l'email que vous avez utilisé lors de votre inscription sur la plateforme PGDE."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_pgde"
-
-  utter_ask_pgde_password:
-    - text: "Veuillez entrer votre mot de passe PGDE."
-      buttons:
-        - title: "Retour"
-          payload: "/go_back_pgde"
-  
-  
-  
-  
-  
-  
-  
-  utter_no_plateform_info:
-    - text: "Cette plateforme n'est pas encore disponible."
-      buttons:
-        - title: "Retour"
-          payload: "/greet"
-  utter_ask_matricule:
-    - text: "Veuillez entrer votre matricule."
-  utter_ask_no_info:
-    - text: "Desolé , j'ai pas trouvé d'information."
-    
+          payload: "/go_back_pgde" 
 actions:
-  - action_E_carriere
-  - action_test
-  - action_retrieve_answer
-  - action_redirect_platform  # Ensure this action is included
-  # interaction base de donnes girafe
-  - action_retrieve_user_info
-
-  - action_handle_email_input
-  - action_reset_pgde_password
-  - action_retrieve_pgde_dossier_number
-  - action_handle_password_input
+  - action_redirect_platform

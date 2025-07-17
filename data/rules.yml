@@ -7,90 +7,25 @@ rules:
     - intent: greet
     - action: utter_greet
 
-- rule: Répondre à la demande d'aide
+- rule: Répondre à la demande d'aide E carriere
   steps:
     - intent: E_carriere
     - action: utter_E_carriere
-
-- rule: Répondre à la question sur le suivi des actes administratifs
-  steps:
-    - intent: ask_acte_followup
-    - action: utter_ask_acte_followup
-
-- rule: Répondre à la soumission d’une réclamation
-  steps:
-    - intent: ask_claim_submission
-    - action: utter_ask_claim_submission
-
-- rule: Répondre à la question des horaires
-  steps:
-    - intent: ask_hours
-    - action: utter_ask_hours
 
 - rule: Expliquer la création de compte
   steps:
     - intent: ask_account_creation
     - action: utter_ask_account_creation
 
-- rule: Expliquer la connexion
-  steps:
+- rule: Expliquer la connexion à E-Carrière
+  steps: 
     - intent: ask_login
     - action: utter_ask_login
-
-- rule: Répondre à la réinitialisation de mot de passe
-  steps:
-    - intent: ask_password_reset
-    - action: utter_ask_password_reset
-
-- rule: Répondre aux questions sur les fonctionnalités de la plateforme
-  steps:
-    - intent: ask_platform_features
-    - action: utter_ask_platform_features
-
-- rule: Donner le lien du tutoriel
-  steps:
-    - intent: ask_tutorial_link
-    - action: utter_ask_tutorial_link
-
-- rule: Décrire l'inscription à la fonction publique
-  steps:
-    - intent: ask_public_service_application
-    - action: utter_ask_public_service_application
-
-- rule: Décrire les étapes d'inscription
-  steps:
-    - intent: ask_public_service_steps
-    - action: utter_ask_public_service_steps
-
-- rule: Lister les documents nécessaires
-  steps:
-    - intent: ask_public_service_documents
-    - action: utter_ask_public_service_documents
-
-- rule: Expliquer la soumission du dossier
-  steps:
-    - intent: ask_public_service_submission
-    - action: utter_ask_public_service_submission
-
-- rule: Expliquer la confirmation de candidature
-  steps:
-    - intent: ask_public_service_confirmation
-    - action: utter_ask_public_service_confirmation
 
 - rule: Gérer une réponse inconnue
   steps:
     - intent: fallback
     - action: utter_fallback
-
-- rule: Répondre avec le document via LLaMA
-  steps:
-    - intent: ask_document_info
-    - action: action_retrieve_answer
-
-- rule: Rediriger `nlu_fallback` vers `action_retrieve_answer`
-  steps:
-    - intent: nlu_fallback
-    - action: action_retrieve_answer
 
 - rule: Gérer le retour utilisateur vers E-Carrière
   steps:
@@ -105,53 +40,22 @@ rules:
 - rule: Gérer le retour utilisateur vers Autres plateformes
   steps:
     - intent: go_back_autres
-    - action: utter_greet
+    - action: utter_greet_with_name
 
 - rule: Rediriger vers la plateforme choisie
   steps:
     - intent: choose_platform
     - action: action_redirect_platform
 
-
-# PGDE
-- rule: Gérer la demande de réinitialisation du mot de passe PGDE
+- rule: Retourner au menu principal avec le nom de l'utilisateur
   steps:
-    - intent: ask_pgde_password_reset
-    - action: utter_ask_pgde_password_reset
-    - action: action_reset_pgde_password
+    - intent: go_back_greet_with_name
+    - action: utter_greet_with_name
 
-- rule: Gérer l'entrée d'email pour la réinitialisation
+- rule: Saluer l'utilisateur avec le nom saisi
   steps:
-    - action: action_reset_pgde_password
+    - intent: provide_name
     - slot_was_set:
-      - awaiting_email: true
-    - intent: nlu_fallback  # Utiliser nlu_fallback pour capturer tout texte
-    - action: action_handle_email_input
-
-# GIRAFE
-
-- rule: Ask for matricule
-  steps:
-    - intent: ask_user_info
-    - action: utter_ask_matricule
-
-- rule: Provide user information
-  steps:
-    - intent: provide_matricule
-    - action: action_retrieve_user_info
-# Dans data/rules.yml:
-- rule: Demande de numéro de dossier PGDE
-  steps:
-    - intent: ask_pgde_dossier_number
-    - action: utter_ask_pgde_email
-
-- rule: Fournir l'email PGDE
-  steps:
-    - intent: provide_pgde_email
-    - action: utter_ask_pgde_password
-
-- rule: Fournir le mot de passe PGDE
-  steps:
-    - intent: provide_pgde_password
-    - action: action_retrieve_pgde_dossier_number
+        - nom: 
+    - action: utter_greet_with_name
 
