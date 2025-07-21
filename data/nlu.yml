@@ -24,69 +24,43 @@ nlu:
       - Montre-moi [PGDE](platform)
       - J’aimerais voir [PGDE](platform)
 
-  - intent: E_carriere
-    examples: |
-      - Je veux en savoir plus sur [E-Carrière](service)
-      - Parle-moi de [E-Carrière](service)
-      - J’ai des questions sur [E-Carrière](service)
-      - Que propose [E-Carrière](service) ?
-      - Informations sur [E-Carrière](service)(service)
-      - [E-Carrière](service) qu’est-ce que c’est ?
-      - [E-Carrière](service) c’est quoi ?
-      - [E-Carrière](service) de quoi s’agit-il ?
+  
 
   - intent: ask_account_creation
     examples: |
-      - Comment activer son  compte sur [E-Carrière](service) ?
+      - Comment activer son compte sur [E-Carrière](service) ?
       - Quels documents sont nécessaires pour l'activation sur [E-Carrière](service) ?
-
-  - intent: ask_login
-    examples: |
-      - Comment me connecter à mon compte sur [E-Carrière](service) ?
-      - Je ne trouve pas la page de connexion sur [E-Carrière](service) ?
-      - J’ai des problèmes de connexion sur [E-Carrière](service), que faire ?
-      - Comment accéder à mon compte [E-Carrière](service) ?
-  - intent: go_back_ecarriere
-    examples: |
-      - Retour à [E-Carrière](service)
-      - Retour à la page d'accueil [E-Carrière](service)
-      - Revenir au menu [E-Carrière](service)
-      - Retourner à [E-Carrière](service)
-
-  - intent: ask_password_reset
-    examples: |
-      - J’ai oublié mon mot de passe, comment le réinitialiser sur [E-Carrière](service) ?
-      - J’ai perdu mes accès, que faire sur [E-Carrière](service) ?
-  
-  - intent: fallback
-    examples: |
-      - Je ne comprends pas
-      - Je ne sais pas
-
-  - intent: ask_pgde_account_creation
-    examples: |
       - Comment créer un compte sur [PGDE](platform) ?
       - Quels sont les documents nécessaires pour l'inscription sur [PGDE](platform) ?
       - Quelle est la procédure d’inscription sur [PGDE](platform) ?
       - Où créer un compte pour [PGDE](platform) ?
       - [PGDE](platform) créer un compte
 
-  - intent: ask_pgde_login
+  - intent: ask_login
     examples: |
+      - Comment me connecter à mon compte sur [E-Carrière](service) ?
+      - Je ne trouve pas la page de connexion sur [E-Carrière](service) ?
       - Comment me connecter à mon compte sur [PGDE](platform) ?
       - Où puis-je me connecter à [PGDE](platform) ?
       - Je ne trouve pas la page de connexion sur [PGDE](platform).
       - J’ai des problèmes de connexion sur [PGDE](platform), que faire ?
       - [PGDE](platform) se connecter
 
-  - intent: ask_pgde_password_reset
+  - intent: ask_password_reset
     examples: |
+      - J’ai oublié mon mot de passe, comment le réinitialiser sur [E-Carrière](service) ?
+      - J’ai perdu mes accès, que faire sur [E-Carrière](service) ?
       - J'ai oublié mon mot de passe PGDE
       - Comment réinitialiser mon mot de passe sur [PGDE](platform) ?
       - Je n'arrive pas à me connecter à [PGDE](platform), j'ai perdu mon mot de passe
       - Mot de passe oublié [PGDE](platform)
       - Reset password [PGDE](platform)
       - Récupérer mot de passe [PGDE](platform)
+  
+  - intent: fallback
+    examples: |
+      - Je ne comprends pas
+      - Je ne sais pas
 
   - intent: go_back_pgde
     examples: |
@@ -132,50 +106,33 @@ nlu:
       - [Arona DIA](nom)
       - [DIA](nom)
       - [Sy](nom)
-      - [la](nom)
-      - [Sow](nom)
-      - [Pa](nom)
-      - [Jean](nom)
+      - [Sal](nom)
       - [Salif](nom)
+      - [Pa](nom)
       - [Nd](nom)
-      - [Ndiaye Fe](nom)
+      - [Sow](nom)
+      - [Jean](nom)
       - [El](nom)
-      - [Se we](nom)
-      - [Jean Paul Ndiaye](nom)
-      - [El Hadji Fall](nom)
-      - [Cheikh Tidiane Diop](nom)
-      - [Fatou Kiné Mbaye](nom)
-      - [Serigne Mbacké Ndao](nom)
-      - [Marième Diallo](nom)
-      - Moi c’est [Pape Waly](nom)
-      - Moi c’est [Ma Daguen](nom)
-      - On m’appelle [Cheikh Tidiane Diop](nom)
-      - Je suis [Fatou Kiné Mbaye](nom)
-      - Mon blaze c'est [Arona DIA](nom)
-      - Appelle-moi [Jean Paul Ndiaye](nom)
-      - Je m'appelle pas [Pape Waly](nom)
-      - Je crois que je m'appelle [El Hadji Fall](nom)
-      - Peut-être [Fatou Kiné Mbaye](nom)
-      - Mon nom est euh... [Serigne Mbacké Ndao](nom)
-      - Je suis le grand [Sow](nom)
-      - Moi c’est [N'importe quoi](nom)
-      - Je m'appelle [Pape Waly](nom)
-      - Mon nom est [Arona DIA](nom)
-      - Je suis [Fatou Kiné Mbaye](nom)
-      - On m'appelle [Cheikh Tidiane Diop](nom)
-      - Moi c'est [Marième Diallo](nom)
-      - Appelle-moi [El Hadji](nom)
-      - Mon prénom c'est [Ma Daguen](nom)
-      - Mon nom de famille est [Sow](nom)
-      - [Jean Paul Ndiaye](nom)
-      - C'est [Serigne Mbacké Ndao](nom)
-      - Je me nomme [Astou Ndiaye](nom)
-      - Vous pouvez m'appeler [Jean](nom)
-      - Mon nom, c'est [Aïssatou Diallo](nom)
-      - Je suis [Jean-Pierre](nom)
-      - Mon blaze c'est [Arona](nom)
-      - Il faut m'appeler [Fatou](nom)
-      - Mon nom est [Ousmane Sonko](nom)
+      - [Se](nom)
+      - [Jean-Paul](nom)
+      - [El Hadji](nom)
+      - [Cheikh](nom)
+      - [Tidiane](nom)
+      - [Diop](nom)
+      - [Marième](nom)
+      - [Diallo](nom)
+      - [Ousmane](nom)
+      - [Bassirou](nom)
+      - [Antoine](nom)
+      - [Coumba](nom)
+      - [Ndeye](nom)
+      - [Jean-Pierre](nom)
+      - [Aïssatou](nom)
+      - [Moussa](nom)
+      - [Khadija](nom)
+      - [Fatou](nom)
+      - [Arona](nom)
+      # ...autres exemples...
 
   - intent: go_back_autres
     examples: |
@@ -183,3 +140,6 @@ nlu:
       - Revenir aux autres plateformes
       - Autres plateformes
       - Retour autres plateformes
+
+lookup: nom
+  - data/lookups/noms.txt

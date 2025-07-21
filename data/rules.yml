@@ -7,20 +7,20 @@ rules:
     - intent: greet
     - action: utter_greet
 
-- rule: Répondre à la demande d'aide E carriere
-  steps:
-    - intent: E_carriere
-    - action: utter_E_carriere
-
 - rule: Expliquer la création de compte
   steps:
     - intent: ask_account_creation
-    - action: utter_ask_account_creation
+    - action: action_explain_account_creation
 
-- rule: Expliquer la connexion à E-Carrière
-  steps: 
+- rule: Expliquer la connexion
+  steps:
     - intent: ask_login
-    - action: utter_ask_login
+    - action: action_explain_login
+
+- rule: Expliquer la réinitialisation du mot de passe
+  steps:
+    - intent: ask_password_reset
+    - action: action_explain_password_reset
 
 - rule: Gérer une réponse inconnue
   steps:
@@ -55,7 +55,5 @@ rules:
 - rule: Saluer l'utilisateur avec le nom saisi
   steps:
     - intent: provide_name
-    - slot_was_set:
-        - nom: 
     - action: utter_greet_with_name
 

@@ -2,16 +2,12 @@ version: "3.1"
 
 intents:
   - greet
-  - E_carriere
   - ask_account_creation
   - ask_login
   - fallback
   - go_back_pgde
   - choose_platform
   - ask_password_reset
-  - ask_pgde_account_creation
-  - ask_pgde_login
-  - ask_pgde_password_reset
   - provide_name
   - go_back_greet_with_name
   - go_back_ecarriere
@@ -78,11 +74,11 @@ responses:
     - text: "Vous souhaitez en savoir plus sur la **PGDE** 💼, la plateforme de gestion des demandes d’emploi à la fonction publique. En quoi puis-je vous aider ?"
       buttons:
         - title: "Je veux m'inscrire"
-          payload: "/ask_pgde_account_creation"
+          payload: "/ask_account_creation"
         - title: "Se connecter"
-          payload: "/ask_pgde_login"
+          payload: "/ask_login"
         - title: "Mot de passe oublié?"
-          payload: "/ask_pgde_password_reset"
+          payload: "/ask_password_reset"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
 
@@ -105,3 +101,6 @@ responses:
           payload: "/go_back_pgde" 
 actions:
   - action_redirect_platform
+  - action_explain_account_creation
+  - action_explain_login
+  - action_explain_password_reset
