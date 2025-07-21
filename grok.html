@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Chatbot Rasa</title>
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+<div id="chat-container" class="fixed bottom-4 right-4 md:w-[400px] w-full max-w-[100vw] h-[calc(100vh-2rem)] md:h-[600px] bg-white rounded-2xl md:shadow-2xl flex flex-col z-50 hidden transition-all duration-300">
+    <div id="chat-header" class="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-4 flex justify-between items-center rounded-t-2xl">
+        <span class="text-lg font-semibold flex items-center gap-2"><i class="fas fa-robot"></i> Amath (MFPRSP)</span>
+        <div id="header-actions" class="flex gap-3">
+            <button onclick="restartChat()" class="text-yellow-300 hover:text-yellow-400 transition-colors"><i class="fas fa-sync"></i></button>
+            <button onclick="fermerChat()" class="text-red-300 hover:text-red-400 transition-colors"><i class="fas fa-times text-lg"></i></button>
+        </div>
+    </div>
+    <div id="chat-box" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3 bg-gray-50">
+        <!-- Messages will be appended here -->
+    </div>
+    <div id="input-container" class="p-4 border-t border-gray-200 bg-white flex gap-3">
+        <input type="text" id="user-input" placeholder="Tapez votre message..." onkeydown="if(event.key === 'Enter') sendUserMessage();" class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+        <button id="send-button" onclick="sendUserMessage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<div class="chat-actions fixed bottom-4 right-4 z-50">
+    <div id="open-chat-icon" class="bg-teal-600 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg cursor-pointer hover:bg-teal-700 transition-all transform hover:scale-105" onclick="ouvrirChat()">
+        <i class="fas fa-comments text-2xl"></i>
+    </div>
+</div>
+
+<script>
+    let lastButtons = [];
+    let loadingIndicator;
+
+    function appendMessage(text, sender) {
+        let chatBox = document.getElementById("chat-box");
+        let messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", "p-3", "rounded-lg", "max-w-[80%]", "text-sm", sender === "bot" ? "bg-gray-200 self-start" : "bg-teal-600 text-white self-end");
+        
+        let formattedText = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank" class="underline text-blue-500">$1</a>')
+            .replace(/\n/g, '<br>');
+        
+        messageDiv.innerHTML = formattedText;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function appendButtons(buttons) {
+        let chatBox = document.getElementById("chat-box");
+        let buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("button-container", "flex", "flex-wrap", "gap-2", "justify-start");
+
+        buttons.forEach(button => {
+            let buttonElement = document.createElement("button");
+            buttonElement.classList.add("chat-button", "px-4", "py-2", "bg-teal-600", "text-white", "rounded-lg", "hover:bg-teal-700", "transition-colors", "text-sm");
+            buttonElement.innerText = button.title;
+            buttonElement.onclick = () => {
+                appendMessage(button.title, "user");
+                disableButtons();
+                sendMessage(button.payload);
+            };
+            buttonContainer.appendChild(buttonElement);
+        });
+
+        lastButtons = buttonContainer;
+        chatBox.appendChild(buttonContainer);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function disableButtons() {
+        if (lastButtons) {
+            Array.from(lastButtons.children).forEach(btn => btn.disabled = true);
+            lastButtons.classList.add("opacity-50");
+        }
+    }
+
+    function showLoadingIndicator() {
+        let chatBox = document.getElementById("chat-box");
+        loadingIndicator = document.createElement("div");
+        loadingIndicator.classList.add("loading-indicator", "flex", "items-center", "justify-center", "gap-1", "py-2");
+        loadingIndicator.innerHTML = `
+            <span class="dot w-2 h-2 bg-teal-600 rounded-full animate-bounce" style="animation-delay: 0s;"></span>
+            <span class="dot w-2 h-2 bg-teal-600 rounded-full animate-bounce" style="animation-delay: 0.2s;"></span>
+            <span class="dot w-2 h-2 bg-teal-600 rounded-full animate-bounce" style="animation-delay: 0.4s;"></span>
+        `;
+        chatBox.appendChild(loadingIndicator);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function hideLoadingIndicator() {
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+            loadingIndicator = null;
+        }
+    }
+
+    function sendMessage(payload) {
+        showLoadingIndicator();
+        fetch("http://10.121.221.75:5005/webhooks/rest/webhook", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sender: "user", message: payload })
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideLoadingIndicator();
+            let foundButtons = false;
+            data.forEach(res => {
+                if (res.text) appendMessage(res.text, "bot");
+                if (res.buttons) {
+                    foundButtons = true;
+                    appendButtons(res.buttons);
+                }
+            });
+            if (!foundButtons) appendButtons([{ title: "Retour", payload: "/go_back" }]);
+        })
+        .catch(error => {
+            hideLoadingIndicator();
+            console.error("Erreur:", error);
+        });
+    }
+
+    function sendUserMessage() {
+        let userInput = document.getElementById("user-input").value.trim();
+        if (userInput === "") return;
+        appendMessage(userInput, "user");
+        sendMessage(userInput);
+        document.getElementById("user-input").value = "";
+    }
+
+    function restartChat() {
+        document.getElementById("chat-box").innerHTML = "";
+        sendMessage("/greet");
+    }
+
+    function fermerChat() {
+        document.getElementById("chat-container").classList.add("hidden");
+        document.getElementById("open-chat-icon").classList.remove("hidden");
+    }
+
+    function ouvrirChat() {
+        document.getElementById("chat-container").classList.remove("hidden");
+        document.getElementById("open-chat-icon").classList.add("hidden");
+    }
+
+    window.onload = () => sendMessage("/greet");
+</script>
+
+</body>
+</html>

@@ -1,4 +1,43 @@
-<DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -7,133 +46,188 @@
     <title>Chatbot Rasa</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+            overscroll-behavior: contain;
         }
         #chat-container {
-            width: 350px;
-            height: 500px;
-            border: 1px solid #00843F; /* Vert */
-            border-radius: 10px;
-            padding: 10px;
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: calc(100% - 2rem);
+            max-width: 90vw;
+            height: calc(100vh - 2rem);
+            max-height: 90vh;
+            background: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            display: none; /* Caché au départ */
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: none;
         }
         #chat-header {
-            background: #00843F; /* Vert */
-            color: white;
-            padding: 10px;
-            font-size: 16px;
+            background: linear-gradient(to right, #00843F, #00a65a);
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            font-size: clamp(1rem, 4vw, 1.125rem);
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
         }
         #header-actions {
             display: flex;
-            gap: 10px;
+            gap: clamp(0.5rem, 2vw, 0.75rem);
+        }
+        #header-actions button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: clamp(0.875rem, 3vw, 1rem);
+            transition: color 0.2s;
+        }
+        #header-actions button:hover i {
+            color: #ffd700; /* Yellow for restart */
+        }
+        #header-actions button:last-child:hover i {
+            color: #ff6347; /* Red for close */
         }
         #chat-box {
-            flex-grow: 1;
+            flex: 1;
+            padding: clamp(0.5rem, 3vw, 1rem);
             overflow-y: auto;
-            padding: 10px;
             display: flex;
             flex-direction: column;
+            gap: clamp(0.5rem, 2vw, 0.75rem);
+            background: #f9fafb;
         }
         .message {
-            padding: 8px;
-            margin: 5px;
-            border-radius: 8px;
-	    A
+            padding: clamp(0.5rem, 2.5vw, 0.75rem);
+            margin: 0.25rem 0;
+            border-radius: 0.5rem;
             max-width: 80%;
+            font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+            line-height: 1.4;
+            word-break: break-word;
         }
         .bot-message {
-            background-color: #e6e6e6;
+            background: #e5e7eb;
             align-self: flex-start;
         }
         .user-message {
-            background-color: #00843F; /* Vert */
-            color: white;
+            background: #00843F;
+            color: #ffffff;
             align-self: flex-end;
+        }
+        .error-message {
+            background: #fee2e2;
+            color: #b91c1c;
+            align-self: center;
+            text-align: center;
+            max-width: 90%;
         }
         .button-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start;
+            gap: clamp(0.5rem, 2vw, 0.75rem);
         }
         .chat-button {
-            margin: 5px;
-            padding: 8px 12px;
+            padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
             border: none;
-            border-radius: 5px;
-            background-color: #00843F; /* Vert */
-            color: white;
+            border-radius: 0.375rem;
+            background: #00843F;
+            color: #ffffff;
             cursor: pointer;
+            font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+            transition: background 0.2s;
+        }
+        .chat-button:hover {
+            background: #006d32;
         }
         .chat-button:disabled {
-            background-color: #999;
+            background: #9ca3af;
             cursor: not-allowed;
+            opacity: 0.5;
         }
         .chat-actions {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 1000;
         }
         .chat-icon {
-            background: #00843F; /* Vert */
-            color: white;
+            background: #00843F;
+            color: #ffffff;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: clamp(2.5rem, 10vw, 3.5rem);
+            height: clamp(2.5rem, 10vw, 3.5rem);
             display: flex;
-       align-items: center;
+            align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: clamp(1rem, 5vw, 1.5rem);
             cursor: pointer;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        .chat-icon:hover {
+            background: #006d32;
+            transform: scale(1.05);
         }
         #input-container {
             display: flex;
-            padding: 10px;
-            border-top: 1px solid #00843F;
+            padding: clamp(0.5rem, 3vw, 1rem);
+            border-top: 1px solid #d1d5db;
+            gap: clamp(0.5rem, 2vw, 0.75rem);
+            background: #ffffff;
         }
         #user-input {
-            flex-grow: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            flex: 1;
+            padding: clamp(0.5rem, 2.5vw, 0.75rem);
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        #user-input:focus {
+            border-color: #00843F;
+            box-shadow: 0 0 0 2px rgba(0, 132, 63, 0.2);
         }
         #send-button {
-            background: #408aa9;
-            color: white;
+            background: #00843F;
+            color: #ffffff;
             border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
+            border-radius: 0.375rem;
+            padding: clamp(0.5rem, 2.5vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
             cursor: pointer;
-            margin-left: 5px;
+            font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+            transition: background 0.2s;
+        }
+        #send-button:hover {
+            background: #006d32;
         }
         .loading-indicator {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 20px;
-            margin: 5px;
+            padding: clamp(0.5rem, 2vw, 0.75rem);
         }
         .dot {
-            width: 6px;
-            height: 6px;
-            margin: 0 2px;
-            background-color: #00843F;
+            width: clamp(0.4rem, 1.5vw, 0.5rem);
+            height: clamp(0.4rem, 1.5vw, 0.5rem);
+            margin: 0 clamp(0.1rem, 0.5vw, 0.125rem);
+            background: #00843F;
             border-radius: 50%;
             display: inline-block;
-            animation: dot-blink 1.4s infinite both;
+            animation: dot-bounce 1.4s infinite ease-in-out both;
         }
         .dot:nth-child(2) {
             animation-delay: 0.2s;
@@ -141,12 +235,49 @@
         .dot:nth-child(3) {
             animation-delay: 0.4s;
         }
-        @keyframes dot-blink {
+        @keyframes dot-bounce {
             0%, 80%, 100% {
-                opacity: 0;
+                transform: scale(0);
             }
             40% {
-                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        /* Tablet (min-width: 640px) */
+        @media (min-width: 640px) {
+            #chat-container {
+                width: clamp(360px, 80vw, 450px);
+                height: clamp(500px, 80vh, 600px);
+                border-radius: 1rem;
+            }
+            #chat-header {
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+            }
+        }
+        /* Desktop (min-width: 1024px) */
+        @media (min-width: 1024px) {
+            #chat-container {
+                width: clamp(400px, 35vw, 500px);
+                height: clamp(600px, 70vh, 700px);
+            }
+        }
+        /* Large screens (min-width: 1280px) */
+        @media (min-width: 1280px) {
+            #chat-container {
+                width: clamp(450px, 30vw, 550px);
+                height: clamp(650px, 65vh, 750px);
+            }
+            #chat-header {
+                font-size: clamp(1.125rem, 2vw, 1.25rem);
+            }
+            .message, .chat-button, #user-input, #send-button {
+                font-size: clamp(0.9rem, 1.5vw, 1rem);
+            }
+            .chat-icon {
+                width: clamp(3rem, 5vw, 3.5rem);
+                height: clamp(3rem, 5vw, 3.5rem);
+                font-size: clamp(1.25rem, 2.5vw, 1.5rem);
             }
         }
     </style>
@@ -155,23 +286,21 @@
 
 <div id="chat-container">
     <div id="chat-header">
-        <span>🤖 Amath (MFPRSP)</span>
+        <span><i class="fas fa-robot"></i> Amath (MFPRSP)</span>
         <div id="header-actions">
-            <button onclick="restartChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;"><i class="fas fa-sync" style="color:rgb(241, 214, 125);"></i>
-            </button>
-            <button onclick="fermerChat()" style="background:none;border:none;color:white;cursor:pointer;font-size:16px;"><i class="fas fa-times" style="color:rgb(228, 123, 97);font-size: 1.5rem;" ></i>
-            </button>
+            <button onclick="restartChat()"><i class="fas fa-sync"></i></button>
+            <button onclick="fermerChat()"><i class="fas fa-times"></i></button>
         </div>
     </div>
     <div id="chat-box"></div>
     <div id="input-container">
-        <input type="text" id="user-input" placeholder="Posez votre question..." onkeydown="if(event.key === 'Enter') sendUserMessage();">
-        <button id="send-button" onclick="sendUserMessage()">➤</button>
+        <input type="text" id="user-input" placeholder="Tapez votre message..." onkeydown="if(event.key === 'Enter') sendUserMessage();">
+        <button id="send-button" onclick="sendUserMessage()"><i class="fas fa-paper-plane"></i></button>
     </div>
 </div>
 
 <div class="chat-actions">
-    <div id="open-chat-icon" class="chat-icon" onclick="ouvrirChat()">💬</div>
+    <div id="open-chat-icon" class="chat-icon" onclick="ouvrirChat()"><i class="fas fa-comments"></i></div>
 </div>
 
 <script>
@@ -181,17 +310,14 @@
     function appendMessage(text, sender) {
         let chatBox = document.getElementById("chat-box");
         let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : "user-message");
-
-        // Transformer les liens Markdown en liens HTML cliquables et les retours à la ligne en <br>
-        let formattedText = text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Mise en gras
-            .replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-            .replace(/\n/g, '<br>');
-
-        // Insérer du HTML au lieu de texte brut
-        messageDiv.innerHTML = formattedText;
+        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : sender === "error" ? "error-message" : "user-message");
         
+        let formattedText = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, '<a href="$2" target="_blank" class="underline text-blue-500">$1</a>')
+            .replace(/\n/g, '<br>');
+        
+        messageDiv.innerHTML = formattedText;
         chatBox.appendChild(messageDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -206,7 +332,7 @@
             buttonElement.classList.add("chat-button");
             buttonElement.innerText = button.title;
             buttonElement.onclick = () => {
-                appendMessage(button.title, "user"); // Afficher le texte du bouton comme message utilisateur
+                appendMessage(button.title, "user");
                 disableButtons();
                 sendMessage(button.payload);
             };
@@ -247,9 +373,18 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sender: "user", message: payload })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             hideLoadingIndicator();
+            if (data.length === 0) {
+                appendMessage("Désolé, aucune réponse reçue du serveur.", "error");
+                return;
+            }
             let foundButtons = false;
             data.forEach(res => {
                 if (res.text) appendMessage(res.text, "bot");
@@ -258,11 +393,12 @@
                     appendButtons(res.buttons);
                 }
             });
-            if (!foundButtons) appendButtons([{ title: "Retour", payload: "/go_back" }]);
+            // if (!foundButtons) appendButtons([{ title: "Retour", payload: "/go_back" }]);
         })
         .catch(error => {
             hideLoadingIndicator();
             console.error("Erreur:", error);
+            appendMessage("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou réessayer plus tard.", "error");
         });
     }
 
@@ -289,7 +425,10 @@
         document.getElementById("open-chat-icon").style.display = "none";
     }
 
-    window.onload = () => sendMessage("/greet");
+    window.onload = () => {
+        // appendMessage("Connexion au serveur en cours...", "bot");
+        sendMessage("/greet");
+    };
 </script>
 
 </body>

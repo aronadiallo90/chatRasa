@@ -36,3 +36,38 @@ if __name__ == "__main__":
 # ssh  -L 3307:127.0.0.1:3306 adminadie@10.121.220.44 -p 3333
 # ssh   adminadie@10.121.221.75 -p 3333
 # mysql -h 127.0.0.1 -P 3306 -u root -p
+
+# sudo systemctl enable ssh-tunnel.service
+# sudo systemctl start ssh-tunnel.service
+
+# verifier
+# sudo systemctl status ssh-tunnel.service
+
+# sudo nano /etc/systemd/system/ssh-tunnel.service
+# sudo nano /etc/systemd/system/rasa-api.service
+
+
+
+
+
+# sudo systemctl daemon-reexec
+# sudo systemctl daemon-reload
+# sudo systemctl enable ssh-tunnel.service
+# sudo systemctl start ssh-tunnel.service
+# sudo systemctl status ssh-tunnel.service
+
+
+
+
+# desactiver les tunnel ssh : 
+# Trouve tous les PID liés à autossh
+# ps aux | grep autossh | awk '{print $2}' | xargs sudo kill -9
+# # Trouve tous les PID liés à ssh (optionnel si tu sais que ça ne dérange pas)
+# ps aux | grep '[s]sh -L 3307' | awk '{print $2}' | xargs sudo kill -9
+
+
+
+# la commande autossh qui marche
+# autossh -M 0 -f -L 3307:127.0.0.1:3306 adminadie@10.121.220.44 -p 3333 -N \
+# -o ServerAliveInterval=60 -o ServerAliveCountMax=3 -o ExitOnForwardFailure=yes
+
