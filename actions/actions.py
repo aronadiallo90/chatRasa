@@ -15,6 +15,7 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
+
 class ActionRedirectPlatform(Action):
     def name(self) -> Text:
         return "action_redirect_platform"
@@ -35,6 +36,35 @@ class ActionRedirectPlatform(Action):
 
         return []
 
+
+
+# class ActionValidateName(Action):
+#     def name(self) -> str:
+#         return "action_validate_name"
+
+#     async def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict) -> list:
+#         name = tracker.get_slot("nom")
+#         file_path = os.path.join("data", "lookups", "nom.txt")  # Chemin local
+#         # Pour production, utiliser : file_path = os.path.join("data", "nom.txt")
+#         try:
+#             with open(file_path, "r", encoding="utf-8") as f:
+#                 valid_names = [line.strip() for line in f]
+#             if name in valid_names:
+#                 dispatcher.utter_message(text=f"Nom valide : {name}")
+#                 return [SlotSet("nom", name)]
+#             else:
+#                 dispatcher.utter_message(text="Nom non reconnu, veuillez réessayer.")
+#                 return [SlotSet("nom", None)]
+#         except FileNotFoundError:
+#             dispatcher.utter_message(text="Erreur : fichier nom.txt introuvable.")
+#             return [SlotSet("nom", None)]
+
+class ActionResetNom(Action):
+    def name(self):
+        return "action_reset_nom"
+
+    def run(self, dispatcher, tracker, domain):
+        return [SlotSet("nom", None)]
 class ActionExplainAccountCreation(Action):
     def name(self) -> Text:
         return "action_explain_account_creation"

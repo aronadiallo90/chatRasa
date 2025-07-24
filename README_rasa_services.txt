@@ -4,6 +4,7 @@ Deux services sont installés et démarrent automatiquement :
 - rasa-api.service → API HTTP de Rasa
 - rasa-actions.service → Serveur d’actions personnalisées
 
+
 Pour vérifier leur statut :
   sudo systemctl status rasa-api.service
   sudo systemctl status rasa-actions.service

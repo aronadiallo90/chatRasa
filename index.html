@@ -366,12 +366,23 @@
         }
     }
 
+    
+    function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+    let senderId = sessionStorage.getItem('sender_id') || generateUUID();
+    sessionStorage.setItem('sender_id', senderId);
+
     function sendMessage(payload) {
         showLoadingIndicator();
-        fetch("http://10.121.221.75:5005/webhooks/rest/webhook", {
+        fetch("http://localhost:5005/webhooks/rest/webhook", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ sender: "user", message: payload })
+            body: JSON.stringify({ sender: senderId, message: payload })
         })
         .then(response => {
             if (!response.ok) {

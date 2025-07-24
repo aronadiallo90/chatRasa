@@ -14,6 +14,17 @@ rasa run actions --debug
 
 
 curl -X POST http://localhost:11434/api/generate -d '{"model":"mistral","prompt":"À qui est destinée la plateforme E-Carrière ?"}'
+
+
+python -m http.server 8000
+
+
+# fermer tout les service autossh 
+ ps aux | grep autossh | awk '{print $2}' | xargs sudo kill -9
+# # Trouve tous les PID liés à ssh (optionnel si tu sais que ça ne dérange pas)
+ ps aux | grep '[s]sh -L 3307' | awk '{print $2}' | xargs sudo kill -9
+
+
 # 🤖 Chatbot Rasa avec Ollama & FAISS
 
 Ce projet est un chatbot intelligent basé sur **Rasa**, utilisant **FAISS** pour la recherche vectorielle et **Ollama** avec **Mistral/LLaMA3** pour générer des réponses à partir de documents PDF.

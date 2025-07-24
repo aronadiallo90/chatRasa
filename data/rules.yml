@@ -5,22 +5,23 @@ rules:
 - rule: Répondre au salut de l'utilisateur
   steps:
     - intent: greet
+    # - action: action_reset_nom
     - action: utter_greet
+
+- rule: Répondre à la demande d'aide E carriere
+  steps:
+    - intent: E_carriere
+    - action: utter_E_carriere
 
 - rule: Expliquer la création de compte
   steps:
     - intent: ask_account_creation
-    - action: action_explain_account_creation
+    - action: utter_ask_account_creation
 
-- rule: Expliquer la connexion
-  steps:
+- rule: Expliquer la connexion à E-Carrière
+  steps: 
     - intent: ask_login
-    - action: action_explain_login
-
-- rule: Expliquer la réinitialisation du mot de passe
-  steps:
-    - intent: ask_password_reset
-    - action: action_explain_password_reset
+    - action: utter_ask_login
 
 - rule: Gérer une réponse inconnue
   steps:
@@ -40,6 +41,8 @@ rules:
 - rule: Gérer le retour utilisateur vers Autres plateformes
   steps:
     - intent: go_back_autres
+    - slot_was_set:
+        - nom:
     - action: utter_greet_with_name
 
 - rule: Rediriger vers la plateforme choisie
@@ -50,10 +53,14 @@ rules:
 - rule: Retourner au menu principal avec le nom de l'utilisateur
   steps:
     - intent: go_back_greet_with_name
+    - slot_was_set:
+        - nom:
     - action: utter_greet_with_name
 
 - rule: Saluer l'utilisateur avec le nom saisi
   steps:
     - intent: provide_name
+    - slot_was_set:
+        - nom: 
     - action: utter_greet_with_name
 
