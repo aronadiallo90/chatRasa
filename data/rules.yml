@@ -64,3 +64,14 @@ rules:
           - nom
       - action: utter_greet_with_name
 
+# - rule: Gérer la réinitialisation du mot de passe
+#   steps:
+#     - intent: ask_password_reset
+#     - action: utter_ask_password_reset  
+- rule: Demander le support technique
+  steps:
+  - intent: ask_support
+  - action: utter_ask_support
+
+
+

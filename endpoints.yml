@@ -41,6 +41,14 @@
 #  password: password
 #  queue: queue
 
+
+# rest:
+# Configuration pour WhatsApp (commentée jusqu’à disponibilité des APIs)
+# whatsapp:
+#   url: "https://api.whatsapp.com"
+#   access_token: "YOUR_ACCESS_TOKEN"
+#   verify_token: "YOUR_VERIFY_TOKEN"
+
 rest:
   url: "http://localhost:5005/webhooks/rest/webhook"
 

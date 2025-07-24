@@ -30,6 +30,10 @@ class ActionRedirectPlatform(Action):
             dispatcher.utter_message(response="utter_E_carriere")
         elif platform == "PGDE":
             dispatcher.utter_message(response="utter_pgde_menu")
+        elif platform == "CRCE":
+            dispatcher.utter_message(response="utter_crce_menu")
+        elif platform == "Attestation":
+            dispatcher.utter_message(response="utter_attestation_menu")
         else:
             dispatcher.utter_message(text="Je ne suis pas sûr de la plateforme que vous avez choisie. Pouvez-vous réessayer ?")
             dispatcher.utter_message(response="utter_greet_with_name")
@@ -79,6 +83,11 @@ class ActionExplainAccountCreation(Action):
             dispatcher.utter_message(response="utter_ask_account_creation")
         elif platform == "PGDE":
             dispatcher.utter_message(response="utter_ask_pgde_account_creation")
+        elif platform == "CRCE":
+            dispatcher.utter_message(response="utter_crce_menu")
+        elif platform == "Attestation":
+            dispatcher.utter_message(response="utter_attestation_menu")
+        
         else:
             dispatcher.utter_message(response="utter_ask_account_creation")
 
@@ -98,8 +107,12 @@ class ActionExplainLogin(Action):
             dispatcher.utter_message(response="utter_ask_login")
         elif platform == "PGDE":
             dispatcher.utter_message(response="utter_ask_pgde_login")
+        elif platform == "CRCE":
+            dispatcher.utter_message(response="utter_crce_menu")
+        elif platform == "Attestation":
+            dispatcher.utter_message(response="utter_attestation_menu")
         else:
-            dispatcher.utter_message(response="utter_ask_login")
+            dispatcher.utter_message(response="utter_greet_with_name")
 
         return []
 

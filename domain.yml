@@ -12,6 +12,7 @@ intents:
   - go_back_greet_with_name
   - go_back_ecarriere
   - go_back_autres
+  - ask_support
 entities:
   - nom
   - platform
@@ -41,6 +42,10 @@ responses:
           payload: '/choose_platform{"platform": "E-Carrière"}'
         - title: "Demande d'emploi (PGDE)"
           payload: '/choose_platform{"platform": "PGDE"}'
+        - title: "CRCE"
+          payload: '/choose_platform{"platform": "CRCE"}'
+        - title: "Attestation"
+          payload: '/choose_platform{"platform": "Attestation"}'
   utter_E_carriere:
     - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique. Comment puis-je vous assister aujourd’hui ?"
       buttons:
@@ -48,6 +53,8 @@ responses:
           payload: "/ask_account_creation"
         - title: "Je n'arrive pas à me connecter"
           payload: "/ask_login"
+        - title: "Mot de passe oublié"
+          payload: "/ask_password_reset"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_ask_account_creation:
@@ -99,6 +106,33 @@ responses:
       buttons:                                                                                          
         - title: "Retour"
           payload: "/go_back_pgde" 
+
+  utter_crce_menu:
+    - text: "Bienvenue sur **CRCE** 📜, la plateforme pour la reconnaissance des diplômes. Comment puis-je vous aider ?"
+      buttons:
+        - title: "Créer un compte"
+          payload: "/ask_account_creation"
+        - title: "Se connecter"
+          payload: "/ask_login"
+        - title: "Mot de passe oublié ?"
+          payload: "/ask_password_reset"
+        - title: "Retour"
+          payload: "/go_back_greet_with_name"
+
+  utter_attestation_menu:
+    - text: "Bienvenue sur le service **Attestation** 📄. Vous pouvez demander une attestation sans compte. Comment puis-je vous aider ?"
+      buttons:
+        - title: "Demander une attestation"
+          payload: "/ask_attestation_request"
+        - title: "Suivre une demande"
+          payload: "/ask_attestation_status"
+        - title: "Retour"
+          payload: "/go_back_greet_with_name"
+  utter_ask_support:
+    - text: "Pour toute assistance, contactez-nous au +221 33 889 99 00 ou par email à support@fonctionpublique.gouv.sn (lundi-vendredi, 8h-17h)."
+      buttons:
+        - title: "Retour au menu principal"
+          payload: "/go_back_greet_with_name"
 actions:
   - action_redirect_platform
   - action_explain_account_creation
@@ -106,3 +140,8 @@ actions:
   - action_explain_password_reset
   - action_reset_nom
   # - action_validate_name
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

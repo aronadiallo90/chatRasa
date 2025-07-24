@@ -24,9 +24,20 @@ nlu:
       - Explorer [Autre plateforme](platform)
       - Montre-moi [PGDE](platform)
       - J’aimerais voir [PGDE](platform)
+      - Je veux voir [E-Carrière](platform)
+      - Explorer [PGDE](platform)
+      - J’aimerais voir [PGDE](platform)
+      - Je veux voir [CRCE](platform)
+      - Accéder à [CRCE](platform)
+      - Demander une [Attestation](platform)
+      - Service [Attestation](platform)
 
   
-
+  - intent: ask_support
+    examples: |
+        - Je besoin d’aide
+        - Contacter le support
+        - Problème technique
   - intent: ask_account_creation
     examples: |
       - Comment activer son compte sur [E-Carrière](service) ?
