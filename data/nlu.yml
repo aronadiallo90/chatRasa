@@ -164,6 +164,43 @@ nlu:
   # - regex: nom
   #   examples: |
   #      - \b[\w\s'-]+\b 
+
+  - intent: E_carriere
+    examples: |
+      - e-carriere
+      - e carrière
+      - ecarriere
+      - e carriere
+      - E-CARRIERE
+      - E CARRIERE
+      - e carrière fonction publique
+      - plateforme e-carrière
+      - je veux ecarriere
+
+  - intent: PGDE
+    examples: |
+      - pgde
+      - PGDE
+      - demande d'emploi
+      - plateforme pgde
+      - Demande d'emploi (PGDE)
+      - je veux pgde
+
+  - intent: CRCE
+    examples: |
+      - crce
+      - CRCE
+      - reconnaissance de diplome
+      - plateforme crce
+      - je veux crce
+
+  - intent: Attestation
+    examples: |
+      - attestation
+      - Attestation
+      - demander une attestation
+      - plateforme attestation
+      - je veux une attestation
   - lookup: nom
     examples: |
           - +fatou Binetou Mariane

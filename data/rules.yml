@@ -1,6 +1,27 @@
-version: "3.1"
+  # Règles pour la reconnaissance directe des plateformes par texte
+  
+
 
 rules:
+- rule: Aller vers E-Carrière par texte
+  steps:
+      - intent: E_carriere
+      - action: utter_E_carriere
+
+- rule: Aller vers PGDE par texte
+  steps:
+      - intent: PGDE
+      - action: utter_pgde_menu
+
+- rule: Aller vers CRCE par texte
+  steps:
+      - intent: CRCE
+      - action: utter_crce_menu
+
+- rule: Aller vers Attestation par texte
+  steps:
+      - intent: Attestation
+      - action: utter_attestation_menu
 
 - rule: Répondre au salut de l'utilisateur
   steps:
@@ -8,10 +29,10 @@ rules:
     # - action: action_reset_nom
     - action: utter_greet
 
-- rule: Répondre à la demande d'aide E carriere
-  steps:
-    - intent: E_carriere
-    - action: utter_E_carriere
+# - rule: Répondre à la demande d'aide E carriere
+#   steps:
+#     - intent: E_carriere
+#     - action: utter_E_carriere
 
 - rule: Expliquer la création de compte
   steps:
