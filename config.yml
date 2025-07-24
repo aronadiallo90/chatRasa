@@ -8,7 +8,7 @@ assistant_id: 20250307-094418-isometric-range
 
 # Configuration for Rasa NLU.
 # https://rasa.com/docs/rasa/nlu/components/
-language: en
+language: fr
 
 pipeline:
   - name: WhitespaceTokenizer

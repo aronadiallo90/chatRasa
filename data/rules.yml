@@ -42,7 +42,7 @@ rules:
   steps:
     - intent: go_back_autres
     - slot_was_set:
-        - nom:
+        - nom
     - action: utter_greet_with_name
 
 - rule: Rediriger vers la plateforme choisie
@@ -54,13 +54,13 @@ rules:
   steps:
     - intent: go_back_greet_with_name
     - slot_was_set:
-        - nom:
+        - nom
     - action: utter_greet_with_name
 
 - rule: Saluer l'utilisateur avec le nom saisi
   steps:
-    - intent: provide_name
-    - slot_was_set:
-        - nom: 
-    - action: utter_greet_with_name
+      - intent: provide_name
+      - slot_was_set:
+          - nom
+      - action: utter_greet_with_name
 
