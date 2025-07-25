@@ -1,15 +1,199 @@
 version: "3.1"
 
 stories:
-- story: User greets and provides name
-  steps:
-    - intent: greet
-    - action: utter_greet
-    - intent: provide_name
-    - slot_was_set:
-        - nom: "{nom}"
-    - action: utter_greet_with_name
-    - intent: choose_platform
-    - action: action_redirect_platform
+  # Histoire 1: Salutation, fourniture du nom et choix d'une plateforme
+  - story: User greets and provides name
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - action: action_redirect_platform
 
+  # Histoire 2: Demande de création de compte sur E-Carrière
+  - story: User asks for account creation on E-Carrière
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "E-Carrière"
+      - action: action_redirect_platform
+      - intent: ask_account_creation
+      - action: action_explain_account_creation
+      - intent: go_back_ecarriere
+      - action: utter_E_carriere
 
+  # Histoire 3: Demande de connexion à PGDE
+  - story: User asks for login on PGDE
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "PGDE"
+      - action: action_redirect_platform
+      - intent: ask_login
+      - action: action_explain_login  # Remplacé utter_ask_pgde_login par action_explain_login
+      - intent: go_back_pgde
+      - action: utter_pgde_menu
+
+  # Histoire 4: Réinitialisation de mot de passe pour E-Carrière
+  - story: User asks for password reset on E-Carrière
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "E-Carrière"
+      - action: action_redirect_platform
+      - intent: ask_password_reset
+      - action: action_explain_password_reset
+      - intent: go_back_ecarriere
+      - action: utter_E_carriere
+
+  # Histoire 5: Vérification de compte avec succès
+  - story: User verifies account successfully
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "E-Carrière"
+      - action: action_redirect_platform
+      - intent: start_account_verification
+      - action: account_verification_form
+      - active_loop: account_verification_form
+      - intent: provide_email
+      - slot_was_set:
+          - email: "test@example.com"
+      - action: action_validate_account
+      - intent: confirm_has_account
+      - slot_was_set:
+          - has_account: "yes"
+      - intent: confirm_has_access
+      - slot_was_set:
+          - has_access: "yes"
+      - action: account_verification_form
+      - active_loop: null
+      - action: utter_account_verified
+      - intent: access_services
+      - action: utter_E_carriere
+
+  # Histoire 6: Vérification de compte sans compte existant
+  - story: User verifies account but no account exists
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "PGDE"
+      - action: action_redirect_platform
+      - intent: start_account_verification
+      - action: account_verification_form
+      - active_loop: account_verification_form
+      - intent: provide_email
+      - slot_was_set:
+          - email: "unknown@example.com"
+      - action: action_validate_account
+      - intent: deny_has_account
+      - slot_was_set:
+          - has_account: "no"
+      - action: account_verification_form
+      - active_loop: null
+      - action: utter_no_account
+      - intent: ask_account_creation
+      - action: action_explain_account_creation  # Remplacé utter_ask_pgde_account_creation par action_explain_account_creation
+      - intent: go_back_pgde
+      - action: utter_pgde_menu
+
+  # Histoire 7: Demande d'attestation
+  - story: User requests attestation
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "Attestation"
+      - action: action_redirect_platform
+      - intent: ask_attestation_request
+      - action: utter_attestation_menu
+      - intent: go_back_greet_with_name
+      - action: utter_greet_with_name
+
+  # Histoire 8: Demande de support technique
+  - story: User asks for technical support
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: ask_support
+      - action: utter_ask_support
+      - intent: go_back_greet_with_name
+      - action: utter_greet_with_name
+
+  # Histoire 9: Demande de statut d'attestation
+  - story: User checks attestation status
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "Attestation"
+      - action: action_redirect_platform
+      - intent: ask_attestation_status
+      - action: utter_attestation_menu
+      - intent: go_back_greet_with_name
+      - action: utter_greet_with_name
+
+  # Histoire 10: Signaler un compte bloqué
+  - story: User reports account blocked
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: provide_name
+      - slot_was_set:
+          - nom: "{nom}"
+      - action: utter_greet_with_name
+      - intent: choose_platform
+      - slot_was_set:
+          - platform: "E-Carrière"
+      - action: action_redirect_platform
+      - intent: ask_account_blocked
+      - action: utter_no_access
+      - intent: go_back_ecarriere
+      - action: utter_E_carriere

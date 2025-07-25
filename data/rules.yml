@@ -1,98 +1,161 @@
-  # Règles pour la reconnaissance directe des plateformes par texte
-  
 
-
+version: "3.1"
 rules:
-- rule: Aller vers E-Carrière par texte
-  steps:
+  - rule: Aller vers E-Carrière par texte
+    steps:
       - intent: E_carriere
       - action: utter_E_carriere
 
-- rule: Aller vers PGDE par texte
-  steps:
+  - rule: Aller vers PGDE par texte
+    steps:
       - intent: PGDE
       - action: utter_pgde_menu
 
-- rule: Aller vers CRCE par texte
-  steps:
+  - rule: Aller vers CRCE par texte
+    steps:
       - intent: CRCE
       - action: utter_crce_menu
 
-- rule: Aller vers Attestation par texte
-  steps:
+  - rule: Aller vers Attestation par texte
+    steps:
       - intent: Attestation
       - action: utter_attestation_menu
 
-- rule: Répondre au salut de l'utilisateur
-  steps:
-    - intent: greet
-    # - action: action_reset_nom
-    - action: utter_greet
+  - rule: Répondre au salut de l'utilisateur
+    steps:
+      - intent: greet
+      - action: utter_greet
 
-# - rule: Répondre à la demande d'aide E carriere
-#   steps:
-#     - intent: E_carriere
-#     - action: utter_E_carriere
+  - rule: Expliquer la création de compte
+    steps:
+      - intent: ask_account_creation
+      - action: action_explain_account_creation
 
-- rule: Expliquer la création de compte
-  steps:
-    - intent: ask_account_creation
-    - action: utter_ask_account_creation
+  - rule: Expliquer la connexion
+    steps:
+      - intent: ask_login
+      - action: action_explain_login
 
-- rule: Expliquer la connexion à E-Carrière
-  steps: 
-    - intent: ask_login
-    - action: utter_ask_login
+  - rule: Gérer une réponse inconnue
+    steps:
+      - intent: fallback
+      - action: utter_fallback
 
-- rule: Gérer une réponse inconnue
-  steps:
-    - intent: fallback
-    - action: utter_fallback
+  - rule: Gérer le retour utilisateur vers E-Carrière
+    steps:
+      - intent: go_back_ecarriere
+      - action: utter_E_carriere
 
-- rule: Gérer le retour utilisateur vers E-Carrière
-  steps:
-    - intent: go_back_ecarriere
-    - action: utter_E_carriere
+  - rule: Gérer le retour utilisateur vers PGDE
+    steps:
+      - intent: go_back_pgde
+      - action: utter_pgde_menu
 
-- rule: Gérer le retour utilisateur vers PGDE
-  steps:
-    - intent: go_back_pgde
-    - action: utter_pgde_menu
+  - rule: Gérer le retour utilisateur vers Autres plateformes
+    steps:
+      - intent: go_back_autres
+      - slot_was_set:
+          - nom
+      - action: utter_greet_with_name
 
-- rule: Gérer le retour utilisateur vers Autres plateformes
-  steps:
-    - intent: go_back_autres
-    - slot_was_set:
-        - nom
-    - action: utter_greet_with_name
+  - rule: Rediriger vers la plateforme choisie
+    steps:
+      - intent: choose_platform
+      - action: action_redirect_platform
 
-- rule: Rediriger vers la plateforme choisie
-  steps:
-    - intent: choose_platform
-    - action: action_redirect_platform
+  - rule: Retourner au menu principal avec le nom de l'utilisateur
+    steps:
+      - intent: go_back_greet_with_name
+      - slot_was_set:
+          - nom
+      - action: utter_greet_with_name
 
-- rule: Retourner au menu principal avec le nom de l'utilisateur
-  steps:
-    - intent: go_back_greet_with_name
-    - slot_was_set:
-        - nom
-    - action: utter_greet_with_name
-
-- rule: Saluer l'utilisateur avec le nom saisi
-  steps:
+  - rule: Saluer l'utilisateur avec le nom saisi
+    steps:
       - intent: provide_name
       - slot_was_set:
           - nom
       - action: utter_greet_with_name
 
-# - rule: Gérer la réinitialisation du mot de passe
-#   steps:
-#     - intent: ask_password_reset
-#     - action: utter_ask_password_reset  
-- rule: Demander le support technique
-  steps:
-  - intent: ask_support
-  - action: utter_ask_support
+  - rule: Gérer la réinitialisation du mot de passe
+    steps:
+      - intent: ask_password_reset
+      - action: action_explain_password_reset
 
+  - rule: Gérer le compte bloqué
+    steps:
+      - intent: ask_account_blocked
+      - action: utter_no_access
 
+  - rule: Gérer la demande d’attestation
+    steps:
+      - intent: ask_attestation_request
+      - action: utter_attestation_menu
 
+  - rule: Gérer le suivi d’attestation
+    steps:
+      - intent: ask_attestation_status
+      - action: utter_attestation_menu
+
+  - rule: Demander le support technique
+    steps:
+      - intent: ask_support
+      - action: utter_ask_support
+
+  - rule: Activer le formulaire de vérification de compte
+    steps:
+      - intent: start_account_verification
+      - action: account_verification_form
+      - active_loop: account_verification_form
+      - slot_was_set:
+          - email: null
+          - has_account: null
+          - has_access: null
+
+  - rule: Soumettre le formulaire de vérification - Compte existant avec accès
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - action: account_verification_form
+      - active_loop: null
+      - slot_was_set:
+          - email: null
+          - has_account: yes
+          - has_access: yes
+      - action: utter_account_verified
+
+  - rule: Gérer l'absence de compte
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - action: account_verification_form
+      - active_loop: null
+      - slot_was_set:
+          - email: null
+          - has_account: no
+          - has_access: null
+      - action: utter_no_account
+
+  - rule: Gérer les problèmes d'accès
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - action: account_verification_form
+      - active_loop: null
+      - slot_was_set:
+          - email: null
+          - has_account: yes
+          - has_access: no
+      - action: utter_no_access
+
+  - rule: Gérer l'absence de compte (alternative condition)
+    condition:
+      - slot_was_set:
+          - has_account: "no"
+    steps:
+      - action: account_verification_form
+      - active_loop: null
+      - slot_was_set:
+          - email: null
+          - has_access: null
+      - action: utter_no_account

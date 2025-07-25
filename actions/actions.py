@@ -135,3 +135,18 @@ class ActionExplainPasswordReset(Action):
 
         return []
 
+class ActionValidateAccount(Action):
+    def name(self) -> Text:
+        return "action_validate_account"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        email = tracker.get_slot("email")
+        platform = tracker.get_slot("platform")
+
+        # Simulation de la vérification API (à remplacer par l’API réelle)
+        # Supposons que l’email "test@example.com" existe pour toutes les plateformes
+        if email == "test@example.com":
+            return [SlotSet("has_account", "yes")]
+        else:
+            dispatcher.utter_message(response="utter_no_account")
+            return [SlotSet("has_account", "no")]

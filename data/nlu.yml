@@ -32,12 +32,87 @@ nlu:
       - Demander une [Attestation](platform)
       - Service [Attestation](platform)
 
+
+  - intent: E_carriere
+    examples: |
+      - e-carriere
+      - e carrière
+      - ecarriere
+      - e carriere
+      - E-CARRIERE
+      - E CARRIERE
+      - e carrière fonction publique
+      - plateforme e-carrière
+      - je veux ecarriere
+  - intent: go_back_ecarriere
+    examples: |
+      - Revenir à E-Carrière
+      - Retourner au menu E-Carrière
+      - Aller au menu principal d'E-Carrière
+
+  - intent: PGDE
+    examples: |
+      - pgde
+      - PGDE
+      - demande d'emploi
+      - plateforme pgde
+      - Demande d'emploi (PGDE)
+      - je veux pgde
+
+  - intent: CRCE
+    examples: |
+      - crce
+      - CRCE
+      - reconnaissance de diplome
+      - plateforme crce
+      - je veux crce
+
+  - intent: Attestation
+    examples: |
+      - attestation
+      - Attestation
+      - demander une attestation
+      - plateforme attestation
+      - je veux une attestation
   
   - intent: ask_support
     examples: |
         - Je besoin d’aide
         - Contacter le support
         - Problème technique
+  - intent: provide_email
+    examples: |
+        - Mon email est [user@example.com](email)
+        - [test@email.com](email)
+        - Voici mon email : [contact@domain.com](email)
+  - intent: confirm_has_access
+    examples: |
+      - Oui, j'ai accès
+      - Bien sûr, j'y ai accès
+      - Oui, je peux me connecter
+  - intent: confirm_has_account
+    examples: |
+      - Oui, j'ai un compte
+      - Oui, je suis inscrit
+      - J'ai déjà un compte
+  - intent: deny_has_access
+    examples: |
+      - Non, je n'ai pas accès
+      - Je ne peux pas me connecter
+      - Pas d'accès
+  - intent: deny_has_account
+    examples: |
+      - Non, je n'ai pas de compte
+      - Je ne suis pas inscrit
+      - Pas de compte
+  - intent: start_account_verification
+    examples: |
+        - Vérifier mon compte
+        - Je veux vérifier si j'ai un compte
+        - Vérification de compte
+
+
+
   - intent: ask_account_creation
     examples: |
       - Comment activer son compte sur [E-Carrière](service) ?
@@ -68,6 +143,30 @@ nlu:
       - Mot de passe oublié [PGDE](platform)
       - Reset password [PGDE](platform)
       - Récupérer mot de passe [PGDE](platform)
+
+  - intent: ask_account_blocked
+    examples: |
+      - Mon compte est bloqué, que faire ?
+      - Que faire si mon compte est bloqué  ?
+      -  Problème avec mon compte
+
+  - intent: access_services
+    examples: |
+      - Accéder aux services
+      - Continuer vers les services
+  - intent: ask_attestation_request
+    examples: |
+      - Demander une attestation
+      - Faire une demande d'attestation
+  - intent: ask_attestation_status
+    examples: |
+      - Suivre ma demande
+      - Statut de ma demande d'attestation
+
+
+      
+  
+
   
   - intent: fallback
     examples: |
@@ -165,42 +264,7 @@ nlu:
   #   examples: |
   #      - \b[\w\s'-]+\b 
 
-  - intent: E_carriere
-    examples: |
-      - e-carriere
-      - e carrière
-      - ecarriere
-      - e carriere
-      - E-CARRIERE
-      - E CARRIERE
-      - e carrière fonction publique
-      - plateforme e-carrière
-      - je veux ecarriere
 
-  - intent: PGDE
-    examples: |
-      - pgde
-      - PGDE
-      - demande d'emploi
-      - plateforme pgde
-      - Demande d'emploi (PGDE)
-      - je veux pgde
-
-  - intent: CRCE
-    examples: |
-      - crce
-      - CRCE
-      - reconnaissance de diplome
-      - plateforme crce
-      - je veux crce
-
-  - intent: Attestation
-    examples: |
-      - attestation
-      - Attestation
-      - demander une attestation
-      - plateforme attestation
-      - je veux une attestation
   - lookup: nom
     examples: |
           - +fatou Binetou Mariane
@@ -14054,7 +14118,7 @@ nlu:
           - Faba Boubou Yero
           - Fabacary
           - Fabala
-                    - Fabelle
+          - Fabelle
           - Fabien
           - Fabienne
           - Fabienne Anne Celile

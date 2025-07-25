@@ -13,9 +13,36 @@ intents:
   - go_back_ecarriere
   - go_back_autres
   - ask_support
+  - provide_email
+  - confirm_has_account
+  - deny_has_account
+  - confirm_has_access
+  - deny_has_access
+  - start_account_verification
+  - E_carriere
+  - PGDE
+  - CRCE
+  - Attestation
+  - ask_account_blocked
+  - access_services
+  - ask_attestation_request
+  - ask_attestation_status
+
 entities:
   - nom
   - platform
+  - email
+forms:
+    account_creation_form:
+      required_slots:
+        - nom
+        - email
+        - has_account
+    account_verification_form:
+      required_slots:
+        - email
+        - has_account
+        - has_access
 slots:
   platform:
     type: text
@@ -32,6 +59,52 @@ slots:
       # - type: from_text
       #   conditions:
       #     - active_loop: null
+  email:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: email
+      # - type: from_text
+      #   conditions:
+      #     - active_loop: null
+  has_account:
+    type: categorical
+    values:
+      - yes
+      - no
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        intent: confirm_has_account
+        value: yes
+      - type: from_intent
+        intent: deny_has_account
+        value: no
+  has_access:
+    type: categorical
+    values:
+      - yes
+      - no
+    influence_conversation: true
+    mappings:
+      - type: from_intent
+        intent: confirm_has_access
+        value: yes
+      - type: from_intent
+        intent: deny_has_access
+        value: no
+
+    # type: bool
+    # influence_conversation: true
+    # initial_value: false
+    # mappings:
+    #   - type: from_intent
+    #     intent: confirm_has_account
+    #     value: true
+    #   - type: from_intent
+    #     intent: deny_has_account
+    #     value: false
 responses:
   utter_greet:
     - text: "Bienvenue ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\n\n Dalal ak Jàmm 😊 !\n\n Pour commencer, puis-je connaître votre nom, s’il vous plaît ?"
@@ -49,12 +122,14 @@ responses:
   utter_E_carriere:
     - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique. Comment puis-je vous assister aujourd’hui ?"
       buttons:
-        - title: "Activer son compte"
+        - title: "Comment Activer son compte"
           payload: "/ask_account_creation"
         - title: "Je n'arrive pas à me connecter"
           payload: "/ask_login"
         - title: "Mot de passe oublié"
           payload: "/ask_password_reset"
+        - title: "Vérifier mon compte"
+          payload: "/start_account_verification"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_ask_account_creation:
@@ -86,6 +161,8 @@ responses:
           payload: "/ask_login"
         - title: "Mot de passe oublié?"
           payload: "/ask_password_reset"
+        - title: "Vérifier mon compte"
+          payload: "/start_account_verification"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
 
@@ -116,6 +193,8 @@ responses:
           payload: "/ask_login"
         - title: "Mot de passe oublié ?"
           payload: "/ask_password_reset"
+        - title: "Vérifier mon compte"
+          payload: "/start_account_verification"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
 
@@ -126,12 +205,55 @@ responses:
           payload: "/ask_attestation_request"
         - title: "Suivre une demande"
           payload: "/ask_attestation_status"
+        - title: "Vérifier mon compte"
+          payload: "/start_account_verification"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_ask_support:
     - text: "Pour toute assistance, contactez-nous au +221 33 889 99 00 ou par email à support@fonctionpublique.gouv.sn (lundi-vendredi, 8h-17h)."
       buttons:
         - title: "Retour au menu principal"
+          payload: "/go_back_greet_with_name"
+  utter_ask_email:
+    - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
+  utter_ask_has_account:
+    - text: "Avez-vous déjà un compte sur {platform} ?"
+      buttons:
+        - title: "Oui"
+          payload: "/confirm_has_account"
+        - title: "Non"
+          payload: "/deny_has_account"
+  utter_ask_has_access:
+    - text: "Avez-vous accès à votre compte (identifiants valides) ?"
+      buttons:
+        - title: "Oui"
+          payload: "/confirm_has_access"
+        - title: "Non"
+          payload: "/deny_has_access"
+  utter_no_account:
+    - text: "Aucun compte trouvé pour cet email. Voulez-vous réessayer ou créer un compte ?"
+      buttons:
+        - title: "Réessayer"
+          payload: "/provide_email"
+        - title: "Créer un compte"
+          payload: "/ask_account_creation"
+        - title: "Retour"
+          payload: "/go_back_greet_with_name"
+  utter_no_access:
+    - text: "Aucun accès au compte ? Sélectionnez une option :"
+      buttons:
+        - title: "Mot de passe oublié"
+          payload: "/ask_password_reset"
+        - title: "Compte bloqué"
+          payload: "/ask_account_blocked"
+        - title: "Retour"
+          payload: "/go_back_greet_with_name"
+  utter_account_verified:
+    - text: "Votre compte est vérifié ! Vous pouvez maintenant accéder aux services de {platform}."
+      buttons:
+        - title: "Continuer"
+          payload: "/access_services"
+        - title: "Retour"
           payload: "/go_back_greet_with_name"
 actions:
   - action_redirect_platform
@@ -140,6 +262,8 @@ actions:
   - action_explain_password_reset
   - action_reset_nom
   # - action_validate_name
+  - action_validate_account
+  - account_verification_form
 
 
 session_config:

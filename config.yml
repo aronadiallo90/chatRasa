@@ -13,6 +13,7 @@ language: fr
 pipeline:
   - name: WhitespaceTokenizer
   - name: RegexFeaturizer
+    use_lookup_tables: true
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: CountVectorsFeaturizer
