@@ -125,49 +125,30 @@ nlu:
         - 1934200001259
   - intent: confirm_has_access
     examples: |
-      - Oui, j'ai accès à mon compte
+      - Oui, j'ai accès
       - Bien sûr, j'y ai accès
-      - Oui, je peux me connecter à mon compte
-      - J'ai accès
-      - Accès disponible
-      - Oui
+      - Oui, je peux me connecter
   - intent: confirm_has_account
     examples: |
       - Oui, j'ai un compte
       - Oui, je suis inscrit
       - J'ai déjà un compte
-      - Compte existant
-      - Je suis enregistré 
-      - Oui
-      
   - intent: deny_has_access
     examples: |
       - Non, je n'ai pas accès
       - Je ne peux pas me connecter
-      - Pas d'accès à mon compte
-      - Aucun accès
-      - Impossible de me connecter
-      - Non
+      - Pas d'accès
   - intent: deny_has_account
     examples: |
       - Non, je n'ai pas de compte
       - Je ne suis pas inscrit
       - Pas de compte
-      - Aucun compte
-      - Je ne suis pas enregistré
-      - Non
   - intent: start_account_verification
     examples: |
         - Vérifier mon compte
         - Je veux vérifier si j'ai un compte
         - Vérification de compte
 
-  - intent: chitchat
-    examples: |
-      - Dis-moi quelque chose d'intéressant
-      - Parle-moi un peu
-      - Comment ça va ?
-      - Que penses-tu de ça ?
   - intent: chitchat/ask_email
     examples: |
       - Quel est mon email ?
@@ -176,15 +157,6 @@ nlu:
     examples: |
       - Quel est mon numéro de CNI ?
       - Demande de CNI
-  - intent: ask_dossier_number
-    examples: |
-      - Connaître mon numéro de dossier
-      - Quel est mon numéro de dossier ?
-      - Je veux connaître mon numéro de dossier PGDE
-      - Numéro de dossier
-      - Mon dossier PGDE
-      - Consulter mon dossier
-      - Voir mon numéro de dossier
 
 
 
@@ -347,7 +319,6 @@ nlu:
   #      - \b[\w\s'-]+\b 
 
 
-
   - lookup: nom
     examples: |
           - +fatou Binetou Mariane
@@ -363,3 +334,9 @@ nlu:
           - amdou
           - aron Arona Sakho
           - aron Josue Assimen
+          - as Malick Dia
+          - assane
+          - assatou
+          - aath
+          - aba
+          - aba Cherif

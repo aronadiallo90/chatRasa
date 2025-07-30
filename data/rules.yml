@@ -1,4 +1,3 @@
-
 version: "3.1"
 rules:
   - rule: Aller vers E-Carrière par texte
@@ -87,12 +86,12 @@ rules:
       - intent: ask_account_blocked
       - action: utter_no_access
 
-  - rule: Gérer la demande d’attestation
+  - rule: Gérer la demande d'attestation
     steps:
       - intent: ask_attestation_request
       - action: utter_attestation_menu
 
-  - rule: Gérer le suivi d’attestation
+  - rule: Gérer le suivi d'attestation
     steps:
       - intent: ask_attestation_status
       - action: utter_attestation_menu
@@ -102,15 +101,65 @@ rules:
       - intent: ask_support
       - action: utter_ask_support
 
+  - rule: Demander le numéro de dossier
+    steps:
+      - intent: ask_dossier_number
+      - action: action_get_dossier_number
+
   - rule: Activer le formulaire de vérification de compte
     steps:
       - intent: start_account_verification
       - action: account_verification_form
       - active_loop: account_verification_form
+    wait_for_user_input: false
+
+  - rule: Handle form responses during account verification
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - intent: confirm_has_account
+      - action: account_verification_form
+    wait_for_user_input: false
+
+  - rule: Handle form responses during account verification - deny
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - intent: deny_has_account
+      - action: account_verification_form
+    wait_for_user_input: false
+
+  - rule: Handle form responses during account verification - access confirm
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - intent: confirm_has_access
+      - action: account_verification_form
+    wait_for_user_input: false
+
+  - rule: Handle form responses during account verification - access deny
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - intent: deny_has_access
+      - action: account_verification_form
+    wait_for_user_input: false
+
+  - rule: Handle chitchat/ask_email during account verification form
+    condition:
+      - active_loop: account_verification_form
+    steps:
+      - intent: chitchat/ask_email
+      - action: utter_ask_email
+
+  - rule: Handle chitchat/ask_cni during account verification form
+    condition:
+      - active_loop: account_verification_form
       - slot_was_set:
-          - email: null
-          - has_account: null
-          - has_access: null
+          - platform: "PGDE"
+    steps:
+      - intent: chitchat/ask_cni
+      - action: utter_ask_cni
 
   - rule: Soumettre le formulaire de vérification - Compte existant avec accès
     condition:
@@ -119,10 +168,10 @@ rules:
       - action: account_verification_form
       - active_loop: null
       - slot_was_set:
-          - email: null
-          - has_account: yes
-          - has_access: yes
+          - has_account: "Oui"
+          - has_access: "Oui"
       - action: utter_account_verified
+
 
   - rule: Gérer l'absence de compte
     condition:
@@ -131,8 +180,9 @@ rules:
       - action: account_verification_form
       - active_loop: null
       - slot_was_set:
+          - has_account: "Non"
           - email: null
-          - has_account: no
+          - cni: null
           - has_access: null
       - action: utter_no_account
 
@@ -143,19 +193,16 @@ rules:
       - action: account_verification_form
       - active_loop: null
       - slot_was_set:
+          - has_account: "Oui"
+          - has_access: "Non"
           - email: null
-          - has_account: yes
-          - has_access: no
+          - cni: null
       - action: utter_no_access
-
-  - rule: Gérer l'absence de compte (alternative condition)
-    condition:
-      - slot_was_set:
-          - has_account: "no"
+  - rule: Demander accès après confirmation d’avoir un compte
     steps:
-      - action: account_verification_form
-      - active_loop: null
-      - slot_was_set:
-          - email: null
-          - has_access: null
-      - action: utter_no_account
+      - intent: confirm_has_account
+      - action: utter_ask_has_access
+  - rule: Rediriger création de compte si pas de compte
+    steps:
+      - intent: deny_has_account
+      - action: utter_ask_pgde_account_creation

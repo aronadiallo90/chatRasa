@@ -45,7 +45,7 @@ stories:
           - platform: "PGDE"
       - action: action_redirect_platform
       - intent: ask_login
-      - action: action_explain_login  # Remplacé utter_ask_pgde_login par action_explain_login
+      - action: action_explain_login
       - intent: go_back_pgde
       - action: utter_pgde_menu
 
@@ -78,26 +78,39 @@ stories:
       - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
-          - platform: "E-Carrière"
+          - platform: "PGDE"
       - action: action_redirect_platform
       - intent: start_account_verification
       - action: account_verification_form
       - active_loop: account_verification_form
-      - intent: provide_email
       - slot_was_set:
-          - email: "test@example.com"
-      - action: action_validate_account
+          - requested_slot: has_account
       - intent: confirm_has_account
       - slot_was_set:
-          - has_account: "yes"
+          - has_account: "Oui"
+      - action: account_verification_form
+      - slot_was_set:
+          - requested_slot: has_access
       - intent: confirm_has_access
       - slot_was_set:
-          - has_access: "yes"
+          - has_access: "Oui"
+      - action: account_verification_form
+      - slot_was_set:
+          - requested_slot: email
+      - intent: provide_email
+      - slot_was_set:
+          - email: "{email}"
+      - action: account_verification_form
+      - slot_was_set:
+          - requested_slot: cni
+      - intent: provide_cni
+      - slot_was_set:
+          - cni: "{cni}"
       - action: account_verification_form
       - active_loop: null
       - action: utter_account_verified
       - intent: access_services
-      - action: utter_E_carriere
+      - action: utter_pgde_menu
 
   # Histoire 6: Vérification de compte sans compte existant
   - story: User verifies account but no account exists
@@ -115,18 +128,16 @@ stories:
       - intent: start_account_verification
       - action: account_verification_form
       - active_loop: account_verification_form
-      - intent: provide_email
       - slot_was_set:
-          - email: "unknown@example.com"
-      - action: action_validate_account
+          - requested_slot: has_account
       - intent: deny_has_account
       - slot_was_set:
-          - has_account: "no"
+          - has_account: "Non"
       - action: account_verification_form
       - active_loop: null
       - action: utter_no_account
       - intent: ask_account_creation
-      - action: action_explain_account_creation  # Remplacé utter_ask_pgde_account_creation par action_explain_account_creation
+      - action: action_explain_account_creation
       - intent: go_back_pgde
       - action: utter_pgde_menu
 
