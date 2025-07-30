@@ -32,26 +32,13 @@ intents:
   - chitchat/ask_email
   - chitchat/ask_cni
   - ask_dossier_number
+  - affirm
 
 entities:
   - nom
   - platform
   - email
   - cni 
-forms:
-  account_creation_form:
-    required_slots:
-      - nom
-      - email
-      - has_account
-      - has_access
-  account_verification_form:
-    required_slots: []
-    
-        
-      
-      
-    # required_slots: []
 slots:
   platform:
     type: text
@@ -68,25 +55,19 @@ slots:
   email:
     type: text
     influence_conversation: false
-    
     mappings:
       - type: from_entity
         entity: email
       - type: from_text
-        conditions:
-          - active_loop: account_verification_form
-            requested_slot: email
+        intent: provide_email
   cni:
     type: text
     influence_conversation: false
-  
     mappings:
       - type: from_entity
         entity: cni
       - type: from_text
-        conditions:
-          - active_loop: account_verification_form
-            requested_slot: cni
+        intent: provide_cni
   has_account:
     type: categorical
     values:
@@ -94,7 +75,12 @@ slots:
       - Non
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_intent
+        intent: confirm_has_account
+        value: "Oui"
+      - type: from_intent
+        intent: deny_has_account
+        value: "Non"
         
   has_access:
     type: categorical
@@ -103,7 +89,12 @@ slots:
       - Non
     influence_conversation: true
     mappings:
-      - type: custom
+      - type: from_intent
+        intent: confirm_has_access
+        value: "Oui"
+      - type: from_intent
+        intent: deny_has_access
+        value: "Non"
 responses:
   utter_greet:
     - text: "Bienvenue ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\n\n Dalal ak Jàmm 😊 !\n\n Pour commencer, puis-je connaître votre nom, s’il vous plaît ?"
@@ -282,10 +273,12 @@ actions:
   - action_explain_login
   - action_explain_password_reset
   - action_reset_nom
-  # - action_validate_name
   - action_validate_account
-  - account_verification_form
-  - action_explain_account_verification
+  - action_start_account_verification
+  - action_handle_has_account
+  - action_handle_has_access
+  - action_handle_email
+  - action_handle_cni
   - action_get_dossier_number
   
 

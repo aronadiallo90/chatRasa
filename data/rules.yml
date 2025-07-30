@@ -106,103 +106,38 @@ rules:
       - intent: ask_dossier_number
       - action: action_get_dossier_number
 
-  - rule: Activer le formulaire de vérification de compte
+  - rule: Commencer la vérification de compte
     steps:
       - intent: start_account_verification
-      - action: account_verification_form
-      - active_loop: account_verification_form
-    wait_for_user_input: false
+      - action: action_start_account_verification
 
-  - rule: Handle form responses during account verification
-    condition:
-      - active_loop: account_verification_form
+  - rule: Gérer la réponse has_account
     steps:
       - intent: confirm_has_account
-      - action: account_verification_form
-    wait_for_user_input: false
+      - action: action_handle_has_account
 
-  - rule: Handle form responses during account verification - deny
-    condition:
-      - active_loop: account_verification_form
+  - rule: Gérer la réponse has_account - Non
     steps:
       - intent: deny_has_account
-      - action: account_verification_form
-    wait_for_user_input: false
+      - action: action_handle_has_account
 
-  - rule: Handle form responses during account verification - access confirm
-    condition:
-      - active_loop: account_verification_form
+  - rule: Gérer la réponse has_access
     steps:
       - intent: confirm_has_access
-      - action: account_verification_form
-    wait_for_user_input: false
+      - action: action_handle_has_access
 
-  - rule: Handle form responses during account verification - access deny
-    condition:
-      - active_loop: account_verification_form
+  - rule: Gérer la réponse has_access - Non
     steps:
       - intent: deny_has_access
-      - action: account_verification_form
-    wait_for_user_input: false
+      - action: action_handle_has_access
 
-  - rule: Handle chitchat/ask_email during account verification form
-    condition:
-      - active_loop: account_verification_form
+  - rule: Gérer l'email fourni
     steps:
-      - intent: chitchat/ask_email
-      - action: utter_ask_email
+      - intent: provide_email
+      - action: action_handle_email
 
-  - rule: Handle chitchat/ask_cni during account verification form
-    condition:
-      - active_loop: account_verification_form
-      - slot_was_set:
-          - platform: "PGDE"
+  - rule: Gérer le CNI fourni
     steps:
-      - intent: chitchat/ask_cni
-      - action: utter_ask_cni
+      - intent: provide_cni
+      - action: action_handle_cni
 
-  - rule: Soumettre le formulaire de vérification - Compte existant avec accès
-    condition:
-      - active_loop: account_verification_form
-    steps:
-      - action: account_verification_form
-      - active_loop: null
-      - slot_was_set:
-          - has_account: "Oui"
-          - has_access: "Oui"
-      - action: utter_account_verified
-
-
-  - rule: Gérer l'absence de compte
-    condition:
-      - active_loop: account_verification_form
-    steps:
-      - action: account_verification_form
-      - active_loop: null
-      - slot_was_set:
-          - has_account: "Non"
-          - email: null
-          - cni: null
-          - has_access: null
-      - action: utter_no_account
-
-  - rule: Gérer les problèmes d'accès
-    condition:
-      - active_loop: account_verification_form
-    steps:
-      - action: account_verification_form
-      - active_loop: null
-      - slot_was_set:
-          - has_account: "Oui"
-          - has_access: "Non"
-          - email: null
-          - cni: null
-      - action: utter_no_access
-  - rule: Demander accès après confirmation d’avoir un compte
-    steps:
-      - intent: confirm_has_account
-      - action: utter_ask_has_access
-  - rule: Rediriger création de compte si pas de compte
-    steps:
-      - intent: deny_has_account
-      - action: utter_ask_pgde_account_creation

@@ -81,36 +81,25 @@ stories:
           - platform: "PGDE"
       - action: action_redirect_platform
       - intent: start_account_verification
-      - action: account_verification_form
-      - active_loop: account_verification_form
-      - slot_was_set:
-          - requested_slot: has_account
+      - action: action_start_account_verification
       - intent: confirm_has_account
       - slot_was_set:
           - has_account: "Oui"
-      - action: account_verification_form
-      - slot_was_set:
-          - requested_slot: has_access
+      - action: action_handle_has_account
       - intent: confirm_has_access
       - slot_was_set:
           - has_access: "Oui"
-      - action: account_verification_form
-      - slot_was_set:
-          - requested_slot: email
+      - action: action_handle_has_access
       - intent: provide_email
       - slot_was_set:
           - email: "{email}"
-      - action: account_verification_form
-      - slot_was_set:
-          - requested_slot: cni
+      - action: action_handle_email
       - intent: provide_cni
       - slot_was_set:
           - cni: "{cni}"
-      - action: account_verification_form
-      - active_loop: null
-      - action: utter_account_verified
-      - intent: access_services
-      - action: utter_pgde_menu
+      - action: action_handle_cni
+      - intent: ask_dossier_number
+      - action: action_get_dossier_number
 
   # Histoire 6: Vérification de compte sans compte existant
   - story: User verifies account but no account exists
@@ -126,20 +115,13 @@ stories:
           - platform: "PGDE"
       - action: action_redirect_platform
       - intent: start_account_verification
-      - action: account_verification_form
-      - active_loop: account_verification_form
-      - slot_was_set:
-          - requested_slot: has_account
+      - action: action_start_account_verification
       - intent: deny_has_account
       - slot_was_set:
           - has_account: "Non"
-      - action: account_verification_form
-      - active_loop: null
-      - action: utter_no_account
+      - action: action_handle_has_account
       - intent: ask_account_creation
       - action: action_explain_account_creation
-      - intent: go_back_pgde
-      - action: utter_pgde_menu
 
   # Histoire 7: Demande d'attestation
   - story: User requests attestation

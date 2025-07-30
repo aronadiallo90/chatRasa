@@ -1,5 +1,4 @@
-
-(.venv) C:\Users\Arona\Desktop\fp\test\pycharm\pycharm>rasa run actions --debug
+(.venv) C:\Users\Arona\Desktop\fp\test\pycharm\pycharm>rasa train
 C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\core\tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
   Base: DeclarativeMeta = declarative_base()
 C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
@@ -19,29 +18,50 @@ Implementing implicit namespace packages (as specified in PEP 420) is preferred 
 C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
 Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
   declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\sanic_cors\extension.py:39: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
-  SANIC_VERSION = LooseVersion(sanic_version)
-2025-07-30 11:35:22 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
-2025-07-30 11:35:22 INFO     rasa_sdk.executor  - Registered function for 'action_redirect_platform'.
-2025-07-30 11:35:22 INFO     rasa_sdk.executor  - Registered function for 'action_explain_account_creation'.
-2025-07-30 11:35:22 INFO     rasa_sdk.executor  - Registered function for 'action_explain_password_reset'.
-2025-07-30 11:35:22 INFO     rasa_sdk.executor  - Registered function for 'action_get_dossier_number'.
-2025-07-30 11:35:22 INFO     rasa_sdk.executor  - Registered function for 'account_verification_form'.
-2025-07-30 11:35:22 INFO     rasa_sdk.endpoint  - Starting plugins...
-2025-07-30 11:35:22 DEBUG    rasa_sdk.plugin  - No plugins found: No module named 'rasa_sdk_plugins'
-2025-07-30 11:35:23 INFO     rasa_sdk.endpoint  - Action endpoint is up and running on http://0.0.0.0:5055
-2025-07-30 11:35:23 DEBUG    rasa_sdk.utils  - Using the default number of Sanic workers (1).
-2025-07-30 11:35:47 DEBUG    rasa_sdk.executor  - Received request to run 'action_redirect_platform'
-2025-07-30 11:35:47 DEBUG    rasa_sdk.executor  - Finished running 'action_redirect_platform'
-2025-07-30 11:35:51 DEBUG    rasa_sdk.executor  - Received request to run 'account_verification_form'
-DEBUG: required_slots called. has_account=None, has_access=None, email=None, cni=None, platform=PGDE
-DEBUG: required_slots returning: ['has_account']
-DEBUG: extract_has_account - intent: start_account_verification, has_account_current: None, has_access_current: None
-DEBUG: extract_has_account returning None
-DEBUG: required_slots called. has_account=None, has_access=None, email=None, cni=None, platform=PGDE
-DEBUG: required_slots returning: ['has_account']
-DEBUG: validate_has_account called with slot_value: None
-DEBUG: validate_has_account - no valid value, asking question
-DEBUG: required_slots called. has_account=None, has_access=None, email=None, cni=None, platform=PGDE
-DEBUG: required_slots returning: ['has_account']
-2025-07-30 11:35:51 DEBUG    rasa_sdk.executor  - Finished running 'account_verification_form'
+2025-07-30 15:37:23 INFO     rasa.cli.train  - Started validating domain and training data...
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\tensorflow\lite\python\util.py:52: DeprecationWarning: jax.xla_computation is deprecated. Please use the AOT APIs.
+  from jax import xla_computation as _xla_computation
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The following duplicated intents have been found across multiple domain files: chitchat
+  More info at https://rasa.com/docs/rasa/domain
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The form 'account_verification_form' is used in the 'User verifies account successfully' block, but it is not listed in the domain file. You should add it to your domain file!
+  More info at https://rasa.com/docs/rasa/forms
+2025-07-30 15:37:54 INFO     rasa.validator  - Validating intents...
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The intent 'chitchat/ask_cni' is listed in the domain file, but is not found in the NLU training data.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The intent 'chitchat/ask_email' is listed in the domain file, but is not found in the NLU training data.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: There is a message in the training data labeled with intent 'affirm'. This intent is not listed in your domain. You should need to add that intent to your domain file!
+  More info at https://rasa.com/docs/rasa/domain
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The intent 'chitchat' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The intent 'chitchat/ask_cni' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The intent 'chitchat/ask_email' is not used in any story or rule.
+2025-07-30 15:37:54 INFO     rasa.validator  - Validating uniqueness of intents and stories...
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The example 'Oui' was found labeled with multiple different intents in the training data. Each annotated message should only appear with one intent. You should fix that conflict The example is labeled with: affirm, confirm_has_access, confirm_has_account.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The example 'non' was found labeled with multiple different intents in the training data. Each annotated message should only appear with one intent. You should fix that conflict The example is labeled with: deny_has_access, deny_has_account.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The example 'Non' was found labeled with multiple different intents in the training data. Each annotated message should only appear with one intent. You should fix that conflict The example is labeled with: deny_has_access, deny_has_account.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The example 'no' was found labeled with multiple different intents in the training data. Each annotated message should only appear with one intent. You should fix that conflict The example is labeled with: deny_has_access, deny_has_account.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The example 'No' was found labeled with multiple different intents in the training data. Each annotated message should only appear with one intent. You should fix that conflict The example is labeled with: deny_has_access, deny_has_account.
+2025-07-30 15:37:54 INFO     rasa.validator  - Validating utterances...
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_pgde_login' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_pgde_password_reset' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_email' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_pgde_account_creation' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_dossier_number' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_login' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_chitchat' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_cni' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_has_access' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_password_reset' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_has_account' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_ask_account_creation' is not used in any story or rule.
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\io.py:100: UserWarning: The utterance 'utter_server_error' is not used in any story or rule.
+2025-07-30 15:37:54 INFO     rasa.validator  - Story structure validation...
+Processed story blocks:   0%|                                                                  | 0/10 [00:00<?, ?it/s, # trackers=1]2025-07-30 15:37:54 ERROR    rasa.shared.core.trackers  - Tried to set non existent slot 'requested_slot'. Make sure you added all your slots to your domain file.
+2025-07-30 15:37:54 ERROR    rasa.shared.core.trackers  - Tried to set non existent slot 'requested_slot'. Make sure you added all your slots to your domain file.
+2025-07-30 15:37:54 ERROR    rasa.shared.core.trackers  - Tried to set non existent slot 'requested_slot'. Make sure you added all your slots to your domain file.
+2025-07-30 15:37:54 ERROR    rasa.shared.core.trackers  - Tried to set non existent slot 'requested_slot'. Make sure you added all your slots to your domain file.
+Processed story blocks:   0%|                                                                  | 0/10 [00:00<?, ?it/s, # trackers=1]2025-07-30 15:37:54 ERROR    rasa.shared.core.trackers  - Tried to set non existent slot 'requested_slot'. Make sure you added all your slots to your domain file.
+Processed story blocks: 100%|████████████████████████████████████████████████████████| 10/10 [00:00<00:00, 196.76it/s, # trackers=1]
+2025-07-30 15:37:54 INFO     rasa.core.training.story_conflict  - Considering all preceding turns for conflict analysis.
+2025-07-30 15:37:54 INFO     rasa.validator  - No story structure conflicts found.
+Project validation completed with errors.
+
+(.venv) C:\Users\Arona\Desktop\fp\test\pycharm\pycharm>

@@ -69,8 +69,9 @@ nlu:
  
   - intent: affirm
     examples: |
-      - Oui
       - Bien sûr
+      - D'accord
+      - OK
 
 
   - intent: Attestation
@@ -91,7 +92,7 @@ nlu:
         - Mon email est [user@example.com](email)
         - [test@email.com](email)
         - Voici mon email : [contact@domain.com](email)
-        - mon email est user@example.com
+        - mon email est user@example.com  
         - user@example.com
         - voici mon email : aliou@gmail.com
         - aliou@gmail.com
@@ -103,6 +104,18 @@ nlu:
         - Mon adresse email : [test@mpf.sn](email)
         - test@mpf.sn
         - Email : test@mpf.sn
+        - [aronadiallo90@gmail.com](email)
+        - aronadiallo90@gmail.com
+        - [john.doe123@yahoo.com](email)
+        - john.doe123@yahoo.com
+        - [marie.martin@hotmail.fr](email)
+        - marie.martin@hotmail.fr
+        - [papa.sow45@orange.sn](email)
+        - papa.sow45@orange.sn
+        - [aminata_fall@gmail.com](email)
+        - aminata_fall@gmail.com
+        - [cheikh.diop2023@outlook.com](email)
+        - cheikh.diop2023@outlook.com
   - intent: provide_cni
     examples: |
         - Mon CNI est [1234567890123](cni)
@@ -130,15 +143,15 @@ nlu:
       - Oui, je peux me connecter à mon compte
       - J'ai accès
       - Accès disponible
-      - Oui
+      - Oui j'ai accès
   - intent: confirm_has_account
     examples: |
       - Oui, j'ai un compte
       - Oui, je suis inscrit
       - J'ai déjà un compte
       - Compte existant
-      - Je suis enregistré 
-      - Oui
+      - Je suis enregistré
+      - Oui j'ai un compte
       
   - intent: deny_has_access
     examples: |
@@ -147,7 +160,7 @@ nlu:
       - Pas d'accès à mon compte
       - Aucun accès
       - Impossible de me connecter
-      - Non
+      - Je n'ai pas accès
   - intent: deny_has_account
     examples: |
       - Non, je n'ai pas de compte
@@ -155,7 +168,7 @@ nlu:
       - Pas de compte
       - Aucun compte
       - Je ne suis pas enregistré
-      - Non
+      - Pas de compte existant
   - intent: start_account_verification
     examples: |
         - Vérifier mon compte
