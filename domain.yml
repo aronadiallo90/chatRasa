@@ -173,15 +173,15 @@ responses:
 
 
   utter_ask_pgde_account_creation:
-    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n⭐ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n⭐ Cliquez sur **Créer un compte**.\n\n⭐ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n⭐ Validez votre inscription via le mail de confirmation."
+    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur **Créer un compte**.\n\n3️⃣ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
       buttons:
         - title: "Retour"
           payload: "/go_back_pgde"
   utter_server_error:
-    - text: "Une erreur s'est produite lors de la communication avec le serveur. Veuillez réessayer ou contacter le support à support@fonctionpublique.gouv.sn."
+    - text: "Une erreur s'est produite . Veuillez réessayer ou contacter le support à support@fonctionpublique.gouv.sn."
 
   utter_ask_pgde_login:
-    - text: "Pour vous **connecter** à **PGDE** :\n\n⭐ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n⭐ Saisissez votre **email** et votre **mot de passe**.\n\n⭐ Cliquez sur **'Se connecter'**."
+    - text: "Pour vous **connecter** à **PGDE** :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
       buttons:                                                                                          
         - title: "Retour"
           payload: "/go_back_pgde"
@@ -329,5 +329,5 @@ actions:
 
 
 session_config:
-  session_expiration_time: 60
+  session_expiration_time: 5
   carry_over_slots_to_new_session: true

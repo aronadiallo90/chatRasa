@@ -183,6 +183,26 @@ class ActionExplainAccountCreation(Action):
         return []
 
 
+class ActionExplainLogin(Action):
+    def name(self) -> Text:
+        return "action_explain_login"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        platform = tracker.get_slot("platform")
+
+        if platform == "E-Carrière":
+            dispatcher.utter_message(response="utter_ask_login")
+        elif platform == "PGDE":
+            dispatcher.utter_message(response="utter_ask_pgde_login")
+        else:
+            dispatcher.utter_message(response="utter_ask_login")
+
+        return []
+
+
 class ActionExplainPasswordReset(Action):
     def name(self) -> Text:
         return "action_explain_password_reset"
