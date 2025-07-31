@@ -69,12 +69,22 @@ rules:
           - nom
       - action: utter_greet_with_name
 
-  - rule: Saluer l'utilisateur avec le nom saisi
+  - rule: Saluer l'utilisateur avec le nom saisi - entity
     steps:
       - intent: provide_name
       - slot_was_set:
           - nom
       - action: utter_greet_with_name
+
+  - rule: Saluer l'utilisateur avec le nom saisi - fallback
+    steps:
+      - intent: provide_name
+      - action: action_handle_name
+
+  - rule: Fallback pour capture du nom après salutation
+    steps:
+      - action: utter_greet
+      - action: action_handle_name
 
   - rule: Gérer la réinitialisation du mot de passe
     steps:
@@ -140,4 +150,14 @@ rules:
     steps:
       - intent: provide_cni
       - action: action_handle_cni
+
+  - rule: Confirmer réinitialisation mot de passe
+    steps:
+      - intent: confirm_password_reset
+      - action: action_confirm_password_reset
+
+  - rule: Annuler réinitialisation mot de passe
+    steps:
+      - intent: deny_password_reset
+      - action: action_deny_password_reset
 

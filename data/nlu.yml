@@ -199,6 +199,22 @@ nlu:
       - Consulter mon dossier
       - Voir mon numéro de dossier
 
+  - intent: confirm_password_reset
+    examples: |
+      - Oui, réinitialiser
+      - Confirmer la réinitialisation
+      - Oui, envoyez le lien
+      - Je confirme
+      - Oui s'il vous plaît
+
+  - intent: deny_password_reset
+    examples: |
+      - Non, annuler
+      - Annuler la réinitialisation
+      - Non merci
+      - Je ne veux pas
+      - Annuler
+
 
 
   - intent: ask_account_creation
@@ -289,59 +305,83 @@ nlu:
   - intent: provide_name
     examples: |
       - Je m'appelle [Pape Waly](nom)
-      - Je m'appelle [Ma Daguen](nom)
-      - Je m'appelle [Arona DIA](nom)
-      - Je m'appelle [Jean Paul Ndiaye](nom)
-      - Je m'appelle [El Hadji Fall](nom)
-      - Je m'appelle [Cheikh Tidiane Diop](nom)
-      - Je m'appelle [Mouhamed Aliou Sow](nom)
-      - Je m'appelle [Fatou Kiné Mbaye](nom)
-      - Je m'appelle [Serigne Mbacké Ndao](nom)
-      - Je m'appelle [Marième Diallo](nom)
-      - Mon nom est [Pape Waly](nom)
-      - Mon nom est [Ma Daguen](nom)
+      - Je m'appelle [Fatou Diop](nom)
       - Mon nom est [Arona DIA](nom)
-      - Mon nom est [Jean Paul Ndiaye](nom)
       - Mon nom est [El Hadji Fall](nom)
-      - Mon nom est [Cheikh Tidiane Diop](nom)
-      - Mon nom est [Fatou Kiné Mbaye](nom)
-      - Mon nom est [Serigne Mbacké Ndao](nom)
-      - Mon nom est [Marième Diallo](nom)
-      - [Pape Waly](nom)
-      - [Ma Daguen](nom)
-      - [Arona DIA](nom)
-      - [DIA](nom)
-      - [Sy](nom)
-      - [Sal](nom)
-      - [Salif](nom)
-      - [Pa](nom)
-      - [Nd](nom)
-      - [Sow](nom)
-      - [Jean](nom)
-      - [El](nom)
-      - [Se](nom)
-      - [Jean-Paul](nom)
-      - [El Hadji](nom)
-      - [Cheikh](nom)
-      - [Tidiane](nom)
-      - [Diop](nom)
+      - [Cheikh Tidiane](nom)
       - [Marième](nom)
-      - [Diallo](nom)
       - [Ousmane](nom)
-      - [Bassirou](nom)
-      - [Antoine](nom)
-      - [Coumba](nom)
-      - [Ndeye](nom)
-      - [Jean-Pierre](nom)
-      - [Aïssatou](nom)
-      - [Moussa](nom)
-      - [Khadija](nom)
-      - [Fatou](nom)
-      - [Arona](nom)
-      - mon nom est [lala](nom)
-      - je m'appelle [lala](nom)
-      - c'est [lala](nom)
-      - [lala](nom)
+      - [Marie](nom)
+      - mon nom est [Jean](nom)
+      - je m'appelle [Aminata](nom)
+      - je mappel [Sy](nom)
+      - je mapel [Modou](nom)
+      - je mappelle [Astou](nom)
+      - mon om est [Ibrahima](nom)
+      - mn nom est [Coumba](nom)
+      - mon nom [Binta](nom)
+      - c'est [Omar](nom)
+      - cest [Ndeye](nom)
+      - se [Moussa](nom)
+      - moi c'est [Awa](nom)
+      - moi cest [Lamine](nom)
+      - moi [Khadija](nom)
+      - je suis [Amadou](nom)
+      - je sui [Dienaba](nom)
+      - [Thierno](nom)
+      - [Aissatou](nom)
+      - [Babacar](nom)
+      - [Ndèye](nom)
+      - [Alioune](nom)
+      - [Mariama](nom)
+      - [Seynabou](nom)
+      - [Abdoulaye](nom)
+      - je m'appelle [Mamadou Lamine](nom)
+      - mon nom est [Cheikh Ahmadou Bamba](nom)
+      - je mappel [Sokhna Fatou](nom)
+      - c'est [El Hadji Malick](nom)
+      - moi c'est [Ndeye Fatou](nom)
+      - [Serigne Fallou](nom)
+      - [Bocar Pathé](nom)
+      - [Mame Diarra](nom)
+      - [Kine Fatou](nom)
+      - [Dieynaba Niang](nom)
+      - je suis [Moustapha Niasse](nom)
+      - mon om est [Aida Mbaye](nom)
+      - se [Oumar Sy](nom)
+      - [Bineta Sarr](nom)
+      - [Khady Diouf](nom)
+      - [Modou Mbacké](nom)
+      - [Rama Kane](nom)
+      - [Saliou Samb](nom)
+      - [Maimouna Ba](nom)
+      - [Ibou Faye](nom)
+      - je mappelle [Ndèye Awa](nom)
+      - cest [Cheikh Tidiane Gadio](nom)
+      - [Yacine Dia](nom)
+      - [Rokhaya Gueye](nom)
+      - [Mamour Diallo](nom)
+      - [Adama Fofana](nom)
+      - [Fatimata Tall](nom)
+      - [Ibrahima Sarr](nom)
+      - [Anta Diop](nom)
+      - [Boubacar Camara](nom)
+      - [Nogaye Fall](nom)
+      - [Alpha Conde](nom)
+      - [Mariétou Sow](nom)
+      - [Demba Ba](nom)
+      - [Coumba Gaye](nom)
+      - [Yankoba Diatara](nom)
+      - [Baye Niass](nom)
+      - [Aicha Diagne](nom)
+      - [Mamadou Moustapha](nom)
+      - [Ndella Madior](nom)
+      - [Lamine Sagna](nom)
+      - [Safietou Thiam](nom)
+      - [Pape Ibra](nom)
+      - [Daba Seye](nom)
+      - [Mor Talla](nom)
+      - [Gnima Mbengue](nom)
   
 
   - intent: go_back_autres
@@ -361,18 +401,3 @@ nlu:
 
 
 
-  - lookup: nom
-    examples: |
-          - +fatou Binetou Mariane
-          - ;mouctar
-          - A
-          - A Nne Marie Chantal
-          - A%inata Ala Ella
-          - A?ss? Ndaw
-          - a
-          - aa
-          - aaa
-          - amadou Ndene
-          - amdou
-          - aron Arona Sakho
-          - aron Josue Assimen

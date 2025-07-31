@@ -33,6 +33,8 @@ intents:
   - chitchat/ask_cni
   - ask_dossier_number
   - affirm
+  - confirm_password_reset
+  - deny_password_reset
 
 entities:
   - nom
@@ -50,8 +52,27 @@ slots:
     type: text
     influence_conversation: true
     mappings:
-      - type: from_entity
-        entity: nom
+      - type: custom
+  nom_officiel:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  username:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  dossier_number:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  user_id:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
   email:
     type: text
     influence_conversation: false
@@ -99,15 +120,15 @@ responses:
   utter_greet:
     - text: "Bienvenue ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\n\n Dalal ak Jàmm 😊 !\n\n Pour commencer, puis-je connaître votre nom, s’il vous plaît ?"
   utter_greet_with_name:
-  - text: "Bonjour {nom}.\n\n En quoi puis-je vous aider aujourd'hui ?"
+  - text: "Bonjour {nom} ! 👋\n\n🎯 **Que souhaitez-vous faire aujourd'hui ?**\n\n💡 *Choisissez la plateforme qui vous intéresse :*"
     buttons:
-      - title: "E-CARRIERE"
+      - title: "💼 E-CARRIERE"
         payload: '/choose_platform{{"platform": "E-Carrière"}}'
-      - title: "Demande d'emploi (PGDE)"
+      - title: "🎯 Demande d'emploi (PGDE)"
         payload: '/choose_platform{{"platform": "PGDE"}}'
-      - title: "CRCE"
+      - title: "📜 CRCE"
         payload: '/choose_platform{{"platform": "CRCE"}}'
-      - title: "Attestation"
+      - title: "📄 Attestation"
         payload: '/choose_platform{{"platform": "Attestation"}}'
   utter_E_carriere:
     - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique. Comment puis-je vous assister aujourd’hui ?"
@@ -143,18 +164,12 @@ responses:
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_pgde_menu:
-    - text: "Vous souhaitez en savoir plus sur la **PGDE** 💼, la plateforme de gestion des demandes d’emploi à la fonction publique. En quoi puis-je vous aider ?"
+    - text: "Excellent choix ! 🚀\n\nLa **PGDE** est une plateforme numérique permettant à **tous les Sénégalais**, qu'ils soient au pays ou dans la diaspora, de **postuler à des offres d'emploi dans la Fonction publique**.\n\nPrêt·e à explorer ? 😊\n\n👉 Avez-vous déjà un compte sur la plateforme ?"
       buttons:
-        - title: "Je veux m'inscrire"
-          payload: "/ask_account_creation"
-        - title: "Se connecter"
-          payload: "/ask_login"
-        - title: "Mot de passe oublié?"
-          payload: "/ask_password_reset"
-        - title: "Vérifier mon compte"
-          payload: "/start_account_verification"
-        - title: "Retour"
-          payload: "/go_back_greet_with_name"
+        - title: "Oui"
+          payload: "/confirm_has_account"
+        - title: "Non"
+          payload: "/deny_has_account"
 
 
   utter_ask_pgde_account_creation:
@@ -214,17 +229,17 @@ responses:
   utter_ask_email:
     - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
-    - text: "Veuillez entrer votre numéro de CNI (Carte Nationale d'Identité sénégalaise) pour vérifier votre compte sur PGDE."
+    - text: "Super ! 🎉\n\nPour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 13 chiffres*"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
     - text: "Votre adresse email est celle que vous avez utilisée lors de votre inscription sur la plateforme. Vérifiez vos emails pour retrouver les communications officielles."
   utter_chitchat/ask_cni:  # Réponse pour l'intent chitchat/ask_cni
     - text: "Pour connaître votre numéro de CNI, vérifiez votre Carte Nationale d'Identité sénégalaise. Ce numéro se trouve généralement au recto de votre carte."
   utter_ask_has_account:
-    - text: "Avez-vous déjà un compte sur {platform} ?"
+    - text: "Avez-vous déjà un compte sur {platform} ?\n\n💡 *Si vous n'êtes pas sûr, choisissez 'Oui' et nous vérifierons ensemble*"
       buttons:
-        - title: "Oui"
+        - title: "✅ Oui"
           payload: "/confirm_has_account"
-        - title: "Non"
+        - title: "❌ Non"
           payload: "/deny_has_account"
   utter_ask_has_access:
     - text: "Avez-vous accès à votre compte (identifiants valides) ?"
@@ -234,12 +249,8 @@ responses:
         - title: "Non"
           payload: "/deny_has_access"
   utter_no_account:
-    - text: "Aucun compte trouvé pour cet email. Voulez-vous réessayer ou créer un compte ?"
+    - text: "Pas de souci {nom} ! 👌\n\nJe vous redirige tout de suite vers la page de **création de compte** pour démarrer votre aventure 👇\n\n[Créer un compte PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
       buttons:
-        - title: "Réessayer"
-          payload: "/provide_email"
-        - title: "Créer un compte"
-          payload: "/ask_account_creation"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_no_access:
@@ -252,12 +263,38 @@ responses:
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_account_verified:
-    - text: "✅ Votre compte PGDE est vérifié ! Vos informations correspondent bien à nos enregistrements."
+    - text: "Parfait ✅ {nom} ! vous avez bel et bien un compte. Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
       buttons:
-        - title: "Connaître mon numéro de dossier"
-          payload: "/ask_dossier_number"
-        - title: "Accéder aux services"
-          payload: "/access_services"
+        - title: "✅ Oui, j'ai accès"
+          payload: "/confirm_has_access"
+        - title: "❌ Non, mot de passe oublié"
+          payload: "/deny_has_access"
+  utter_account_access_confirmed:
+    - text: "🎉 Génial ! Vous pouvez vous connecter normalement via ce lien :\n\n🔗 [**Se connecter à PGDE**](https://emploi-fpublique.sec.gouv.sn/login)\n\n✨ Bonne chance dans vos démarches ! 🤝\n\n💡 *Besoin d'autre chose ?*"
+      buttons:
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "🔄 Autre vérification"
+          payload: "/start_account_verification"
+  utter_confirm_password_reset:
+    - text: "Pas de panique {nom}, ça arrive 😉\n\nPour réinitialiser votre mot de passe, je vais envoyer un lien de réinitialisation à votre adresse email :\n\n📧 {email}\n\nConfirmez-vous cette réinitialisation ?"
+      buttons:
+        - title: "Oui, réinitialiser"
+          payload: "/confirm_password_reset"
+        - title: "Non, annuler"
+          payload: "/deny_password_reset"
+  utter_password_reset_success:
+    - text: "✅ Demande de réinitialisation envoyée !\n\n📧 Vérifiez votre email **{email}** pour le lien de réinitialisation.\n\n⚠️ Pensez à vérifier vos spams si vous ne voyez pas l'email.\n\nUne fois votre mot de passe changé, vous pourrez vous connecter :\n\n[Se connecter à PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
+      buttons:
+        - title: "Se connecter à PGDE"
+          payload: "https://emploi-fpublique.sec.gouv.sn/login"
+        - title: "Retour"
+          payload: "/go_back_greet_with_name"
+  utter_password_reset_cancelled:
+    - text: "Réinitialisation annulée ❌\n\nSi vous vous souvenez de votre mot de passe, vous pouvez essayer de vous connecter :\n\n[Se connecter à PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
+      buttons:
+        - title: "Se connecter à PGDE"
+          payload: "https://emploi-fpublique.sec.gouv.sn/login"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_dossier_number:
@@ -274,12 +311,18 @@ actions:
   - action_explain_password_reset
   - action_reset_nom
   - action_validate_account
+  - action_handle_name
   - action_start_account_verification
   - action_handle_has_account
   - action_handle_has_access
   - action_handle_email
   - action_handle_cni
+  - action_confirm_password_reset
+  - action_deny_password_reset
   - action_get_dossier_number
+  - action_reset_account_data
+  - action_reset_for_new_platform
+  - action_soft_reset
   
 
 
