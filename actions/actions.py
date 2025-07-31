@@ -5,6 +5,73 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
 
+class ECarriereAPIService:
+    """
+    Service pour les appels API E-Carrière avec intégration SQL Server
+    """
+    
+    @staticmethod
+    def verify_user_by_cni_matricule(cni: str, matricule: str) -> Optional[Dict[str, Any]]:
+        """
+        Vérifier si un utilisateur existe par CNI + Matricule dans la base SQL Server
+        
+        Returns:
+            dict: {id: str, nom: str, matricule: str, projets: list} si trouvé
+            None: si non trouvé
+        """
+        try:
+            import pyodbc
+            
+            # Configuration SQL Server
+            server = "10.4.116.87,1433"
+            database = "referentiel_fudpe_new"
+            username = "sa"
+            password = "AdieAdie1"
+            
+            print(f"DEBUG ECarriereAPIService: Tentative de connexion à {server}/{database} avec CNI={cni}, Matricule={matricule}")
+            
+            # Connexion à SQL Server
+            conn = pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={server};"
+                f"DATABASE={database};"
+                f"UID={username};"
+                f"PWD={password}"
+            )
+            
+            cursor = conn.cursor()
+            
+            # Requête pour récupérer l'utilisateur par CNI + Matricule
+            # Utiliser la vraie structure de table agent
+            query = """
+                SELECT agt_id, agt_cni, agt_matricule_interne, agt_nom, agt_prenom, agt_affectation_id 
+                FROM agent 
+                WHERE agt_cni = ? AND agt_matricule_interne = ? AND agt_deleted = 0
+            """
+            
+            cursor.execute(query, (cni, matricule))
+            user = cursor.fetchone()
+            
+            if user:
+                return {
+                    "id": user[0],  # agt_id
+                    "nom": f"{user[4]} {user[3]}",  # agt_prenom + agt_nom
+                    "matricule": user[2],  # agt_matricule_interne
+                    "cni": user[1],  # agt_cni
+                    "projets": f"Affectation ID: {user[5]}" if user[5] else "Aucune affectation"
+                }
+            
+            return None
+            
+        except Exception as e:
+            print(f"Erreur SQL Server E-Carrière: {e}")
+            return None
+        
+        finally:
+            if 'conn' in locals():
+                conn.close()
+
+
 class PGDEAPIService:
     """
     Service pour les appels API PGDE avec intégration MySQL
@@ -352,12 +419,19 @@ class ActionHandleHasAccount(Action):
             if platform == "PGDE":
                 # Pour PGDE : demander CNI directement
                 dispatcher.utter_message(response="utter_ask_cni")
+            elif platform == "E-Carrière":
+                # Pour E-Carrière : demander CNI d'abord
+                dispatcher.utter_message(response="utter_ask_cni_ecarriere")
             else:
                 # Pour autres plateformes : demander accès
                 dispatcher.utter_message(response="utter_ask_has_access")
             return [SlotSet("has_account", "Oui")]
         elif intent == "deny_has_account":
-            dispatcher.utter_message(response="utter_no_account")
+            # Adapter le message selon la plateforme
+            if platform == "E-Carrière":
+                dispatcher.utter_message(text="Pas de souci ! 👌\n\nPour créer un compte E-Carrière, vous devez d'abord être un agent de la fonction publique.\n\nVeuillez contacter votre administration pour l'activation de votre compte.")
+            else:
+                dispatcher.utter_message(response="utter_no_account")
             return [SlotSet("has_account", "Non")]
         
         return []
@@ -380,6 +454,9 @@ class ActionHandleHasAccess(Action):
                 if platform == "PGDE":
                     # Pour PGDE : confirmer connexion
                     dispatcher.utter_message(response="utter_account_access_confirmed")
+                elif platform == "E-Carrière":
+                    # Pour E-Carrière : confirmer connexion
+                    dispatcher.utter_message(text="🎉 Génial ! Vous pouvez vous connecter normalement via ce lien :\n\n🔗 [**Se connecter à E-Carrière**](https://e-carriere.sec.gouv.sn/#/login)\n\n✨ Bonne chance dans vos démarches ! 🤝")
                 else:
                     # Pour autres plateformes : demander email
                     dispatcher.utter_message(response="utter_ask_email")
@@ -462,39 +539,108 @@ class ActionHandleCNI(Action):
         has_account = tracker.get_slot("has_account")
         platform = tracker.get_slot("platform")
         
-        if has_account == "Oui" and platform == "PGDE":
+        print(f"DEBUG ActionHandleCNI: has_account={has_account}, platform={platform}")
+        
+        if has_account == "Oui" and (platform == "PGDE" or platform == "E-Carrière"):
             # Récupérer le CNI du message
             cni = next(tracker.get_latest_entity_values("cni"), None)
             if not cni:
                 cni = tracker.latest_message.get("text", "").strip()
             
+            print(f"DEBUG ActionHandleCNI: CNI extracted = {cni}")
+            
             # Valider le CNI - accepter 12 ou 13 chiffres
             if cni and cni.isdigit() and len(cni) >= 12 and len(cni) <= 13:
-                # FUTURE: Appel API réel
-                user_data = PGDEAPIService.verify_user_by_cni(cni)
-                
-                if user_data:
-                    # Utiliser les vraies données de la base de données
-                    nom_officiel = user_data["nom"]
-                    username = user_data["username"] 
-                    dossier_number = user_data["id"]  # L'ID est le numéro de dossier
-                    email = user_data["email"]
+                if platform == "PGDE":
+                    # PGDE : Vérification directe avec CNI
+                    user_data = PGDEAPIService.verify_user_by_cni(cni)
                     
-                    dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
-                    return [SlotSet("cni", cni), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
-                else:
-                    # Soit CNI n'existe pas, soit problème de connexion BD
-                    dispatcher.utter_message(
-                        text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI inexistant dans la base de données\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier votre CNI ou contacter le support."
-                    )
-                    dispatcher.utter_message(response="utter_no_account")
-                    return []
+                    if user_data:
+                        # Utiliser les vraies données de la base de données
+                        nom_officiel = user_data["nom"]
+                        username = user_data["username"] 
+                        dossier_number = user_data["id"]  # L'ID est le numéro de dossier
+                        email = user_data["email"]
+                        
+                        dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
+                        return [SlotSet("cni", cni), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
+                    else:
+                        # Soit CNI n'existe pas, soit problème de connexion BD
+                        dispatcher.utter_message(
+                            text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI inexistant dans la base de données\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier votre CNI ou contacter le support."
+                        )
+                        dispatcher.utter_message(response="utter_no_account")
+                        return []
+                
+                elif platform == "E-Carrière":
+                    # E-Carrière : Stocker CNI et demander matricule
+                    dispatcher.utter_message(response="utter_ask_matricule")
+                    return [SlotSet("cni", cni)]
             else:
+                print(f"DEBUG ActionHandleCNI: CNI format invalide - cni={cni}, len={len(cni) if cni else 0}, isdigit={cni.isdigit() if cni else False}")
                 dispatcher.utter_message(text="⚠️ **Format incorrect**\n\nLe numéro de CNI doit contenir **12 ou 13 chiffres**.\n\n💡 *Exemples : 178637770865 ou 1934200001259*\n\nVeuillez réessayer :")
                 return []
+        else:
+            print(f"DEBUG ActionHandleCNI: Conditions non remplies - has_account={has_account}, platform={platform}")
         
         return []
 
+
+
+class ActionHandleMatricule(Action):
+    def name(self) -> Text:
+        return "action_handle_matricule"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        has_account = tracker.get_slot("has_account")
+        platform = tracker.get_slot("platform")
+        cni = tracker.get_slot("cni")
+        
+        print(f"DEBUG ActionHandleMatricule: has_account={has_account}, platform={platform}, cni={cni}")
+        
+        if has_account == "Oui" and platform == "E-Carrière" and cni:
+            # Récupérer le matricule du message
+            matricule = next(tracker.get_latest_entity_values("matricule"), None)
+            if not matricule:
+                matricule = tracker.latest_message.get("text", "").strip()
+            
+            # Valider le matricule (format à adapter selon vos règles)
+            if matricule and len(matricule) >= 4:
+                # Vérifier avec la base SQL Server
+                user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+                
+                if user_data:
+                    # Utiliser les vraies données de la base SQL Server
+                    nom_officiel = user_data["nom"]
+                    matricule_official = user_data["matricule"] 
+                    agent_id = user_data["id"]
+                    projets = user_data["projets"]
+                    
+                    dispatcher.utter_message(response="utter_ecarriere_account_verified", 
+                                           nom=nom_officiel, 
+                                           matricule=matricule_official, 
+                                           projets=projets)
+                    return [SlotSet("matricule", matricule), 
+                            SlotSet("nom_officiel", nom_officiel), 
+                            SlotSet("agent_id", agent_id)]
+                else:
+                    dispatcher.utter_message(
+                        text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI ou Matricule incorrect\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier vos informations."
+                    )
+                    return []
+            else:
+                dispatcher.utter_message(text="⚠️ **Format incorrect**\n\nVeuillez saisir un matricule valide.\n\n💡 *Exemple : A12345*")
+                return []
+        else:
+            # Debug: Conditions non remplies
+            print(f"DEBUG: Conditions non remplies - has_account={has_account}, platform={platform}, cni={cni}")
+            dispatcher.utter_message(text="⚠️ **Erreur de workflow**\n\nIl semble qu'il y ait un problème avec les informations précédentes. Veuillez recommencer la vérification.")
+            return []
+        
+        return []
 
 
 class ActionConfirmPasswordReset(Action):

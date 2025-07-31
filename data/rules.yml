@@ -161,3 +161,8 @@ rules:
       - intent: deny_password_reset
       - action: action_deny_password_reset
 
+  - rule: Gérer le matricule fourni
+    steps:
+      - intent: provide_matricule
+      - action: action_handle_matricule
+

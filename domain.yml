@@ -35,12 +35,14 @@ intents:
   - affirm
   - confirm_password_reset
   - deny_password_reset
+  - provide_matricule
 
 entities:
   - nom
   - platform
   - email
-  - cni 
+  - cni
+  - matricule 
 slots:
   platform:
     type: text
@@ -69,6 +71,19 @@ slots:
     mappings:
       - type: custom
   user_id:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  matricule:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: matricule
+      - type: from_text
+        intent: provide_matricule
+  agent_id:
     type: text
     influence_conversation: false
     mappings:
@@ -131,18 +146,12 @@ responses:
       - title: "📄 Attestation"
         payload: '/choose_platform{{"platform": "Attestation"}}'
   utter_E_carriere:
-    - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique. Comment puis-je vous assister aujourd’hui ?"
+    - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique.\n\nPrêt·e à explorer ? 😊\n\n👉 Avez-vous déjà un compte sur la plateforme ?"
       buttons:
-        - title: "Comment Activer son compte"
-          payload: "/ask_account_creation"
-        - title: "Je n'arrive pas à me connecter"
-          payload: "/ask_login"
-        - title: "Mot de passe oublié"
-          payload: "/ask_password_reset"
-        - title: "Vérifier mon compte"
-          payload: "/start_account_verification"
-        - title: "Retour"
-          payload: "/go_back_greet_with_name"
+        - title: "✅ Oui"
+          payload: "/confirm_has_account"
+        - title: "❌ Non"
+          payload: "/deny_has_account"
   utter_ask_account_creation:
     - text: "Pour vous **activer** son compte :\n\n⭐ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n⭐ **Remplissez** les informations demandées avec attention :\n\n⭐ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n⭐ Votre **Nom** doit être en MAJUSCULES.\n\n⭐ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n⭐ Suivez ensuite suiver les instructions pour finaliser l’activation de votre compte."
       buttons:
@@ -229,7 +238,11 @@ responses:
   utter_ask_email:
     - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
-    - text: "Super ! 🎉\n\nPour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 13 chiffres*"
+    - text: "Super ! 🎉\n\n**Étape 2/3** - Vérification CNI\n\nPour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 12 ou 13 chiffres*"
+  utter_ask_cni_ecarriere:  # CNI pour E-Carrière
+    - text: "Super ! 🎉\n\n**Étape 2/4** - Vérification CNI\n\nPour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 12 ou 13 chiffres*"
+  utter_ask_matricule:  # Demander matricule après CNI pour E-Carrière
+    - text: "Parfait ! 👍\n\n**Étape 3/4** - Vérification Matricule\n\nMaintenant, j'ai besoin de votre **matricule** d'agent.\n\n💡 *Format : Ex. A12345, B67890*"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
     - text: "Votre adresse email est celle que vous avez utilisée lors de votre inscription sur la plateforme. Vérifiez vos emails pour retrouver les communications officielles."
   utter_chitchat/ask_cni:  # Réponse pour l'intent chitchat/ask_cni
@@ -249,21 +262,32 @@ responses:
         - title: "Non"
           payload: "/deny_has_access"
   utter_no_account:
-    - text: "Pas de souci {nom} ! 👌\n\nJe vous redirige tout de suite vers la page de **création de compte** pour démarrer votre aventure 👇\n\n[Créer un compte PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
+    - text: "Pas de souci {nom} ! 👌\n\nPour créer un compte, veuillez suivre les instructions appropriées selon votre plateforme."
       buttons:
+        - title: "ℹ️ Comment créer un compte"
+          payload: "/ask_account_creation"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_no_access:
-    - text: "Aucun accès au compte ? Sélectionnez une option :"
+    - text: "Pas d'accès à votre compte ? 🤔\n\n💡 **Choisissez l'option qui vous convient :**"
       buttons:
-        - title: "Mot de passe oublié"
+        - title: "📝 Créer un compte"
+          payload: "/ask_account_creation"
+        - title: "🔑 Se connecter (j'ai un compte)"
+          payload: "/ask_login"
+        - title: "🔒 Mot de passe oublié"
           payload: "/ask_password_reset"
-        - title: "Compte bloqué"
-          payload: "/ask_account_blocked"
-        - title: "Retour"
+        - title: "🏠 Retour"
           payload: "/go_back_greet_with_name"
   utter_account_verified:
-    - text: "Parfait ✅ {nom} ! vous avez bel et bien un compte. Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
+    - text: "**Étape 3/3** - Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans la base. Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
+      buttons:
+        - title: "✅ Oui, j'ai accès"
+          payload: "/confirm_has_access"
+        - title: "❌ Non, mot de passe oublié"
+          payload: "/deny_has_access"
+  utter_ecarriere_account_verified:
+    - text: "**Étape 4/4** - Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans E-Carrière. Voici vos infos :\n\n👤 **Nom :** {nom}\n🆔 **Matricule :** {matricule}\n📂 **Projets/Actes :** {projets}\n\n🔐 Avez-vous toujours accès à votre compte ?"
       buttons:
         - title: "✅ Oui, j'ai accès"
           payload: "/confirm_has_access"
@@ -323,6 +347,7 @@ actions:
   - action_reset_account_data
   - action_reset_for_new_platform
   - action_soft_reset
+  - action_handle_matricule
   
 
 

@@ -215,6 +215,19 @@ nlu:
       - Je ne veux pas
       - Annuler
 
+  - intent: provide_matricule
+    examples: |
+      - Mon matricule est [A12345](matricule)
+      - Voici mon matricule : [B67890](matricule)
+      - Matricule : [C11111](matricule)
+      - Mon matricule d'agent est [D22222](matricule)
+      - [A12345](matricule)
+      - Matricule : [E33333](matricule)
+      - mon matricule est A12345
+      - A12345
+      - voici mon matricule : B67890
+      - B67890
+
 
 
   - intent: ask_account_creation

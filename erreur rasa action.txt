@@ -1,0 +1,51 @@
+le upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  Base: DeclarativeMeta = declarative_base()
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('sphinxcontrib')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\sanic_cors\extension.py:39: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  SANIC_VERSION = LooseVersion(sanic_version)
+2025-07-31 17:01:35 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_redirect_platform'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_explain_account_creation'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_explain_login'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_explain_password_reset'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_handle_name'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_start_account_verification'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_handle_has_account'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_handle_has_access'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_handle_email'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_handle_cni'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_handle_matricule'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_confirm_password_reset'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_deny_password_reset'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_get_dossier_number'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_reset_account_data'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_reset_for_new_platform'.
+2025-07-31 17:01:35 INFO     rasa_sdk.executor  - Registered function for 'action_soft_reset'.
+2025-07-31 17:01:35 INFO     rasa_sdk.endpoint  - Starting plugins...
+2025-07-31 17:01:35 DEBUG    rasa_sdk.plugin  - No plugins found: No module named 'rasa_sdk_plugins'
+2025-07-31 17:01:35 INFO     rasa_sdk.endpoint  - Action endpoint is up and running on http://0.0.0.0:5055
+2025-07-31 17:01:35 DEBUG    rasa_sdk.utils  - Using the default number of Sanic workers (1).
+2025-07-31 17:05:06 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_name'
+2025-07-31 17:05:06 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_name'
+2025-07-31 17:05:13 DEBUG    rasa_sdk.executor  - Received request to run 'action_redirect_platform'
+2025-07-31 17:05:13 DEBUG    rasa_sdk.executor  - Finished running 'action_redirect_platform'
+2025-07-31 17:05:22 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_has_account'
+2025-07-31 17:05:22 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_has_account'
+2025-07-31 17:07:44 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_cni'
+2025-07-31 17:07:44 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_cni'

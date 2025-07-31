@@ -1,5 +1,19 @@
-    "Nnumber_dossier": user['id'],  # Utiliser le numberid comme numéro de dossier
-                    "nom": f"{user['firstname']} {user['lastname']}",
-                    "username": user['username'],
-                    "email": user['email'],
-                    "cni": user['numberid']
+# === Configuration de la connexion à la base de données SQL Server ===
+server = "10.4.116.87,1433"
+database = "referentiel_fudpe_new"
+username = "sa"
+password = "AdieAdie1"
+
+try:
+            # Connexion à la base de données SQL Server
+            conn = pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={server};"
+                f"DATABASE={database};"
+                f"UID={username};"
+                f"PWD={password}"
+            )
+            print("✅ Connexion réussie à la base de données SQL Server !")
+            cursor = conn.cursor()
+except pyodbc.Error as e:
+            print(f"Erreur de connexion à la base de données : {e}")
