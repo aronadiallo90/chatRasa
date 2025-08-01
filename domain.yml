@@ -238,11 +238,11 @@ responses:
   utter_ask_email:
     - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
-    - text: "Super ! 🎉\n\n**Étape 2/3** - Vérification CNI\n\nPour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 12 ou 13 chiffres*"
+    - text: "Super ! 🎉\n\nPour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 13 chiffres*"
   utter_ask_cni_ecarriere:  # CNI pour E-Carrière
-    - text: "Super ! 🎉\n\n**Étape 2/4** - Vérification CNI\n\nPour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 12 ou 13 chiffres*"
+    - text: "Super ! 🎉\n\nPour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 13 chiffres*"
   utter_ask_matricule:  # Demander matricule après CNI pour E-Carrière
-    - text: "Parfait ! 👍\n\n**Étape 3/4** - Vérification Matricule\n\nMaintenant, j'ai besoin de votre **matricule** d'agent.\n\n💡 *Format : Ex. A12345, B67890*"
+    - text: "Parfait ! 👍\n\nMaintenant, j'ai besoin de votre **matricule** d'agent.\n\n💡 *Format : Votre matricule doit être en MAJUSCULES et sans slash (/) *"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
     - text: "Votre adresse email est celle que vous avez utilisée lors de votre inscription sur la plateforme. Vérifiez vos emails pour retrouver les communications officielles."
   utter_chitchat/ask_cni:  # Réponse pour l'intent chitchat/ask_cni
@@ -280,14 +280,14 @@ responses:
         - title: "🏠 Retour"
           payload: "/go_back_greet_with_name"
   utter_account_verified:
-    - text: "**Étape 3/3** - Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans la base. Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
+    - text: "**Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans la base. Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
       buttons:
         - title: "✅ Oui, j'ai accès"
           payload: "/confirm_has_access"
         - title: "❌ Non, mot de passe oublié"
           payload: "/deny_has_access"
   utter_ecarriere_account_verified:
-    - text: "**Étape 4/4** - Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans E-Carrière. Voici vos infos :\n\n👤 **Nom :** {nom}\n🆔 **Matricule :** {matricule}\n📂 **Projets/Actes :** {projets}\n\n🔐 Avez-vous toujours accès à votre compte ?"
+    - text: "**Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans E-Carrière. Voici vos infos :\n\n👤 **Nom :** {nom}\n🆔 **Matricule :** {matricule}\n📂 **Projets/Actes :** {projets}\n\n🔐 Avez-vous toujours accès à votre compte ?"
       buttons:
         - title: "✅ Oui, j'ai accès"
           payload: "/confirm_has_access"

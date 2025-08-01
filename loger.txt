@@ -1,48 +1,61 @@
-mysql_config = {
-    "host": "127.0.0.1",
-    "port": 3306,
-    "database": "PGDE",
-    "user": "root",
-    "password": ""
-}
 
-
-
-voici les tables de la bd avec number id qui coorespond au cni:
-
-
-INSERT INTO pgde.utilisateur (numberid,firstname,lastname,username,email,date_inscription,enabled,password,salt,username_canonical,email_canonical,last_login,confirmation_token,password_requested_at,roles,recruted) VALUES
-	 ('1934200001259','Mbaye','Dieng','BabsP1','aronadiallo90@gmail.com','2025-03-04 11:29:18',1,'$2y$12$az8y6SeoAbMI.t5btPKSvumbZ25.hZWxxGjJOdHkCSIk.xUO7BL1.',NULL,'babsp1','mbaye26.dieng@gmail.com','2025-03-26 15:56:44',NULL,NULL,'a:1:{i:0;s:5:"admin";}',0),
-	 ('USR001','Mamadou','Diop','mdiop','mamadou.diop@example.com','2025-01-10 09:30:00',1,'pass123',NULL,'mdiop','mamadou.diop@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1),
-	 ('USR002','Aïssatou','Sow','asow','aissatou.sow@example.com','2025-01-12 14:45:00',1,'$2y$12$XL1Mcfh.OYnslqxfmW47cO/I9bpreU.zwKq4SBfKaEJmzG9xv3xY2',NULL,'asow','aissatou.sow@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_ADMIN";}',0),
-	 ('USR003','Cheikh','Ndoye','cndoye','cheikh.ndoye@example.com','2025-01-15 08:00:00',0,'pass123',NULL,'cndoye','cheikh.ndoye@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR004','Fatou','Diouf','fdiouf','fatou.diouf@example.com','2025-01-18 16:30:00',1,'pass123',NULL,'fdiouf','fatou.diouf@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1),
-	 ('USR005','Amadou','Ba','aba','amadou.ba@example.com','2025-01-20 11:15:00',1,'pass123',NULL,'aba','amadou.ba@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_SUPER_ADMIN";}',1),
-	 ('USR006','Ndeye','Fall','nfall','ndeye.fall@example.com','2025-01-22 13:25:00',1,'pass123',NULL,'nfall','ndeye.fall@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR007','Serigne','Mbaye','smbaye','serigne.mbaye@example.com','2025-01-25 10:00:00',0,'pass123',NULL,'smbaye','serigne.mbaye@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR008','Bineta','Sy','bsy','bineta.sy@example.com','2025-01-28 09:00:00',1,'pass123',NULL,'bsy','bineta.sy@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_ADMIN";}',1),
-	 ('USR009','Ibrahima','Lo','ilo','ibrahima.lo@example.com','2025-02-01 12:00:00',1,'pass123',NULL,'ilo','ibrahima.lo@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1);
-INSERT INTO pgde.utilisateur (numberid,firstname,lastname,username,email,date_inscription,enabled,password,salt,username_canonical,email_canonical,last_login,confirmation_token,password_requested_at,roles,recruted) VALUES
-	 ('USR010','Khady','Kane','kkane','khady.kane@example.com','2024-02-03 14:10:00',1,'pass123',NULL,'kkane','khady.kane@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1),
-	 ('USR011','Paul','Dupont','pdupont','paul.dupont@example.com','2024-12-10 08:45:00',1,'pass123',NULL,'pdupont','paul.dupont@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR012','Marie','Leclerc','mleclerc','marie.leclerc@example.com','2025-01-05 09:15:00',1,'pass123',NULL,'mleclerc','marie.leclerc@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR013','Jean','Moreau','jmoreau','jean.moreau@example.com','2025-02-10 15:00:00',0,'pass123',NULL,'jmoreau','jean.moreau@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR014','Lucie','Dubois','ldubois','lucie.dubois@example.com','2025-01-28 10:45:00',1,'pass123',NULL,'ldubois','lucie.dubois@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1),
-	 ('USR015','Mohamed','Ali','mali','mohamed.ali@example.com','2025-02-20 11:00:00',1,'pass123',NULL,'mali','mohamed.ali@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_ADMIN";}',1),
-	 ('USR016','Souleymane','Diallo','sdiallo','souleymane.diallo@example.com','2025-02-22 09:20:00',1,'pass123',NULL,'sdiallo','souleymane.diallo@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',0),
-	 ('USR017','Oumou','Barry','obarry','oumou.barry@example.com','2025-03-01 13:10:00',1,'pass123',NULL,'obarry','oumou.barry@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1),
-	 ('USR018','Thierno','Camara','tcamara','thierno.camara@example.com','2025-03-05 10:30:00',1,'pass123',NULL,'tcamara','thierno.camara@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_ADMIN";}',0),
-	 ('USR019','Aminata','Gueye','agueye','aminata.gueye@example.com','2025-03-07 15:00:00',1,'$2y$12$nH.1j5G7ssGocM54Htt.Ie7BCh1aaNN9ZvjrR9LfOQJjba.qkp5IK',NULL,'agueye','aminata.gueye@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_USER";}',1);
-INSERT INTO pgde.utilisateur (numberid,firstname,lastname,username,email,date_inscription,enabled,password,salt,username_canonical,email_canonical,last_login,confirmation_token,password_requested_at,roles,recruted) VALUES
-	 ('USR020','Lamine','Sagna','lsagna','lamine.sagna@example.com','2025-03-10 09:00:00',1,'pass123',NULL,'lsagna','lamine.sagna@example.com',NULL,NULL,NULL,'a:1:{i:0;s:10:"ROLE_SUPER_ADMIN";}',1),
-	 ('178637770865','Arona Dia','rone','rone','fmamad12345@gmail.com','2025-04-03 09:01:49',0,'$2y$12$EPhzl5/hlPox60VfYQ1i1uAc.UIgHpEYaD0jSW0TscLv8vd26h5j.',NULL,'rone','fmamad12345@gmail.com',NULL,NULL,NULL,'a:0:{}',0);
-
-
-en recuperant son cni qui correspons a numberid on recupere les autres infos dont on a besoin puis on envoi une requette api suivant pour la renitialisation du mdp
-parexemple :
-http://127.0.0.1:8000/api/chatbot/reset-password
-
-{
- "email":"aronadiallo90@gmail.com",
- "numberid": "1934200001259"
-}
+(.venv) C:\Users\Arona\Desktop\fp\test\pycharm\pycharm>rasa run actions --debug
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\core\tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  Base: DeclarativeMeta = declarative_base()
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('sphinxcontrib')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\sanic_cors\extension.py:39: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
+  SANIC_VERSION = LooseVersion(sanic_version)
+2025-07-31 18:34:57 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
+Traceback (most recent call last):
+  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\Scripts\rasa.exe\__main__.py", line 7, in <module>
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\__main__.py", line 133, in main
+    cmdline_arguments.func(cmdline_arguments)
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\cli\run.py", line 57, in run_actions
+    sdk.main_from_args(args)
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\__main__.py", line 21, in main_from_args
+    run(
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\endpoint.py", line 157, in run
+    app = create_app(
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\endpoint.py", line 85, in create_app
+    executor.register_package(action_package_name)
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 263, in register_package
+    self._import_submodules(package)
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 226, in _import_submodules
+    self._import_module(full_name)
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 240, in _import_module
+    module = importlib.import_module(name)
+  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 786, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 923, in get_code
+  File "<frozen importlib._bootstrap_external>", line 853, in source_to_code
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\actions\actions.py", line 666
+    else:
+IndentationError: expected an indented block
+2025-07-31 18:34:57 DEBUG    urllib3.connectionpool  - Starting new HTTPS connection (1): o251570.ingest.sentry.io:443
+2025-07-31 18:34:57 DEBUG    urllib3.connectionpool  - https://o251570.ingest.sentry.io:443 "POST /api/2801673/envelope/ HTTP/1.1" 200 2

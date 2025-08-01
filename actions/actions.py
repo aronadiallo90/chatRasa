@@ -44,19 +44,113 @@ class ECarriereAPIService:
             # Requête pour récupérer l'utilisateur par CNI + Matricule
             # Utiliser la vraie structure de table agent
             query = """
-                SELECT agt_id, agt_cni, agt_matricule_interne, agt_nom, agt_prenom, agt_affectation_id 
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id 
                 FROM agent 
-                WHERE agt_cni = ? AND agt_matricule_interne = ? AND agt_deleted = 0
+                WHERE agt_cni = ? AND agt_matricule_solde = ? AND agt_deleted = 0
             """
             
             cursor.execute(query, (cni, matricule))
+            user = cursor.fetchone()
+            
+            print(f"DEBUG ECarriereAPIService: Résultat requête user = {user}")
+            
+            if user:
+                # Requête pour récupérer les 3 derniers projets/actes de l'agent
+                actes_query = """
+                    SELECT TOP 3
+                        ac.act_numero_projet,
+                        ac.act_numero_acte,
+                        ea.eta_act_code AS etat_projet,
+                        ta.tac_libelle AS type_projet
+                    FROM 
+                        dbo.acte_agent aa
+                    INNER JOIN 
+                        dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+                    LEFT JOIN 
+                        dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+                    LEFT JOIN 
+                        dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+                    WHERE 
+                        aa.act_agt_agt_id = ?
+                        AND ac.act_is_projet = 1
+                    ORDER BY ac.act_date_acte DESC;
+                """
+                
+                cursor.execute(actes_query, (user[0],)) # user[0] est agt_id
+                actes = cursor.fetchall()
+                
+                # Formater les projets
+                projets_list = []
+                for acte in actes:
+                    projet_info = f"Projet n°{acte[0]} ({acte[3]}) - État: {acte[2]}"
+                    projets_list.append(projet_info)
+                return {
+                    "id": user[0],  # agt_id
+                    "nom": f"{user[4]} {user[3]}",  # agt_prenom + agt_nom
+                    "matricule": user[2],  # agt_matricule_solde
+                    "cni": user[1],  # agt_cni
+                    "projets": projets_list
+                }
+            else:
+                print(f"DEBUG ECarriereAPIService: Aucun utilisateur trouvé avec CNI={cni} et Matricule={matricule}")
+                return None
+            
+            return None
+            
+        except Exception as e:
+            print(f"Erreur SQL Server E-Carrière: {e}")
+            return None
+        
+        finally:
+            if 'conn' in locals():
+                conn.close()
+
+    @staticmethod
+    def verify_user_by_cni(cni: str) -> Optional[Dict[str, Any]]:
+        """
+        Vérifier si un utilisateur existe par CNI dans la base SQL Server
+        
+        Returns:
+            dict: {id: str, nom: str, matricule: str, projets: list} si trouvé
+            None: si non trouvé
+        """
+        try:
+            import pyodbc
+            
+            # Configuration SQL Server
+            server = "10.4.116.87,1433"
+            database = "referentiel_fudpe_new"
+            username = "sa"
+            password = "AdieAdie1"
+            
+            print(f"DEBUG ECarriereAPIService: Tentative de connexion à {server}/{database} avec CNI={cni}")
+            
+            # Connexion à SQL Server
+            conn = pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={server};"
+                f"DATABASE={database};"
+                f"UID={username};"
+                f"PWD={password}"
+            )
+            
+            cursor = conn.cursor()
+            
+            # Requête pour récupérer l'utilisateur par CNI
+            query = """
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id 
+                FROM agent 
+                WHERE agt_cni = ? AND agt_deleted = 0
+            """
+            
+            cursor.execute(query, (cni,))
             user = cursor.fetchone()
             
             if user:
                 return {
                     "id": user[0],  # agt_id
                     "nom": f"{user[4]} {user[3]}",  # agt_prenom + agt_nom
-                    "matricule": user[2],  # agt_matricule_interne
+                    "matricule": user[2],  # agt_matricule_solde
                     "cni": user[1],  # agt_cni
                     "projets": f"Affectation ID: {user[5]}" if user[5] else "Aucune affectation"
                 }
@@ -573,12 +667,33 @@ class ActionHandleCNI(Action):
                         return []
                 
                 elif platform == "E-Carrière":
-                    # E-Carrière : Stocker CNI et demander matricule
-                    dispatcher.utter_message(response="utter_ask_matricule")
-                    return [SlotSet("cni", cni)]
+                    # E-Carrière : Vérifier d'abord si la CNI existe
+                    user_data = ECarriereAPIService.verify_user_by_cni(cni)
+                    
+                    if user_data:
+                        # Si la CNI existe, stocker CNI et demander matricule
+                        dispatcher.utter_message(response="utter_ask_matricule")
+                        return [SlotSet("cni", cni)]
+                    else:
+                        # Si la CNI n'existe pas
+                        dispatcher.utter_message(
+                            text="❌ **Compte non trouvé**\n\nNous n'avons pas trouvé de compte associé à ce numéro de CNI.\n\nVeuillez vérifier votre CNI ou contacter le support.",
+                            buttons=[
+                                {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                                {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                                {"title": "📞 Support", "payload": "/ask_support"}
+                            ]
+                        )
+                        return []
             else:
                 print(f"DEBUG ActionHandleCNI: CNI format invalide - cni={cni}, len={len(cni) if cni else 0}, isdigit={cni.isdigit() if cni else False}")
-                dispatcher.utter_message(text="⚠️ **Format incorrect**\n\nLe numéro de CNI doit contenir **12 ou 13 chiffres**.\n\n💡 *Exemples : 178637770865 ou 1934200001259*\n\nVeuillez réessayer :")
+                dispatcher.utter_message(
+                    text="⚠️ **Format incorrect**\n\nLe numéro de CNI doit contenir **12 ou 13 chiffres**.\n\n💡 *Exemples : 178637770865 ou 1934200001259*\n\nVeuillez réessayer :",
+                    buttons=[
+                        {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                    ]
+                )
                 return []
         else:
             print(f"DEBUG ActionHandleCNI: Conditions non remplies - has_account={has_account}, platform={platform}")
@@ -601,6 +716,10 @@ class ActionHandleMatricule(Action):
         
         print(f"DEBUG ActionHandleMatricule: has_account={has_account}, platform={platform}, cni={cni}")
         
+        latest_intent = tracker.latest_message.get("intent", {}).get("name")
+        latest_text = tracker.latest_message.get("text", "")
+        print(f"DEBUG ActionHandleMatricule: latest_intent={latest_intent}, latest_text='{latest_text}'")
+        
         if has_account == "Oui" and platform == "E-Carrière" and cni:
             # Récupérer le matricule du message
             matricule = next(tracker.get_latest_entity_values("matricule"), None)
@@ -619,25 +738,71 @@ class ActionHandleMatricule(Action):
                     agent_id = user_data["id"]
                     projets = user_data["projets"]
                     
-                    dispatcher.utter_message(response="utter_ecarriere_account_verified", 
-                                           nom=nom_officiel, 
-                                           matricule=matricule_official, 
-                                           projets=projets)
+                    projets = user_data.get("projets", [])
+                    
+                    # Formater le message
+                    if projets:
+                        projets_text = "\n".join([f"- {p}" for p in projets])
+                        message = f"""✅ **Compte E-Carrière trouvé !**
+
+Bonjour **{nom_officiel}**,
+
+- **Matricule :** {matricule_official}
+
+Voici vos 3 derniers projets :
+{projets_text}"""
+                    else:
+                        message = f"""✅ **Compte E-Carrière trouvé !**
+
+Bonjour **{nom_officiel}**,
+
+- **Matricule :** {matricule_official}
+
+Nous n'avons pas trouvé de projets récents pour votre compte."""
+
+                    # Envoyer le message avec boutons de navigation
+                    dispatcher.utter_message(
+                        text=message,
+                        buttons=[
+                            {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
+                            {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                            {"title": "📞 Support", "payload": "/ask_support"}
+                        ]
+                    )
+                    
                     return [SlotSet("matricule", matricule), 
                             SlotSet("nom_officiel", nom_officiel), 
                             SlotSet("agent_id", agent_id)]
                 else:
                     dispatcher.utter_message(
-                        text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI ou Matricule incorrect\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier vos informations."
+                        text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI ou Matricule incorrect\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier vos informations.",
+                        buttons=[
+                            {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                            {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                            {"title": "📞 Support", "payload": "/ask_support"}
+                        ]
                     )
                     return []
             else:
-                dispatcher.utter_message(text="⚠️ **Format incorrect**\n\nVeuillez saisir un matricule valide.\n\n💡 *Exemple : A12345*")
+                dispatcher.utter_message(
+                    text="⚠️ **Format incorrect**\n\nVeuillez saisir un matricule valide.\n\n💡 *Exemple : A12345*",
+                    buttons=[
+                        {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                    ]
+                )
                 return []
         else:
             # Debug: Conditions non remplies
             print(f"DEBUG: Conditions non remplies - has_account={has_account}, platform={platform}, cni={cni}")
-            dispatcher.utter_message(text="⚠️ **Erreur de workflow**\n\nIl semble qu'il y ait un problème avec les informations précédentes. Veuillez recommencer la vérification.")
+            dispatcher.utter_message(
+                text="⚠️ **Erreur de workflow**\n\nIl semble qu'il y ait un problème avec les informations précédentes. Veuillez recommencer la vérification.",
+                buttons=[
+                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
+                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                ]
+            )
             return []
         
         return []

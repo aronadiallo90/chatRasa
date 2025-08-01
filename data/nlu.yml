@@ -227,6 +227,18 @@ nlu:
       - A12345
       - voici mon matricule : B67890
       - B67890
+      - [519410J](matricule)
+      - 519410J
+      - Mon matricule est [519410J](matricule)
+      - mon matricule est 519410J
+      - voici mon matricule : 519410J
+      - Matricule : 519410J
+      - [F12345J](matricule)
+      - F12345J
+      - [G67890K](matricule)
+      - G67890K
+      - matricule 519410J
+      - le matricule est 519410J
 
 
 
@@ -313,6 +325,17 @@ nlu:
       - 1111222233334
       - 5555666677778
       - 9999888877776
+
+  - lookup: matricule
+    examples: |
+      - A12345
+      - B67890
+      - C11111
+      - D22222
+      - E33333
+      - F12345J
+      - G67890K
+      - 519410J
 
   
   - intent: provide_name

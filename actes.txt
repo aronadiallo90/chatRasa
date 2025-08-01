@@ -1,0 +1,23 @@
+SELECT TOP 3
+                a.agt_nom,
+                a.agt_prenom,
+                ac.act_numero_projet,
+                ac.act_numero_acte,
+                ea.eta_act_code AS etat_projet,
+                ta.tac_libelle AS type_projet
+            FROM 
+                referentiel_fudpe_new.dbo.agent a
+            INNER JOIN 
+                referentiel_fudpe_new.dbo.acte_agent aa ON aa.act_agt_agt_id = a.agt_id
+            INNER JOIN 
+                referentiel_fudpe_new.dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+            LEFT JOIN 
+                referentiel_fudpe_new.dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+            LEFT JOIN 
+                referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+            WHERE 
+                a.agt_matricule_solde = ?
+                AND ac.act_is_projet = 1
+            ORDER BY ac.act_date_acte DESC;  -- Trier par date d'acte décroissante (du plus récent au plus ancien)
+        """
+            cursor.execute(query, user_matricule)
