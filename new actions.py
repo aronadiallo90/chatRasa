@@ -3,8 +3,6 @@ from typing import Any, Text, Dict, List, Optional
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
-import pymssql
-import sys
 
 
 class ECarriereAPIService:
@@ -13,136 +11,158 @@ class ECarriereAPIService:
     """
     
     @staticmethod
-    def _get_db_connection():
-        """Crée et retourne une connexion à la base de données SQL Server."""
-        server = "10.42.3.49"
-        database = "referentiel_fudpe_new"
-        username = "sa"
-        password = "AdieAdie2"
-        port = 1433
-        
-        return pymssql.connect(
-            server=server,
-            user=username,
-            password=password,
-            database=database,
-            port=port,
-            timeout=30,
-            login_timeout=30
-        )
-
-    @staticmethod
     def verify_user_by_cni_matricule(cni: str, matricule: str) -> Optional[Dict[str, Any]]:
         """
-        Vérifier si un utilisateur existe par CNI + Matricule et récupère ses projets.
+        Vérifier si un utilisateur existe par CNI + Matricule dans la base SQL Server
+        
+        Returns:
+            dict: {id: str, nom: str, matricule: str, projets: list} si trouvé
+            None: si non trouvé
         """
-        conn = None
         try:
-            conn = ECarriereAPIService._get_db_connection()
-            print(f"DEBUG: Connexion pymssql réussie pour verify_user_by_cni_matricule")
+            import pyodbc
+            
+            # Configuration SQL Server
+            server = "10.4.116.87,1433"
+            database = "referentiel_fudpe_new"
+            username = "sa"
+            password = "AdieAdie1"
+            
+            print(f"DEBUG ECarriereAPIService: Tentative de connexion à {server}/{database} avec CNI={cni}, Matricule={matricule}")
+            
+            # Connexion à SQL Server
+            conn = pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={server};"
+                f"DATABASE={database};"
+                f"UID={username};"
+                f"PWD={password}"
+            )
+            
             cursor = conn.cursor()
             
-            # Requête pour récupérer l'utilisateur
-            user_query = """
-                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom
-                FROM referentiel_fudpe_new.dbo.agent 
-                WHERE agt_cni = %s AND agt_matricule_solde = %s AND agt_deleted = 0
+            # Requête pour récupérer l'utilisateur par CNI + Matricule
+            # Utiliser la vraie structure de table agent
+            query = """
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id 
+                FROM agent 
+                WHERE agt_cni = ? AND agt_matricule_solde = ? AND agt_deleted = 0
             """
-            cursor.execute(user_query, (cni, matricule))
+            
+            cursor.execute(query, (cni, matricule))
             user = cursor.fetchone()
             
-            if not user:
-                print(f"DEBUG: Aucun utilisateur trouvé pour CNI={cni} et Matricule={matricule}")
+            print(f"DEBUG ECarriereAPIService: Résultat requête user = {user}")
+            
+            if user:
+                # Requête pour récupérer les 3 derniers projets/actes de l'agent
+                actes_query = """
+                    SELECT TOP 3
+                        ac.act_numero_projet,
+                        ac.act_numero_acte,
+                        ea.eta_act_code AS etat_projet,
+                        ta.tac_libelle AS type_projet
+                    FROM 
+                        dbo.acte_agent aa
+                    INNER JOIN 
+                        dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+                    LEFT JOIN 
+                        dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+                    LEFT JOIN 
+                        dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+                    WHERE 
+                        aa.act_agt_agt_id = ?
+                        AND ac.act_is_projet = 1
+                    ORDER BY ac.act_date_acte DESC;
+                """
+                
+                cursor.execute(actes_query, (user[0],)) # user[0] est agt_id
+                actes = cursor.fetchall()
+                
+                # Formater les projets
+                projets_list = []
+                for acte in actes:
+                    projet_info = f"Projet n°{acte[0]} ({acte[3]}) - État: {acte[2]}"
+                    projets_list.append(projet_info)
+                return {
+                    "id": user[0],  # agt_id
+                    "nom": f"{user[4]} {user[3]}",  # agt_prenom + agt_nom
+                    "matricule": user[2],  # agt_matricule_solde
+                    "cni": user[1],  # agt_cni
+                    "projets": projets_list
+                }
+            else:
+                print(f"DEBUG ECarriereAPIService: Aucun utilisateur trouvé avec CNI={cni} et Matricule={matricule}")
                 return None
-
-            agent_id, _, matricule_solde, nom, prenom = user
-            print(f"DEBUG: Utilisateur trouvé: id={agent_id}, nom={prenom} {nom}")
-
-            # Requête pour récupérer les 3 derniers projets de l'agent
-            actes_query = """
-                SELECT TOP 3
-                    ac.act_numero_projet,
-                    ac.act_numero_acte,
-                    ea.eta_act_code AS etat_projet,
-                    ta.tac_libelle AS type_projet
-                FROM 
-                    referentiel_fudpe_new.dbo.acte_agent aa
-                INNER JOIN 
-                    referentiel_fudpe_new.dbo.acte ac ON ac.act_id = aa.act_agt_act_id
-                LEFT JOIN 
-                    referentiel_fudpe_new.dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
-                LEFT JOIN 
-                    referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
-                WHERE 
-                    aa.act_agt_agt_id = %s
-                    AND ac.act_is_projet = 1
-                ORDER BY ac.act_date_acte DESC;
-            """
-            cursor.execute(actes_query, (agent_id,))
-            actes = cursor.fetchall()
             
-            projets_list = []
-            for acte in actes:
-                projet_info = f"Projet n°{acte[0] or 'N/A'} ({acte[3] or 'N/A'}) - État: {acte[2] or 'N/A'}"
-                projets_list.append(projet_info)
-            
-            print(f"DEBUG: Projets trouvés: {projets_list}")
-
-            return {
-                "id": agent_id,
-                "nom": f"{prenom} {nom}",
-                "matricule": matricule_solde,
-                "cni": cni,
-                "projets": projets_list
-            }
-
-        except pymssql.Error as e:
-            print(f"ERREUR pymssql dans verify_user_by_cni_matricule: {e}")
             return None
+            
         except Exception as e:
-            print(f"ERREUR générale dans verify_user_by_cni_matricule: {e}")
+            print(f"Erreur SQL Server E-Carrière: {e}")
             return None
+        
         finally:
-            if conn:
+            if 'conn' in locals():
                 conn.close()
 
     @staticmethod
     def verify_user_by_cni(cni: str) -> Optional[Dict[str, Any]]:
         """
-        Vérifier si un utilisateur existe par CNI dans la base SQL Server.
+        Vérifier si un utilisateur existe par CNI dans la base SQL Server
+        
+        Returns:
+            dict: {id: str, nom: str, matricule: str, projets: list} si trouvé
+            None: si non trouvé
         """
-        conn = None
         try:
-            conn = ECarriereAPIService._get_db_connection()
-            print(f"DEBUG: Connexion pymssql réussie pour verify_user_by_cni")
+            import pyodbc
+            
+            # Configuration SQL Server
+            server = "10.4.116.87,1433"
+            database = "referentiel_fudpe_new"
+            username = "sa"
+            password = "AdieAdie1"
+            
+            print(f"DEBUG ECarriereAPIService: Tentative de connexion à {server}/{database} avec CNI={cni}")
+            
+            # Connexion à SQL Server
+            conn = pyodbc.connect(
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={server};"
+                f"DATABASE={database};"
+                f"UID={username};"
+                f"PWD={password}"
+            )
+            
             cursor = conn.cursor()
             
+            # Requête pour récupérer l'utilisateur par CNI
             query = """
-                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom
-                FROM referentiel_fudpe_new.dbo.agent 
-                WHERE agt_cni = %s AND agt_deleted = 0
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id 
+                FROM agent 
+                WHERE agt_cni = ? AND agt_deleted = 0
             """
+            
             cursor.execute(query, (cni,))
             user = cursor.fetchone()
             
             if user:
-                agent_id, _, matricule_solde, nom, prenom = user
                 return {
-                    "id": agent_id,
-                    "nom": f"{prenom} {nom}",
-                    "matricule": matricule_solde,
-                    "cni": cni
+                    "id": user[0],  # agt_id
+                    "nom": f"{user[4]} {user[3]}",  # agt_prenom + agt_nom
+                    "matricule": user[2],  # agt_matricule_solde
+                    "cni": user[1],  # agt_cni
+                    "projets": f"Affectation ID: {user[5]}" if user[5] else "Aucune affectation"
                 }
+            
             return None
-
-        except pymssql.Error as e:
-            print(f"ERREUR pymssql dans verify_user_by_cni: {e}")
-            return None
+            
         except Exception as e:
-            print(f"ERREUR générale dans verify_user_by_cni: {e}")
+            print(f"Erreur SQL Server E-Carrière: {e}")
             return None
+        
         finally:
-            if conn:
+            if 'conn' in locals():
                 conn.close()
 
 

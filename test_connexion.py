@@ -1,5 +1,6 @@
 import pyodbc
-
+# 10.42.3.49
+#AdieAdie2
 # Configuration de la connexion
 server = "10.4.116.87,1433"
 database = "referentiel_fudpe_new"

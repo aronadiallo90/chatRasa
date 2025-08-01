@@ -418,6 +418,26 @@ nlu:
       - [Daba Seye](nom)
       - [Mor Talla](nom)
       - [Gnima Mbengue](nom)
+      - [Ousman Fall](nom)
+      - [Mansour Gadiaga](nom)
+      - [Omar Fall](nom)
+      - [Awa Diop](nom)
+      - [Moussa Sow](nom)
+      - [Fatou Ba](nom)
+      - [Cheikh Fall](nom)
+      - [Ndeye Ba](nom)
+      - [Ibou Diop](nom)
+      - [Rama Fall](nom)
+      - je m'appelle [Ousman Fall](nom)
+      - mon nom est [Mansour Gadiaga](nom)
+      - je suis [Omar Fall](nom)
+      - c'est [Awa Diop](nom)
+      - [Moussa Sow](nom)
+      - [Fatou Ba](nom)
+      - Ousman Fall
+      - Mansour Gadiaga
+      - Omar Fall
+      - Awa Diop
   
 
   - intent: go_back_autres
