@@ -447,9 +447,41 @@ nlu:
       - Autres plateformes
       - Retour autres plateformes
 
-  
+  - intent: voir_actes
+    examples: |
+      - Voir mes actes
+      - Afficher mes actes
+      - Mes actes
+      - Je veux voir mes actes
+      - Montrer mes actes
+      - Consulter mes actes
+      - Actes
 
-  
+  - intent: voir_projets
+    examples: |
+      - Voir mes projets
+      - Afficher mes projets
+      - Mes projets
+      - Je veux voir mes projets
+      - Montrer mes projets
+      - Consulter mes projets
+      - Projets
+
+  - intent: aucun_projet_acte
+    examples: |
+      - Aucun projet disponible
+      - Pas de projets
+      - Aucun acte disponible
+      - Pas d'actes
+      - Rien disponible
+
+  - intent: retour_menu_utilisateur
+    examples: |
+      - Retour au menu
+      - Menu utilisateur
+      - Retour menu
+      - Menu principal utilisateur
+      - Revenir au menu
 
   # - regex: nom
   #   examples: |

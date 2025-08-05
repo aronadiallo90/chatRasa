@@ -107,6 +107,80 @@ class ECarriereAPIService:
                 conn.close()
 
     @staticmethod
+    def get_all_actes(cni: str, matricule: str) -> Optional[Dict[str, Any]]:
+        """
+        Récupérer tous les actes (pas seulement les projets) d'un utilisateur par CNI + Matricule.
+        """
+        conn = None
+        try:
+            conn = ECarriereAPIService._get_db_connection()
+            print(f"DEBUG: Connexion pymssql réussie pour get_all_actes")
+            cursor = conn.cursor()
+            
+            # Requête pour récupérer l'utilisateur
+            user_query = """
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom
+                FROM referentiel_fudpe_new.dbo.agent 
+                WHERE agt_cni = %s AND agt_matricule_solde = %s AND agt_deleted = 0
+            """
+            cursor.execute(user_query, (cni, matricule))
+            user = cursor.fetchone()
+            
+            if not user:
+                print(f"DEBUG: Aucun utilisateur trouvé pour CNI={cni} et Matricule={matricule}")
+                return None
+
+            agent_id, _, matricule_solde, nom, prenom = user
+            print(f"DEBUG: Utilisateur trouvé: id={agent_id}, nom={prenom} {nom}")
+
+            # Requête pour récupérer tous les actes de l'agent (projets et non-projets)
+            actes_query = """
+                SELECT 
+                    ac.act_numero_acte,
+                    ea.eta_act_code AS etat_acte,
+                    ta.tac_libelle AS type_acte,
+                    ac.act_is_projet
+                FROM 
+                    referentiel_fudpe_new.dbo.acte_agent aa
+                INNER JOIN 
+                    referentiel_fudpe_new.dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+                LEFT JOIN 
+                    referentiel_fudpe_new.dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+                LEFT JOIN 
+                    referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+                WHERE 
+                    aa.act_agt_agt_id = %s
+                ORDER BY ac.act_date_acte DESC;
+            """
+            cursor.execute(actes_query, (agent_id,))
+            actes = cursor.fetchall()
+            
+            actes_list = []
+            for acte in actes:
+                acte_info = f"Acte n°{acte[0] or 'N/A'} ({acte[2] or 'N/A'}) - État: {acte[1] or 'N/A'}"
+                actes_list.append(acte_info)
+            
+            print(f"DEBUG: Actes trouvés: {actes_list}")
+
+            return {
+                "id": agent_id,
+                "nom": f"{prenom} {nom}",
+                "matricule": matricule_solde,
+                "cni": cni,
+                "actes": actes_list
+            }
+
+        except pymssql.Error as e:
+            print(f"ERREUR pymssql dans get_all_actes: {e}")
+            return None
+        except Exception as e:
+            print(f"ERREUR générale dans get_all_actes: {e}")
+            return None
+        finally:
+            if conn:
+                conn.close()
+
+    @staticmethod
     def verify_user_by_cni(cni: str) -> Optional[Dict[str, Any]]:
         """
         Vérifier si un utilisateur existe par CNI dans la base SQL Server.
@@ -224,6 +298,7 @@ class PGDEAPIService:
             import json
             
             # URL de l'API de réinitialisation
+            # api_url = "http://10.121.220.44/api/chatbot/reset-password"
             api_url = "http://127.0.0.1:8000/api/chatbot/reset-password"
             
             # Données à envoyer
@@ -738,36 +813,35 @@ class ActionHandleMatricule(Action):
                     
                     projets = user_data.get("projets", [])
                     
-                    # Formater le message
+                    # Message de salutation et menu de choix
+                    message = f"""✅ **Compte E-Carrière trouvé !**
+
+Bonjour **{nom_officiel}**,
+
+- **Matricule :** {matricule_official}
+
+Que souhaitez-vous consulter ?"""
+
+                    # Boutons de choix selon les données disponibles
+                    buttons = []
                     if projets:
-                        projets_text = "\n".join([f"- {p}" for p in projets])
-                        message = f"""✅ **Compte E-Carrière trouvé !**
-
-Bonjour **{nom_officiel}**,
-
-- **Matricule :** {matricule_official}
-
-Voici vos 3 derniers projets :
-{projets_text}"""
+                        buttons.extend([
+                            {"title": "📄 Voir mes actes", "payload": "/voir_actes"},
+                            {"title": "📊 Voir mes projets", "payload": "/voir_projets"}
+                        ])
                     else:
-                        message = f"""✅ **Compte E-Carrière trouvé !**
+                        buttons.append({"title": "❌ Aucun projet/acte disponible", "payload": "/aucun_projet_acte"})
+                    
+                    # Boutons de navigation
+                    buttons.extend([
+                        {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
+                        {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "📞 Support", "payload": "/ask_support"}
+                    ])
 
-Bonjour **{nom_officiel}**,
-
-- **Matricule :** {matricule_official}
-
-Nous n'avons pas trouvé de projets récents pour votre compte."""
-
-                    # Envoyer le message avec boutons de navigation
-                    dispatcher.utter_message(
-                        text=message,
-                        buttons=[
-                            {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-                            {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                            {"title": "📞 Support", "payload": "/ask_support"}
-                        ]
-                    )
+                    # Envoyer le message avec boutons de choix
+                    dispatcher.utter_message(text=message, buttons=buttons)
                     
                     return [SlotSet("matricule", matricule), 
                             SlotSet("nom_officiel", nom_officiel), 
@@ -928,3 +1002,166 @@ class ActionSoftReset(Action):
             SlotSet("has_account", None),
             SlotSet("has_access", None)
         ]
+
+
+class ActionVoirActes(Action):
+    """Affiche tous les actes de l'utilisateur"""
+    def name(self) -> Text:
+        return "action_voir_actes"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        cni = tracker.get_slot("cni")
+        matricule = tracker.get_slot("matricule")
+        nom_officiel = tracker.get_slot("nom_officiel")
+        
+        if cni and matricule:
+            # Récupérer tous les actes de l'utilisateur
+            user_data = ECarriereAPIService.get_all_actes(cni, matricule)
+            
+            if user_data and user_data.get("actes"):
+                actes = user_data["actes"]
+                actes_text = "\n".join([f"- {acte}" for acte in actes])
+                
+                message = f"""📄 **Vos actes, {nom_officiel}**
+
+{actes_text}"""
+            else:
+                message = f"""📄 **Aucun acte trouvé, {nom_officiel}**
+
+Nous n'avons pas trouvé d'actes pour votre compte."""
+        else:
+            message = "❌ Erreur : Informations d'authentification manquantes."
+        
+        dispatcher.utter_message(
+            text=message,
+            buttons=[
+                {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
+                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+            ]
+        )
+        
+        return []
+
+
+class ActionVoirProjets(Action):
+    """Affiche les projets de l'utilisateur"""
+    def name(self) -> Text:
+        return "action_voir_projets"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        cni = tracker.get_slot("cni")
+        matricule = tracker.get_slot("matricule")
+        nom_officiel = tracker.get_slot("nom_officiel")
+        
+        if cni and matricule:
+            # Récupérer les projets de l'utilisateur
+            user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+            
+            if user_data and user_data.get("projets"):
+                projets = user_data["projets"]
+                projets_text = "\n".join([f"- {projet}" for projet in projets])
+                
+                message = f"""📊 **Vos projets, {nom_officiel}**
+
+{projets_text}"""
+            else:
+                message = f"""📊 **Aucun projet trouvé, {nom_officiel}**
+
+Nous n'avons pas trouvé de projets pour votre compte."""
+        else:
+            message = "❌ Erreur : Informations d'authentification manquantes."
+        
+        dispatcher.utter_message(
+            text=message,
+            buttons=[
+                {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
+                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+            ]
+        )
+        
+        return []
+
+
+class ActionAucunProjetActe(Action):
+    """Gère le cas où il n'y a pas de projets ou d'actes"""
+    def name(self) -> Text:
+        return "action_aucun_projet_acte"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        nom_officiel = tracker.get_slot("nom_officiel") or "Utilisateur"
+        
+        dispatcher.utter_message(
+            text=f"❌ **Aucun projet ou acte disponible, {nom_officiel}**\n\nNous n'avons trouvé aucun projet ou acte associé à votre compte pour le moment.\n\nVeuillez contacter le support si vous pensez qu'il s'agit d'une erreur.",
+            buttons=[
+                {"title": "🔄 Nouvelle vérification", "payload": "/start_account_verification"},
+                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                {"title": "📞 Support", "payload": "/ask_support"}
+            ]
+        )
+        
+        return []
+
+
+class ActionRetourMenuUtilisateur(Action):
+    """Retourne au menu de choix utilisateur après authentification"""
+    def name(self) -> Text:
+        return "action_retour_menu_utilisateur"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        nom_officiel = tracker.get_slot("nom_officiel")
+        matricule_official = tracker.get_slot("matricule")
+        cni = tracker.get_slot("cni")
+        matricule = tracker.get_slot("matricule")
+        
+        if nom_officiel and matricule_official:
+            # Vérifier la disponibilité des projets/actes
+            user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+            projets = user_data.get("projets", []) if user_data else []
+            
+            message = f"""✅ **Compte E-Carrière**
+
+Bonjour **{nom_officiel}**,
+
+- **Matricule :** {matricule_official}
+
+Que souhaitez-vous consulter ?"""
+
+            # Boutons de choix selon les données disponibles
+            buttons = []
+            if projets:
+                buttons.extend([
+                    {"title": "📄 Voir mes actes", "payload": "/voir_actes"},
+                    {"title": "📊 Voir mes projets", "payload": "/voir_projets"}
+                ])
+            else:
+                buttons.append({"title": "❌ Aucun projet/acte disponible", "payload": "/aucun_projet_acte"})
+            
+            # Boutons de navigation
+            buttons.extend([
+                {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
+                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+            ])
+
+            dispatcher.utter_message(text=message, buttons=buttons)
+        else:
+            dispatcher.utter_message(
+                text="❌ Erreur : Informations d'authentification manquantes. Veuillez recommencer la vérification.",
+                buttons=[
+                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
+                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                ]
+            )
+        
+        return []

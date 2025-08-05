@@ -166,3 +166,23 @@ rules:
       - intent: provide_matricule
       - action: action_handle_matricule
 
+  - rule: Voir les actes de l'utilisateur
+    steps:
+      - intent: voir_actes
+      - action: action_voir_actes
+
+  - rule: Voir les projets de l'utilisateur
+    steps:
+      - intent: voir_projets
+      - action: action_voir_projets
+
+  - rule: Aucun projet ou acte disponible
+    steps:
+      - intent: aucun_projet_acte
+      - action: action_aucun_projet_acte
+
+  - rule: Retour au menu utilisateur
+    steps:
+      - intent: retour_menu_utilisateur
+      - action: action_retour_menu_utilisateur
+

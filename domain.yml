@@ -36,6 +36,10 @@ intents:
   - confirm_password_reset
   - deny_password_reset
   - provide_matricule
+  - voir_actes
+  - voir_projets
+  - aucun_projet_acte
+  - retour_menu_utilisateur
 
 entities:
   - nom
@@ -348,6 +352,10 @@ actions:
   - action_reset_for_new_platform
   - action_soft_reset
   - action_handle_matricule
+  - action_voir_actes
+  - action_voir_projets
+  - action_aucun_projet_acte
+  - action_retour_menu_utilisateur
   
 
 
