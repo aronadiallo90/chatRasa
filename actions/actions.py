@@ -133,13 +133,14 @@ class ECarriereAPIService:
             agent_id, _, matricule_solde, nom, prenom = user
             print(f"DEBUG: Utilisateur trouvé: id={agent_id}, nom={prenom} {nom}")
 
-            # Requête pour récupérer tous les actes de l'agent (projets et non-projets)
+            # Requête pour récupérer les 3 derniers actes de l'agent (projets et non-projets)
             actes_query = """
-                SELECT 
+                SELECT TOP 3
                     ac.act_numero_acte,
                     ea.eta_act_code AS etat_acte,
                     ta.tac_libelle AS type_acte,
-                    ac.act_is_projet
+                    ac.act_is_projet,
+                    ac.act_date_acte
                 FROM 
                     referentiel_fudpe_new.dbo.acte_agent aa
                 INNER JOIN 
@@ -156,8 +157,16 @@ class ECarriereAPIService:
             actes = cursor.fetchall()
             
             actes_list = []
-            for acte in actes:
-                acte_info = f"Acte n°{acte[0] or 'N/A'} ({acte[2] or 'N/A'}) - État: {acte[1] or 'N/A'}"
+            for i, acte in enumerate(actes, 1):
+                numero_acte = acte[0] or 'N/A'
+                etat_acte = acte[1] or 'N/A'
+                type_acte = acte[2] or 'N/A'
+                date_acte = acte[4].strftime("%d/%m/%Y") if acte[4] else 'N/A'
+                
+                acte_info = f"""**{i}. Acte n°{numero_acte}**
+📋 Type : {type_acte}
+📊 État : {etat_acte}
+📅 Date : {date_acte}"""
                 actes_list.append(acte_info)
             
             print(f"DEBUG: Actes trouvés: {actes_list}")
@@ -1023,9 +1032,9 @@ class ActionVoirActes(Action):
             
             if user_data and user_data.get("actes"):
                 actes = user_data["actes"]
-                actes_text = "\n".join([f"- {acte}" for acte in actes])
+                actes_text = "\n\n".join(actes)
                 
-                message = f"""📄 **Vos actes, {nom_officiel}**
+                message = f"""📄 **Vos 3 derniers actes, {nom_officiel}**
 
 {actes_text}"""
             else:
@@ -1065,9 +1074,16 @@ class ActionVoirProjets(Action):
             
             if user_data and user_data.get("projets"):
                 projets = user_data["projets"]
-                projets_text = "\n".join([f"- {projet}" for projet in projets])
                 
-                message = f"""📊 **Vos projets, {nom_officiel}**
+                # Formatage amélioré des projets
+                projets_formatted = []
+                for i, projet in enumerate(projets, 1):
+                    projet_formatted = f"**{i}.** {projet}"
+                    projets_formatted.append(projet_formatted)
+                
+                projets_text = "\n\n".join(projets_formatted)
+                
+                message = f"""📊 **Vos 3 derniers projets, {nom_officiel}**
 
 {projets_text}"""
             else:
