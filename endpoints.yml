@@ -63,3 +63,10 @@ cors:
 
 action_endpoint:
   url: "http://localhost:5055/webhook"
+
+# WhatsApp webhook configuration
+# URL où WhatsApp va envoyer les messages entrants
+whatsapp_webhook:
+  url: "https://YOUR_DOMAIN.com/webhooks/whatsapp/webhook"
+  # Pour les tests locaux, utilisez ngrok :
+  # url: "https://YOUR_NGROK_URL.ngrok.io/webhooks/whatsapp/webhook"

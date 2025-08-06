@@ -64,7 +64,9 @@ class ECarriereAPIService:
                     ac.act_numero_projet,
                     ac.act_numero_acte,
                     ea.eta_act_code AS etat_projet,
-                    ta.tac_libelle AS type_projet
+                    ta.tac_libelle AS type_projet,
+                    ac.act_date_acte,
+                    ac.act_date_projet
                 FROM 
                     referentiel_fudpe_new.dbo.acte_agent aa
                 INNER JOIN 
@@ -82,8 +84,32 @@ class ECarriereAPIService:
             actes = cursor.fetchall()
             
             projets_list = []
-            for acte in actes:
-                projet_info = f"Projet n°{acte[0] or 'N/A'} ({acte[3] or 'N/A'}) - État: {acte[2] or 'N/A'}"
+            for i, acte in enumerate(actes, 1):
+                numero_projet = acte[0]
+                numero_acte = acte[1]
+                etat_projet = acte[2]
+                type_projet = acte[3]
+                date_acte = acte[4].strftime("%d/%m/%Y") if acte[4] else None
+                date_projet = acte[5].strftime("%d/%m/%Y") if acte[5] else None
+                
+                # Construire le message ligne par ligne en évitant les N/A
+                projet_info = f"**{i}. Projet n°{numero_projet or 'Sans numéro'}**"
+                
+                if type_projet:
+                    projet_info += f"\n📋 Type : {type_projet}"
+                
+                if etat_projet:
+                    projet_info += f"\n📊 État : {etat_projet}"
+                
+                if numero_acte:
+                    projet_info += f"\n📄 N° Acte : {numero_acte}"
+                
+                if date_projet:
+                    projet_info += f"\n📅 Date projet : {date_projet}"
+                
+                if date_acte:
+                    projet_info += f"\n📅 Date acte : {date_acte}"
+                
                 projets_list.append(projet_info)
             
             print(f"DEBUG: Projets trouvés: {projets_list}")
@@ -133,7 +159,29 @@ class ECarriereAPIService:
             agent_id, _, matricule_solde, nom, prenom = user
             print(f"DEBUG: Utilisateur trouvé: id={agent_id}, nom={prenom} {nom}")
 
-            # Requête pour récupérer les 3 derniers actes de l'agent (projets et non-projets)
+            # Requête pour récupérer les 3 derniers actes de l'agent (avec conditions spécifiques)
+            # actes_query = """
+            #     SELECT TOP 3
+            #         ac.act_numero_acte,
+            #         ea.eta_act_code AS etat_acte,
+            #         ta.tac_libelle AS type_acte,
+            #         ac.act_is_projet,
+            #         ac.act_date_acte
+            #     FROM 
+            #         referentiel_fudpe_new.dbo.acte_agent aa
+            #     INNER JOIN 
+            #         referentiel_fudpe_new.dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+            #     LEFT JOIN 
+            #         referentiel_fudpe_new.dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+            #     LEFT JOIN 
+            #         referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+            #     WHERE 
+            #         aa.act_agt_agt_id = %s
+            #         AND ac.act_is_projet = 0
+            #         AND ac.act_etat_id = 24
+            #         AND ac.act_date_acte IS NOT NULL
+            #     ORDER BY ac.act_date_acte DESC;
+            # """
             actes_query = """
                 SELECT TOP 3
                     ac.act_numero_acte,
@@ -151,6 +199,9 @@ class ECarriereAPIService:
                     referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
                 WHERE 
                     aa.act_agt_agt_id = %s
+                    AND ac.act_is_projet = 0
+                    
+                    AND ac.act_date_acte IS NOT NULL
                 ORDER BY ac.act_date_acte DESC;
             """
             cursor.execute(actes_query, (agent_id,))
@@ -158,15 +209,23 @@ class ECarriereAPIService:
             
             actes_list = []
             for i, acte in enumerate(actes, 1):
-                numero_acte = acte[0] or 'N/A'
-                etat_acte = acte[1] or 'N/A'
-                type_acte = acte[2] or 'N/A'
-                date_acte = acte[4].strftime("%d/%m/%Y") if acte[4] else 'N/A'
+                numero_acte = acte[0]
+                etat_acte = acte[1]
+                type_acte = acte[2]
+                date_acte = acte[4].strftime("%d/%m/%Y") if acte[4] else None
                 
-                acte_info = f"""**{i}. Acte n°{numero_acte}**
-📋 Type : {type_acte}
-📊 État : {etat_acte}
-📅 Date : {date_acte}"""
+                # Construire le message ligne par ligne en évitant les N/A
+                acte_info = f"**{i}. Acte n°{numero_acte or 'Sans numéro'}**"
+                
+                if type_acte:
+                    acte_info += f"\n📋 Type : {type_acte}"
+                
+                if etat_acte:
+                    acte_info += f"\n📊 État : {etat_acte}"
+                
+                if date_acte:
+                    acte_info += f"\n📅 Date : {date_acte}"
+                
                 actes_list.append(acte_info)
             
             print(f"DEBUG: Actes trouvés: {actes_list}")
@@ -491,7 +550,7 @@ class ActionHandleName(Action):
                 return [SlotSet("nom", nom_clean)]
         
         # Si pas de nom valide, redemander avec aide
-        dispatcher.utter_message(text="🤔 **Je n'ai pas bien compris votre nom**\n\n💡 *Vous pouvez dire :*\n• \"Je m'appelle [votre nom]\"\n• \"Mon nom est [votre nom]\"\n• Ou simplement taper votre nom\n\nPouvez-vous réessayer ?")
+        dispatcher.utter_message(text="**👤 Pour mieux vous aider, j'ai besoin de votre nom.**\n\nPouvez-vous réessayer ?")
         return []
 
     def _clean_and_format_name(self, nom_raw: str) -> str:
@@ -682,7 +741,7 @@ class ActionHandleEmail(Action):
                     self._verify_and_respond(dispatcher, email, None, platform)
                 return [SlotSet("email", email)]
             else:
-                dispatcher.utter_message(text="Veuillez entrer une adresse email valide (exemple: nom@domaine.com).")
+                dispatcher.utter_message(text="**📧 Adresse email non valide**\n Assurez-vous d'entrer une adresse email au bon format, comme exemple@gmail.com.")
                 return []
         
         return []
@@ -699,7 +758,7 @@ class ActionHandleEmail(Action):
         
         # Si pas trouvé
         dispatcher.utter_message(
-            text="❌ Désolé, nous ne trouvons pas de compte correspondant à ces informations. Veuillez vérifier votre email et CNI, ou contactez le support technique."
+            text="⚠️ Compte introuvable.\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n🔄 Veuillez vérifier vos données ou réessayer dans un instant."
         )
         dispatcher.utter_message(response="utter_no_account")
 
@@ -743,7 +802,7 @@ class ActionHandleCNI(Action):
                     else:
                         # Soit CNI n'existe pas, soit problème de connexion BD
                         dispatcher.utter_message(
-                            text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI inexistant dans la base de données\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier votre CNI ou contacter le support."
+                            text="❌ ** Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte actif dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin."
                         )
                         dispatcher.utter_message(response="utter_no_account")
                         return []
@@ -759,7 +818,7 @@ class ActionHandleCNI(Action):
                     else:
                         # Si la CNI n'existe pas
                         dispatcher.utter_message(
-                            text="❌ **Compte non trouvé**\n\nNous n'avons pas trouvé de compte associé à ce numéro de CNI.\n\nVeuillez vérifier votre CNI ou contacter le support.",
+                            text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte actif dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
                             buttons=[
                                 {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                                 {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
@@ -770,7 +829,7 @@ class ActionHandleCNI(Action):
             else:
                 print(f"DEBUG ActionHandleCNI: CNI format invalide - cni={cni}, len={len(cni) if cni else 0}, isdigit={cni.isdigit() if cni else False}")
                 dispatcher.utter_message(
-                    text="⚠️ **Format incorrect**\n\nLe numéro de CNI doit contenir **12 ou 13 chiffres**.\n\n💡 *Exemples : 178637770865 ou 1934200001259*\n\nVeuillez réessayer :",
+                    text="**🔢 Numéro de CNI invalide**\n\nLe numéro saisi ne semble pas valide.\nVeuillez vérifier qu'il contient bien 13 chiffres et réessayer.",
                     buttons=[
                         {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                         {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
@@ -823,9 +882,7 @@ class ActionHandleMatricule(Action):
                     projets = user_data.get("projets", [])
                     
                     # Message de salutation et menu de choix
-                    message = f"""✅ **Compte E-Carrière trouvé !**
-
-Bonjour **{nom_officiel}**,
+                    message = f"""Enchanté **{nom_officiel}**,
 
 - **Matricule :** {matricule_official}
 
@@ -857,7 +914,7 @@ Que souhaitez-vous consulter ?"""
                             SlotSet("agent_id", agent_id)]
                 else:
                     dispatcher.utter_message(
-                        text="❌ **Compte non trouvé**\n\nPossibles causes :\n• CNI ou Matricule incorrect\n• Compte désactivé\n• Problème de connexion à la base de données\n\nVeuillez vérifier vos informations.",
+                        text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte actif dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
                         buttons=[
                             {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                             {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
@@ -907,7 +964,7 @@ class ActionConfirmPasswordReset(Action):
             if success:
                 dispatcher.utter_message(response="utter_password_reset_success", email=email)
             else:
-                dispatcher.utter_message(text="❌ **Erreur de réinitialisation**\n\nImpossible d'envoyer l'email de réinitialisation.\n\nPossibles causes :\n• API de réinitialisation indisponible\n• Problème de connexion réseau\n• Email inexistant dans la base\n\nVeuillez contacter le support technique.")
+                dispatcher.utter_message(text="❌ **Réinitialisation non aboutie**\n\nUne erreur est survenue lors de l'envoi de l'email de réinitialisation.\n\n🔁 Vous pouvez réessayer dans un instant ou contacter le support technique pour obtenir de l'aide.")
         else:
             dispatcher.utter_message(text="❌ Informations manquantes pour la réinitialisation.")
         
@@ -1038,12 +1095,12 @@ class ActionVoirActes(Action):
 
 {actes_text}"""
             else:
-                message = f"""📄 **Aucun acte trouvé, {nom_officiel}**
+                message = f"""📄 **Aucun acte disponible pour le moment, {nom_officiel}**
 
-Nous n'avons pas trouvé d'actes pour votre compte."""
+Votre espace ne contient pas d'actes actuellement. Si vous pensez que c'est une erreur, vous pouvez contacter le support."""
         else:
-            message = "❌ Erreur : Informations d'authentification manquantes."
-        
+            message = "⚠️ Informations incomplètes.\nIl semble que certaines informations soient manquantes.\nVeuillez recommencer le processus depuis le début."
+
         dispatcher.utter_message(
             text=message,
             buttons=[
@@ -1074,14 +1131,7 @@ class ActionVoirProjets(Action):
             
             if user_data and user_data.get("projets"):
                 projets = user_data["projets"]
-                
-                # Formatage amélioré des projets
-                projets_formatted = []
-                for i, projet in enumerate(projets, 1):
-                    projet_formatted = f"**{i}.** {projet}"
-                    projets_formatted.append(projet_formatted)
-                
-                projets_text = "\n\n".join(projets_formatted)
+                projets_text = "\n\n".join(projets)
                 
                 message = f"""📊 **Vos 3 derniers projets, {nom_officiel}**
 
@@ -1089,7 +1139,8 @@ class ActionVoirProjets(Action):
             else:
                 message = f"""📊 **Aucun projet trouvé, {nom_officiel}**
 
-Nous n'avons pas trouvé de projets pour votre compte."""
+Aucun projet n'apparaît pour votre compte pour le moment.
+N'hésitez pas à contacter le support si besoin."""
         else:
             message = "❌ Erreur : Informations d'authentification manquantes."
         
@@ -1146,9 +1197,7 @@ class ActionRetourMenuUtilisateur(Action):
             user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
             projets = user_data.get("projets", []) if user_data else []
             
-            message = f"""✅ **Compte E-Carrière**
-
-Bonjour **{nom_officiel}**,
+            message = f"""Enchanté **{nom_officiel}**,
 
 - **Matricule :** {matricule_official}
 

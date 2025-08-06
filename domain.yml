@@ -137,20 +137,20 @@ slots:
         value: "Non"
 responses:
   utter_greet:
-    - text: "Bienvenue ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\n\n Dalal ak Jàmm 😊 !\n\n Pour commencer, puis-je connaître votre nom, s’il vous plaît ?"
+    - text: "Dalal ak Jàmm 😊 ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\nPuis-je connaître votre nom, s'il vous plaît ?"
   utter_greet_with_name:
-  - text: "Bonjour {nom} ! 👋\n\n🎯 **Que souhaitez-vous faire aujourd'hui ?**\n\n💡 *Choisissez la plateforme qui vous intéresse :*"
+  - text: "Bienvenue {nom} ! 👋\n**En quoi puis-je vous aider aujourd'hui ?**\n\n💡Choisissez la plateforme qui vous intéresse"
     buttons:
-      - title: "💼 E-CARRIERE"
+      - title: "💼E-Carrière"
         payload: '/choose_platform{{"platform": "E-Carrière"}}'
-      - title: "🎯 Demande d'emploi (PGDE)"
+      - title: "🎯Demande d'emploi (PGDE)"
         payload: '/choose_platform{{"platform": "PGDE"}}'
-      - title: "📜 CRCE"
+      - title: "📜 Reconnaissance de diplôme (CRCE)"
         payload: '/choose_platform{{"platform": "CRCE"}}'
-      - title: "📄 Attestation"
+      - title: "📄 Attestation de non appartenance"
         payload: '/choose_platform{{"platform": "Attestation"}}'
   utter_E_carriere:
-    - text: "Bienvenue sur **e-Carrière** 🧾, la plateforme dédiée à la gestion des carrières dans la fonction publique.\n\nPrêt·e à explorer ? 😊\n\n👉 Avez-vous déjà un compte sur la plateforme ?"
+    - text: "Bienvenue sur **E-Carrière** 🧾,La plateforme dédiée au suivi des actes administratifs liés à votre carrière dans la fonction publique du Sénégal.\nPrêt·e à suivre l'évolution de vos dossiers ?😊\n👉 Avez-vous déjà un compte sur la plateforme ?"
       buttons:
         - title: "✅ Oui"
           payload: "/confirm_has_account"
@@ -242,17 +242,17 @@ responses:
   utter_ask_email:
     - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
-    - text: "Super ! 🎉\n\nPour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 13 chiffres*"
+    - text: "Super ! 🎉Pour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
   utter_ask_cni_ecarriere:  # CNI pour E-Carrière
-    - text: "Super ! 🎉\n\nPour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n\n💡 *Format : 13 chiffres*"
+    - text: "Super ! 🎉Pour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
   utter_ask_matricule:  # Demander matricule après CNI pour E-Carrière
-    - text: "Parfait ! 👍\n\nMaintenant, j'ai besoin de votre **matricule** d'agent.\n\n💡 *Format : Votre matricule doit être en MAJUSCULES et sans slash (/) *"
+    - text: "Parfait ! 👍Maintenant, j'ai besoin de votre **matricule solde**.\nVotre matricule doit être en MAJUSCULES et sans slash(/)"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
     - text: "Votre adresse email est celle que vous avez utilisée lors de votre inscription sur la plateforme. Vérifiez vos emails pour retrouver les communications officielles."
   utter_chitchat/ask_cni:  # Réponse pour l'intent chitchat/ask_cni
     - text: "Pour connaître votre numéro de CNI, vérifiez votre Carte Nationale d'Identité sénégalaise. Ce numéro se trouve généralement au recto de votre carte."
   utter_ask_has_account:
-    - text: "Avez-vous déjà un compte sur {platform} ?\n\n💡 *Si vous n'êtes pas sûr, choisissez 'Oui' et nous vérifierons ensemble*"
+    - text: "Avez-vous déjà un compte sur {platform} ?\n💡Si vous n'êtes pas sûr, choisissez 'Oui' et nous vérifierons ensemble*"
       buttons:
         - title: "✅ Oui"
           payload: "/confirm_has_account"
@@ -266,14 +266,14 @@ responses:
         - title: "Non"
           payload: "/deny_has_access"
   utter_no_account:
-    - text: "Pas de souci {nom} ! 👌\n\nPour créer un compte, veuillez suivre les instructions appropriées selon votre plateforme."
+    - text: "⚠️**Compte introuvable** {nom}\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n🔁 Veuillez vérifier vos données ou réessayer dans un instant."
       buttons:
         - title: "ℹ️ Comment créer un compte"
           payload: "/ask_account_creation"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_no_access:
-    - text: "Pas d'accès à votre compte ? 🤔\n\n💡 **Choisissez l'option qui vous convient :**"
+    - text: "🔐 **Accès non reconnu**\n Si vous avez oublié vos identifiants ou rencontré un souci, vous pouvez demander une réinitialisation ou contacter le support"
       buttons:
         - title: "📝 Créer un compte"
           payload: "/ask_account_creation"
@@ -284,7 +284,7 @@ responses:
         - title: "🏠 Retour"
           payload: "/go_back_greet_with_name"
   utter_account_verified:
-    - text: "**Compte trouvé ! ✅\n\nParfait {nom} ! Je vous retrouve bien dans la base. Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
+    - text: "✅ **Votre compte a bien été vérifié !**\n Bienvenue **{nom}** 👋 \n Vous êtes maintenant connecté·e à votre espace personnel.Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
       buttons:
         - title: "✅ Oui, j'ai accès"
           payload: "/confirm_has_access"
@@ -298,21 +298,21 @@ responses:
         - title: "❌ Non, mot de passe oublié"
           payload: "/deny_has_access"
   utter_account_access_confirmed:
-    - text: "🎉 Génial ! Vous pouvez vous connecter normalement via ce lien :\n\n🔗 [**Se connecter à PGDE**](https://emploi-fpublique.sec.gouv.sn/login)\n\n✨ Bonne chance dans vos démarches ! 🤝"
+    - text: "✅ **Accès confirmé**.\n Vous pouvez vous connecter dès maintenant à votre espace personnel.\n🔗 [**Accéder à la plateforme**](https://emploi-fpublique.sec.gouv.sn/login)\n\n✨ Bonne chance dans vos démarches ! 🤝"
       buttons:
         - title: "🔄 Autre vérification"
           payload: "/start_account_verification"
         - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
   utter_confirm_password_reset:
-    - text: "Pas de panique {nom}, ça arrive 😉\n\nPour réinitialiser votre mot de passe, je vais envoyer un lien de réinitialisation à votre adresse email :\n\n📧 {email}\n\nConfirmez-vous cette réinitialisation ?"
+    - text: "Pas de panique {nom}, ça arrive\nPour réinitialiser votre mot de passe, je vais envoyer un lien de réinitialisation à votre adresse email :\n\n📧 {email}\n\nConfirmez-vous cette réinitialisation ?"
       buttons:
         - title: "Oui, réinitialiser"
           payload: "/confirm_password_reset"
         - title: "Non, annuler"
           payload: "/deny_password_reset"
   utter_password_reset_success:
-    - text: "✅ Demande de réinitialisation envoyée !\n\n📧 Vérifiez votre email **{email}** pour le lien de réinitialisation.\n\n⚠️ Pensez à vérifier vos spams si vous ne voyez pas l'email.\n\nUne fois votre mot de passe changé, vous pourrez vous connecter :\n\n[Se connecter à PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
+    - text: "✅ **Réinitialisation réussie !**\nUn lien de réinitialisation a été envoyé à l'adresse : **{email}**.\n📬 Pensez à vérifier votre dossier *Spam* ou *Courrier indésirable*.\nUne fois votre mot de passe changé, vous pourrez vous connecter :\n\n[Se connecter à PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
       buttons:
         - title: "🔄 Autre vérification"
           payload: "/start_account_verification"
@@ -326,7 +326,7 @@ responses:
         - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
   utter_dossier_number:
-    - text: "📋 Votre numéro de dossier PGDE est : **{dossier_number}**\n\nVous pouvez utiliser ce numéro pour suivre l'état de vos candidatures sur la plateforme PGDE."
+    - text: "📁 **Votre numéro de dossier est :** {dossier_number}**\nVous pouvez utiliser ce numéro pour suivre l'état de vos candidatures sur la plateforme PGDE."
       buttons:
         - title: "🔄 Autre vérification"
           payload: "/start_account_verification"
