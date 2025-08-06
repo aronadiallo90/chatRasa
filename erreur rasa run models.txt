@@ -1,31 +1,7 @@
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.rule_policy  - There is no applicable rule.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
-[state 1] user intent: greet | previous action name: action_listen
-[state 2] user intent: greet | previous action name: utter_greet
-[state 3] user intent: provide_name | user entities: ('nom',) | previous action name: action_listen
-[state 4] user intent: provide_name | user entities: ('nom',) | previous action name: action_handle_name | slots: {'nom': (1.0,)}
-[state 5] user intent: choose_platform | user entities: ('platform',) | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,)}
-[state 6] user intent: choose_platform | user entities: ('platform',) | previous action name: action_redirect_platform | slots: {'platform': (1.0,), 'nom': (1.0,)}
-[state 7] user intent: confirm_has_account | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-[state 8] user intent: confirm_has_account | previous action name: action_handle_has_account | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-[state 9] user intent: provide_cni | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-[state 10] user intent: provide_cni | previous action name: action_handle_cni | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-[state 11] user intent: nlu_fallback | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.rule_policy  - There is no applicable rule.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'action_handle_has_account' based on user intent.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.unexpected_intent_policy  - Querying for intent `nlu_fallback`.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.unexpected_intent_policy  - Query intent index 31 not found in label thresholds - {10: -0.64483166, 11: 0.23247302, 12: 0.1278122, 13: -0.109581955, 18: -0.011703417, 19: -0.51722825, 20: -0.31852773, 23: -0.48065284, 27: -0.18169174, 28: -9.191036e-05, 29: -0.44163376, 30: -0.21818659, 33: -0.65697855, 34: -0.64062995, 36: -0.023504525, 39: 0.36464277, 6: 0.083315834, 7: -0.4350955, 8: 0.103926614, 9: 0.23075578}. Check for `action_unlikely_intent` prediction will be skipped.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.ensemble  - Made prediction using user intent.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.ensemble  - Added `DefinePrevUserUtteredFeaturization(False)` event.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - Predicted next action 'action_default_fallback' with confidence 0.30.
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[<rasa.shared.core.events.DefinePrevUserUtteredFeaturization object at 0x000001F51FB7A7C0>]
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_default_fallback rasa_events=[<rasa.shared.core.events.UserUtteranceReverted object at 0x000001F51FB7A850>]
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - [debug    ] processor.slots.log            slot_values=     platform: E-Carrière
-        nom: Arona
+2025-08-06 13:25:15 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_handle_has_account rasa_events=[BotUttered('Super ! 🎉Pour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).
+💡Votre cni doit contenir 13 chiffres', {"elements": null, "quick_replies": null, "buttons": null, "attachment": null, "image": null, "custom": null}, {"utter_action": "utter_ask_cni_ecarriere", "template": "utter_ask_cni_ecarriere"}, 1754486715.1222374), SlotSet(key: has_account, value: Oui)]
+2025-08-06 13:25:15 DEBUG    rasa.core.processor  - [debug    ] processor.slots.log            slot_values=     platform: E-Carrière
+        nom: Aliou Baxal
         nom_officiel: None
         username: None
         dossier_number: None
@@ -33,37 +9,142 @@
         matricule: None
         agent_id: None
         email: None
-        cni: 2476197200058
+        cni: None
         has_account: Oui
         has_access: None
         session_started_metadata: None
-2025-08-01 08:09:30 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x000001F5193FC6A0>}, targets: ['select_prediction'] and ExecutionContext(model_id='1e107e0042ea4575bd51fd588962a3b7', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'rule_only_data_provider' running 'RuleOnlyDataProvider.provide'.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'run_MemoizationPolicy1' running 'MemoizationPolicy.predict_action_probabilities'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.memoization  - [debug    ] memoization.predict.actions    tracker_states=[{}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_redirect_platform'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_handle_has_account'}}, {'user': {'intent': 'provide_cni'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'provide_cni'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_handle_cni'}}]
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.memoization  - There is no memorised next action
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'run_RulePolicy0' running 'RulePolicy.predict_action_probabilities'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+2025-08-06 13:25:15 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x0000016D3C5EBF70>}, targets: ['select_prediction'] and ExecutionContext(model_id='4455f3778a484dedb4f0190ad9273b77', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'rule_only_data_provider' running 'RuleOnlyDataProvider.provide'.
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'run_MemoizationPolicy1' running 'MemoizationPolicy.predict_action_probabilities'.
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.memoization  - [debug    ] memoization.predict.actions    tracker_states=[{}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_redirect_platform'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_handle_has_account'}}]
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.memoization  - There is no memorised next action
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'run_RulePolicy0' running 'RulePolicy.predict_action_probabilities'.
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
 [state 1] user intent: greet | previous action name: action_listen
 [state 2] user intent: greet | previous action name: utter_greet
-[state 3] user intent: provide_name | user entities: ('nom',) | previous action name: action_listen
-[state 4] user intent: provide_name | user entities: ('nom',) | previous action name: action_handle_name | slots: {'nom': (1.0,)}
+[state 3] user intent: provide_name | previous action name: action_listen
+[state 4] user intent: provide_name | previous action name: action_handle_name | slots: {'nom': (1.0,)}
 [state 5] user intent: choose_platform | user entities: ('platform',) | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,)}
 [state 6] user intent: choose_platform | user entities: ('platform',) | previous action name: action_redirect_platform | slots: {'platform': (1.0,), 'nom': (1.0,)}
 [state 7] user intent: confirm_has_account | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
 [state 8] user intent: confirm_has_account | previous action name: action_handle_has_account | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-[state 9] user intent: provide_cni | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-[state 10] user intent: provide_cni | previous action name: action_handle_cni | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.rule_policy  - There is a rule for the next action 'action_listen'.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'action_listen' based on user intent.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.unexpected_intent_policy  - Skipping predictions for UnexpecTEDIntentPolicy as either there is no event of type `UserUttered`, event's intent is new and not in domain or there is an event of type `ActionExecuted` after the last `UserUttered`.
-2025-08-01 08:09:30 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
-2025-08-01 08:09:30 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - Predicted next action 'action_listen' with confidence 1.00.
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[]
-2025-08-01 08:09:30 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_listen rasa_events=[]
-2025-08-01 08:09:30 DEBUG    rasa.core.tracker_store  - No event broker configured. Skipping streaming events.
-2025-08-01 08:09:30 DEBUG    rasa.core.lock_store  - Deleted lock for conversation '6013a7dc-21f2-48ae-8ac3-0c96585c0d96'.
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.rule_policy  - There is a rule for the next action 'action_listen'.
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'action_listen' based on user intent.
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.unexpected_intent_policy  - Skipping predictions for UnexpecTEDIntentPolicy as either there is no event of type `UserUttered`, event's intent is new and not in domain or there is an event of type `ActionExecuted` after the last `UserUttered`.
+2025-08-06 13:25:15 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
+2025-08-06 13:25:15 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
+2025-08-06 13:25:15 DEBUG    rasa.core.processor  - Predicted next action 'action_listen' with confidence 1.00.
+2025-08-06 13:25:15 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[]
+2025-08-06 13:25:15 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_listen rasa_events=[]
+2025-08-06 13:25:15 DEBUG    rasa.core.tracker_store  - No event broker configured. Skipping streaming events.
+2025-08-06 13:25:15 DEBUG    rasa.core.lock_store  - Deleted lock for conversation '098303bd-6bd7-422e-8b50-dbd37205e8fd'.
+2025-08-06 13:25:19 DEBUG    rasa.core.lock_store  - Issuing ticket for conversation '098303bd-6bd7-422e-8b50-dbd37205e8fd'.
+2025-08-06 13:25:19 DEBUG    rasa.core.lock_store  - Acquiring lock for conversation '098303bd-6bd7-422e-8b50-dbd37205e8fd'.
+2025-08-06 13:25:19 DEBUG    rasa.core.lock_store  - Acquired lock for conversation '098303bd-6bd7-422e-8b50-dbd37205e8fd'.
+2025-08-06 13:25:19 DEBUG    rasa.core.tracker_store  - Recreating tracker for id '098303bd-6bd7-422e-8b50-dbd37205e8fd'
+2025-08-06 13:25:19 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__message__': [<rasa.core.channels.channel.UserMessage object at 0x0000016D3C5EBCD0>], '__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x0000016D3C322400>}, targets: ['run_RegexMessageHandler'] and ExecutionContext(model_id='4455f3778a484dedb4f0190ad9273b77', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'nlu_message_converter' running 'NLUMessageConverter.convert_user_message'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_WhitespaceTokenizer0' running 'WhitespaceTokenizer.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_RegexFeaturizer1' running 'RegexFeaturizer.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_LexicalSyntacticFeaturizer2' running 'LexicalSyntacticFeaturizer.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_CountVectorsFeaturizer3' running 'CountVectorsFeaturizer.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_CountVectorsFeaturizer4' running 'CountVectorsFeaturizer.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_DIETClassifier5' running 'DIETClassifier.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_EntitySynonymMapper6' running 'EntitySynonymMapper.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_ResponseSelector7' running 'ResponseSelector.process'.
+2025-08-06 13:25:19 DEBUG    rasa.nlu.selectors.response_selector  - Adding following selector key to message property: default
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_FallbackClassifier8' running 'FallbackClassifier.process'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_RegexMessageHandler' running 'RegexMessageHandler.process'.
+2025-08-06 13:25:19 DEBUG    rasa.core.processor  - [debug    ] processor.message.parse        parse_data_entities=[] parse_data_intent={'name': 'provide_matricule', 'confidence': 0.7753479480743408} parse_data_text=2476197200058
+2025-08-06 13:25:19 DEBUG    rasa.core.processor  - Logged UserUtterance - tracker now has 37 events.
+2025-08-06 13:25:19 DEBUG    rasa.core.actions.action  - Validating extracted slots: matricule
+2025-08-06 13:25:19 DEBUG    rasa.core.processor  - [debug    ] processor.extract.slots        action_extract_slot=action_extract_slots len_extraction_events=1 rasa_events=[SlotSet(key: matricule, value: 2476197200058)]
+2025-08-06 13:25:19 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x0000016D3C322400>}, targets: ['select_prediction'] and ExecutionContext(model_id='4455f3778a484dedb4f0190ad9273b77', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'rule_only_data_provider' running 'RuleOnlyDataProvider.provide'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_MemoizationPolicy1' running 'MemoizationPolicy.predict_action_probabilities'.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.memoization  - [debug    ] memoization.predict.actions    tracker_states=[{}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_redirect_platform'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_handle_has_account'}}, {'user': {'intent': 'provide_matricule'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}]
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.memoization  - There is no memorised next action
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_RulePolicy0' running 'RulePolicy.predict_action_probabilities'.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+[state 1] user intent: greet | previous action name: action_listen
+[state 2] user intent: greet | previous action name: utter_greet
+[state 3] user intent: provide_name | previous action name: action_listen
+[state 4] user intent: provide_name | previous action name: action_handle_name | slots: {'nom': (1.0,)}
+[state 5] user intent: choose_platform | user entities: ('platform',) | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,)}
+[state 6] user intent: choose_platform | user entities: ('platform',) | previous action name: action_redirect_platform | slots: {'platform': (1.0,), 'nom': (1.0,)}
+[state 7] user intent: confirm_has_account | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 8] user intent: confirm_has_account | previous action name: action_handle_has_account | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 9] user text: 2476197200058 | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.rule_policy  - There is no applicable rule.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+[state 1] user intent: greet | previous action name: action_listen
+[state 2] user intent: greet | previous action name: utter_greet
+[state 3] user intent: provide_name | previous action name: action_listen
+[state 4] user intent: provide_name | previous action name: action_handle_name | slots: {'nom': (1.0,)}
+[state 5] user intent: choose_platform | user entities: ('platform',) | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,)}
+[state 6] user intent: choose_platform | user entities: ('platform',) | previous action name: action_redirect_platform | slots: {'platform': (1.0,), 'nom': (1.0,)}
+[state 7] user intent: confirm_has_account | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 8] user intent: confirm_has_account | previous action name: action_handle_has_account | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 9] user intent: provide_matricule | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.rule_policy  - There is a rule for the next action 'action_handle_matricule'.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'utter_pgde_menu' based on user intent.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.unexpected_intent_policy  - Querying for intent `provide_matricule`.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.unexpected_intent_policy  - Query intent index 36 not found in label thresholds - {10: -0.5706084, 11: -0.040649317, 12: 0.30812752, 13: 7.727742e-05, 19: 0.034276962, 20: -0.51986474, 21: -0.29012743, 24: -0.41412345, 28: -0.18935537, 29: -0.38495263, 30: -0.36984456, 31: -0.3004145, 34: -0.68697727, 35: -0.66287917, 37: -0.15322971, 41: 0.02091673, 6: 0.06865373, 7: -0.28137258, 8: 0.17700861, 9: 0.15278926}. Check for `action_unlikely_intent` prediction will be skipped.
+2025-08-06 13:25:19 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.ensemble  - Made prediction using user intent.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.ensemble  - Added `DefinePrevUserUtteredFeaturization(False)` event.
+2025-08-06 13:25:19 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
+2025-08-06 13:25:19 DEBUG    rasa.core.processor  - Predicted next action 'action_handle_matricule' with confidence 1.00.
+2025-08-06 13:25:19 DEBUG    rasa.core.actions.action  - Calling action endpoint to run action 'action_handle_matricule'.
+2025-08-06 13:25:20 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[<rasa.shared.core.events.DefinePrevUserUtteredFeaturization object at 0x0000016D4347EDC0>]
+2025-08-06 13:25:20 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_handle_matricule rasa_events=[]
+2025-08-06 13:25:20 DEBUG    rasa.core.processor  - [debug    ] processor.slots.log            slot_values=     platform: E-Carrière
+        nom: Aliou Baxal
+        nom_officiel: None
+        username: None
+        dossier_number: None
+        user_id: None
+        matricule: 2476197200058
+        agent_id: None
+        email: None
+        cni: None
+        has_account: Oui
+        has_access: None
+        session_started_metadata: None
+2025-08-06 13:25:20 DEBUG    rasa.engine.runner.dask  - Running graph with inputs: {'__tracker__': <rasa.shared.core.trackers.DialogueStateTracker object at 0x0000016D3C322400>}, targets: ['select_prediction'] and ExecutionContext(model_id='4455f3778a484dedb4f0190ad9273b77', should_add_diagnostic_data=False, is_finetuning=False, node_name=None).
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'rule_only_data_provider' running 'RuleOnlyDataProvider.provide'.
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'domain_provider' running 'DomainProvider.provide_inference'.
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'run_MemoizationPolicy1' running 'MemoizationPolicy.predict_action_probabilities'.
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.memoization  - [debug    ] memoization.predict.actions    tracker_states=[{}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'greet'}, 'prev_action': {'action_name': 'utter_greet'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'choose_platform', 'entities': ('platform',)}, 'slots': {'platform': (1.0,), 'nom': (1.0,)}, 'prev_action': {'action_name': 'action_redirect_platform'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_handle_has_account'}}, {'user': {'intent': 'confirm_has_account'}, 'slots': {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}, 'prev_action': {'action_name': 'action_listen'}}]
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.memoization  - There is no memorised next action
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'run_RulePolicy0' running 'RulePolicy.predict_action_probabilities'.
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.rule_policy  - [debug    ] rule_policy.actions.find       current_states=
+[state 1] user intent: greet | previous action name: action_listen
+[state 2] user intent: greet | previous action name: utter_greet
+[state 3] user intent: provide_name | previous action name: action_listen
+[state 4] user intent: provide_name | previous action name: action_handle_name | slots: {'nom': (1.0,)}
+[state 5] user intent: choose_platform | user entities: ('platform',) | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,)}
+[state 6] user intent: choose_platform | user entities: ('platform',) | previous action name: action_redirect_platform | slots: {'platform': (1.0,), 'nom': (1.0,)}
+[state 7] user intent: confirm_has_account | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 8] user intent: confirm_has_account | previous action name: action_handle_has_account | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 9] user intent: provide_matricule | previous action name: action_listen | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+[state 10] user intent: provide_matricule | previous action name: action_handle_matricule | slots: {'platform': (1.0,), 'nom': (1.0,), 'has_account': (1.0, 0.0, 0.0)}
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.rule_policy  - There is a rule for the next action 'action_listen'.
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'run_TEDPolicy2' running 'TEDPolicy.predict_action_probabilities'.
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.ted_policy  - TED predicted 'action_handle_has_account' based on user intent.
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'run_UnexpecTEDIntentPolicy3' running 'UnexpecTEDIntentPolicy.predict_action_probabilities'.
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.unexpected_intent_policy  - Skipping predictions for UnexpecTEDIntentPolicy as either there is no event of type `UserUttered`, event's intent is new and not in domain or there is an event of type `ActionExecuted` after the last `UserUttered`.
+2025-08-06 13:25:20 DEBUG    rasa.engine.graph  - Node 'select_prediction' running 'DefaultPolicyPredictionEnsemble.combine_predictions_from_kwargs'.
+2025-08-06 13:25:20 DEBUG    rasa.core.policies.ensemble  - Predicted next action using RulePolicy.
+2025-08-06 13:25:20 DEBUG    rasa.core.processor  - Predicted next action 'action_listen' with confidence 1.00.
+2025-08-06 13:25:20 DEBUG    rasa.core.processor  - [debug    ] processor.actions.policy_prediction prediction_events=[]
+2025-08-06 13:25:20 DEBUG    rasa.core.processor  - [debug    ] processor.actions.log          action_name=action_listen rasa_events=[]
+2025-08-06 13:25:20 DEBUG    rasa.core.tracker_store  - No event broker configured. Skipping streaming events.
+2025-08-06 13:25:20 DEBUG    rasa.core.lock_store  - Deleted lock for conversation '098303bd-6bd7-422e-8b50-dbd37205e8fd'.

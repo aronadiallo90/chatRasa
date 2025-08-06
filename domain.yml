@@ -157,7 +157,7 @@ responses:
         - title: "❌ Non"
           payload: "/deny_has_account"
   utter_ask_account_creation:
-    - text: "Pour vous **activer** son compte :\n\n⭐ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n⭐ **Remplissez** les informations demandées avec attention :\n\n⭐ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n⭐ Votre **Nom** doit être en MAJUSCULES.\n\n⭐ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n⭐ Suivez ensuite suiver les instructions pour finaliser l’activation de votre compte."
+    - text: "Pour **activer** votre compte :\n\n⭐ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n⭐ **Remplissez** les informations demandées avec attention :\n\n⭐ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n⭐ Votre **Nom** doit être en MAJUSCULES.\n\n⭐ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n⭐ Suivez ensuite les instructions pour finaliser l'activation de votre compte."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -268,14 +268,14 @@ responses:
   utter_no_account:
     - text: "⚠️**Compte introuvable** {nom}\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n🔁 Veuillez vérifier vos données ou réessayer dans un instant."
       buttons:
-        - title: "ℹ️ Comment créer un compte"
+        - title: "ℹ️ Comment activer mon compte"
           payload: "/ask_account_creation"
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_no_access:
     - text: "🔐 **Accès non reconnu**\n Si vous avez oublié vos identifiants ou rencontré un souci, vous pouvez demander une réinitialisation ou contacter le support"
       buttons:
-        - title: "📝 Créer un compte"
+        - title: "📝 Activer mon compte"
           payload: "/ask_account_creation"
         - title: "🔑 Se connecter (j'ai un compte)"
           payload: "/ask_login"

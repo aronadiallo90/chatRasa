@@ -136,6 +136,12 @@ nlu:
         - Mon numéro : [5555666677778](cni)
         - CNI : 1934200001259
         - 1934200001259
+        - [2476197200058](cni)
+        - 2476197200058
+        - [1234567890123](cni)
+        - 1234567890123
+        - [9876543210987](cni)
+        - 9876543210987
   - intent: confirm_has_access
     examples: |
       - Oui, j'ai accès à mon compte
@@ -239,6 +245,19 @@ nlu:
       - G67890K
       - matricule 519410J
       - le matricule est 519410J
+      - [123](matricule)
+      - 123
+      - [456](matricule)
+      - 456
+      - [789](matricule)
+      - 789
+      - [1234](matricule)
+      - 1234
+      - [12345](matricule)
+      - 12345
+      - mon matricule est 123
+      - matricule 456
+      - le matricule est 1234
 
 
 

@@ -44,7 +44,7 @@ class ECarriereAPIService:
             
             # Requête pour récupérer l'utilisateur
             user_query = """
-                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id
                 FROM referentiel_fudpe_new.dbo.agent 
                 WHERE agt_cni = %s AND agt_matricule_solde = %s AND agt_deleted = 0
             """
@@ -55,7 +55,7 @@ class ECarriereAPIService:
                 print(f"DEBUG: Aucun utilisateur trouvé pour CNI={cni} et Matricule={matricule}")
                 return None
 
-            agent_id, _, matricule_solde, nom, prenom = user
+            agent_id, _, matricule_solde, nom, prenom, agt_affectation_id = user
             print(f"DEBUG: Utilisateur trouvé: id={agent_id}, nom={prenom} {nom}")
 
             # Requête pour récupérer les 3 derniers projets de l'agent
@@ -119,7 +119,8 @@ class ECarriereAPIService:
                 "nom": f"{prenom} {nom}",
                 "matricule": matricule_solde,
                 "cni": cni,
-                "projets": projets_list
+                "projets": projets_list,
+                "agt_affectation_id": agt_affectation_id
             }
 
         except pymssql.Error as e:
@@ -651,9 +652,9 @@ class ActionHandleHasAccount(Action):
             # Adapter le message selon la plateforme
             if platform == "E-Carrière":
                 dispatcher.utter_message(
-                    text="Pas de souci ! 👌\n\nPour créer un compte E-Carrière, vous devez d'abord être un agent de la fonction publique.\n\nVeuillez contacter votre administration pour l'activation de votre compte.",
+                    text="Pas de souci ! 👌\n\nPour créer un compte E-Carrière, vous devez d'abord être un agent de la fonction publique.",
                     buttons=[
-                        {"title": "ℹ️ Comment créer un compte", "payload": "/ask_account_creation"},
+                        {"title": "ℹ️ Comment Activer mon compte", "payload": "/ask_account_creation"},
                         {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
                         {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
                         {"title": "📞 Support", "payload": "/ask_support"}
@@ -773,8 +774,14 @@ class ActionHandleCNI(Action):
         
         has_account = tracker.get_slot("has_account")
         platform = tracker.get_slot("platform")
+        existing_cni = tracker.get_slot("cni")
         
-        print(f"DEBUG ActionHandleCNI: has_account={has_account}, platform={platform}")
+        print(f"DEBUG ActionHandleCNI: has_account={has_account}, platform={platform}, existing_cni={existing_cni}")
+        
+        # Si on a déjà un CNI et qu'on est sur E-Carrière, on attend un matricule, pas un autre CNI
+        if existing_cni and platform == "E-Carrière":
+            print("DEBUG ActionHandleCNI: CNI déjà présent, on attend probablement un matricule")
+            return []
         
         if has_account == "Oui" and (platform == "PGDE" or platform == "E-Carrière"):
             # Récupérer le CNI du message
@@ -809,27 +816,38 @@ class ActionHandleCNI(Action):
                 
                 elif platform == "E-Carrière":
                     # E-Carrière : Vérifier d'abord si la CNI existe
-                    user_data = ECarriereAPIService.verify_user_by_cni(cni)
-                    
-                    if user_data:
-                        # Si la CNI existe, stocker CNI et demander matricule
-                        dispatcher.utter_message(response="utter_ask_matricule")
-                        return [SlotSet("cni", cni)]
-                    else:
-                        # Si la CNI n'existe pas
+                    try:
+                        user_data = ECarriereAPIService.verify_user_by_cni(cni)
+                        
+                        if user_data:
+                            # Si la CNI existe, stocker CNI et demander matricule
+                            dispatcher.utter_message(response="utter_ask_matricule")
+                            return [SlotSet("cni", cni)]
+                        else:
+                            # Si la CNI n'existe pas
+                            dispatcher.utter_message(
+                                text="❌ **Compte non trouvé**\n\nNous n'avons pas trouvé de compte avec ce numéro de CNI.\n\n👉 Vérifiez votre numéro ou contactez le support si besoin.",
+                                buttons=[
+                                    {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                                    {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                                    {"title": "📞 Support", "payload": "/ask_support"}
+                                ]
+                            )
+                            return []
+                    except Exception as e:
+                        print(f"ERREUR dans ActionHandleCNI: {e}")
                         dispatcher.utter_message(
-                            text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte actif dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
+                            text="❌ **Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
                             buttons=[
                                 {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                                {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                                {"title": "📞 Support", "payload": "/ask_support"}
+                                {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
                             ]
                         )
                         return []
             else:
                 print(f"DEBUG ActionHandleCNI: CNI format invalide - cni={cni}, len={len(cni) if cni else 0}, isdigit={cni.isdigit() if cni else False}")
                 dispatcher.utter_message(
-                    text="**🔢 Numéro de CNI invalide**\n\nLe numéro saisi ne semble pas valide.\nVeuillez vérifier qu'il contient bien 13 chiffres et réessayer.",
+                    text="❌ **Format de CNI incorrect**\n\nVotre numéro de CNI doit contenir exactement 13 chiffres.\n\n💡 Vérifiez sur votre carte d'identité et ressaisissez.",
                     buttons=[
                         {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                         {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
@@ -838,6 +856,14 @@ class ActionHandleCNI(Action):
                 return []
         else:
             print(f"DEBUG ActionHandleCNI: Conditions non remplies - has_account={has_account}, platform={platform}")
+            # Si on arrive ici, quelque chose ne va pas dans le flux
+            dispatcher.utter_message(
+                text="❌ **Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
+                buttons=[
+                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
+                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                ]
+            )
         
         return []
 
@@ -861,6 +887,39 @@ class ActionHandleMatricule(Action):
         latest_text = tracker.latest_message.get("text", "")
         print(f"DEBUG ActionHandleMatricule: latest_intent={latest_intent}, latest_text='{latest_text}'")
         
+        # Si on n'a pas de CNI pour E-Carrière, l'input peut être un CNI mal classifié
+        if platform == "E-Carrière" and not cni:
+            # Si l'input ressemble à un CNI (13 chiffres), traiter comme CNI
+            input_text = latest_text.strip()
+            if input_text.isdigit() and len(input_text) == 13:
+                print("DEBUG ActionHandleMatricule: Input ressemble à un CNI, rediriger vers ActionHandleCNI")
+                # Traiter directement comme un CNI
+                try:
+                    user_data = ECarriereAPIService.verify_user_by_cni(input_text)
+                    if user_data:
+                        dispatcher.utter_message(response="utter_ask_matricule")
+                        return [SlotSet("cni", input_text)]
+                    else:
+                        dispatcher.utter_message(
+                            text="❌ **Compte non trouvé**\n\nNous n'avons pas trouvé de compte avec ce numéro de CNI.\n\n👉 Vérifiez votre numéro ou contactez le support si besoin.",
+                            buttons=[
+                                {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                                {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                                {"title": "📞 Support", "payload": "/ask_support"}
+                            ]
+                        )
+                        return []
+                except Exception as e:
+                    print(f"ERREUR dans ActionHandleMatricule (CNI processing): {e}")
+                    dispatcher.utter_message(
+                        text="❌ **Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
+                        buttons=[
+                            {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                            {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                        ]
+                    )
+                    return []
+        
         if has_account == "Oui" and platform == "E-Carrière" and cni:
             # Récupérer le matricule du message
             matricule = next(tracker.get_latest_entity_values("matricule"), None)
@@ -878,25 +937,41 @@ class ActionHandleMatricule(Action):
                     matricule_official = user_data["matricule"] 
                     agent_id = user_data["id"]
                     projets = user_data["projets"]
+                    agt_affectation_id = user_data.get("agt_affectation_id")
                     
                     projets = user_data.get("projets", [])
                     
-                    # Message de salutation et menu de choix
+                    # Vérifier si le compte est activé (agt_affectation_id == 174200)
+                    compte_active = agt_affectation_id == 174200
+                    
+                    # Message de salutation
                     message = f"""Enchanté **{nom_officiel}**,
 
 - **Matricule :** {matricule_official}
+"""
+                    
+                    # Ajouter message d'activation si nécessaire
+                    if not compte_active:
+                        message += """\n⚠️ **Activation requise**
+Je vois que vous n'avez pas encore activé votre compte E-Carrière.
+Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
 
-Que souhaitez-vous consulter ?"""
+"""
 
                     # Boutons de choix selon les données disponibles
                     buttons = []
                     if projets:
+                        message += "Que souhaitez-vous faire ?"
                         buttons.extend([
                             {"title": "📄 Voir mes actes", "payload": "/voir_actes"},
                             {"title": "📊 Voir mes projets", "payload": "/voir_projets"}
                         ])
                     else:
-                        buttons.append({"title": "❌ Aucun projet/acte disponible", "payload": "/aucun_projet_acte"})
+                        message += "Aucun projet ou acte n'est disponible pour votre compte pour le moment."
+                    
+                    # Ajouter bouton d'activation si nécessaire
+                    if not compte_active:
+                        buttons.append({"title": "✅ Activer mon compte", "payload": "/ask_account_creation"})
                     
                     # Boutons de navigation
                     buttons.extend([
@@ -914,7 +989,7 @@ Que souhaitez-vous consulter ?"""
                             SlotSet("agent_id", agent_id)]
                 else:
                     dispatcher.utter_message(
-                        text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte actif dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
+                        text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe matricule saisi ne correspond pas à votre CNI dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre matricule ou contacter notre équipe d'assistance si besoin.",
                         buttons=[
                             {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                             {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
@@ -935,7 +1010,7 @@ Que souhaitez-vous consulter ?"""
             # Debug: Conditions non remplies
             print(f"DEBUG: Conditions non remplies - has_account={has_account}, platform={platform}, cni={cni}")
             dispatcher.utter_message(
-                text="⚠️ **Erreur de workflow**\n\nIl semble qu'il y ait un problème avec les informations précédentes. Veuillez recommencer la vérification.",
+                text="❌ **Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
                 buttons=[
                     {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
                     {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}

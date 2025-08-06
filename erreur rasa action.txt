@@ -1,6 +1,4 @@
-
-(.venv) C:\Users\Arona\Desktop\fp\test\pycharm\pycharm>rasa run actions --debug
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\core\tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
   Base: DeclarativeMeta = declarative_base()
 C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
   import pkg_resources
@@ -21,36 +19,45 @@ Implementing implicit namespace packages (as specified in PEP 420) is preferred 
   declare_namespace(pkg)
 C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\sanic_cors\extension.py:39: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
   SANIC_VERSION = LooseVersion(sanic_version)
-2025-07-31 18:39:37 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_redirect_platform'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_explain_account_creation'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_explain_login'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_explain_password_reset'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_handle_name'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_start_account_verification'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_handle_has_account'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_handle_has_access'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_handle_email'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_handle_cni'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_handle_matricule'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_confirm_password_reset'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_deny_password_reset'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_get_dossier_number'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_reset_account_data'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_reset_for_new_platform'.
-2025-07-31 18:39:37 INFO     rasa_sdk.executor  - Registered function for 'action_soft_reset'.
-2025-07-31 18:39:37 INFO     rasa_sdk.endpoint  - Starting plugins...
-2025-07-31 18:39:37 DEBUG    rasa_sdk.plugin  - No plugins found: No module named 'rasa_sdk_plugins'
-2025-07-31 18:39:37 INFO     rasa_sdk.endpoint  - Action endpoint is up and running on http://0.0.0.0:5055
-2025-07-31 18:39:37 DEBUG    rasa_sdk.utils  - Using the default number of Sanic workers (1).
-2025-08-01 08:09:08 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_name'
-2025-08-01 08:09:08 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_name'
-2025-08-01 08:09:11 DEBUG    rasa_sdk.executor  - Received request to run 'action_redirect_platform'
-2025-08-01 08:09:11 DEBUG    rasa_sdk.executor  - Finished running 'action_redirect_platform'
-2025-08-01 08:09:13 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_has_account'
-2025-08-01 08:09:13 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_has_account'
-2025-08-01 08:09:16 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_cni'
-DEBUG ActionHandleCNI: has_account=Oui, platform=E-Carrière
-DEBUG ActionHandleCNI: CNI extracted = 2476197200058
-DEBUG ECarriereAPIService: Tentative de connexion à 10.4.116.87,1433/referentiel_fudpe_new avec CNI=2476197200058
-2025-08-01 08:09:18 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_cni'
+2025-08-06 13:23:02 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_redirect_platform'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_explain_account_creation'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_explain_login'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_explain_password_reset'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_handle_name'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_start_account_verification'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_handle_has_account'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_handle_has_access'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_handle_email'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_handle_cni'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_handle_matricule'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_confirm_password_reset'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_deny_password_reset'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_get_dossier_number'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_reset_account_data'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_reset_for_new_platform'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_soft_reset'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_voir_actes'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_voir_projets'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_aucun_projet_acte'.
+2025-08-06 13:23:02 INFO     rasa_sdk.executor  - Registered function for 'action_retour_menu_utilisateur'.
+2025-08-06 13:23:02 INFO     rasa_sdk.endpoint  - Starting plugins...
+2025-08-06 13:23:02 DEBUG    rasa_sdk.plugin  - No plugins found: No module named 'rasa_sdk_plugins'
+2025-08-06 13:23:02 INFO     rasa_sdk.endpoint  - Action endpoint is up and running on http://0.0.0.0:5055
+2025-08-06 13:23:02 DEBUG    rasa_sdk.utils  - Using the default number of Sanic workers (1).
+2025-08-06 13:25:08 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_name'
+DEBUG ActionHandleName: nom brut = 'aliou baxal'
+DEBUG _clean_and_format_name: mot='aliou', len=5, in_stop_words=False
+DEBUG _clean_and_format_name: mot='baxal', len=5, in_stop_words=False
+DEBUG _clean_and_format_name: résultat final = 'Aliou Baxal'
+DEBUG ActionHandleName: nom nettoyé = 'Aliou Baxal'
+2025-08-06 13:25:08 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_name'
+2025-08-06 13:25:11 DEBUG    rasa_sdk.executor  - Received request to run 'action_redirect_platform'
+2025-08-06 13:25:11 DEBUG    rasa_sdk.executor  - Finished running 'action_redirect_platform'
+2025-08-06 13:25:15 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_has_account'
+2025-08-06 13:25:15 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_has_account'
+2025-08-06 13:25:19 DEBUG    rasa_sdk.executor  - Received request to run 'action_handle_matricule'
+DEBUG ActionHandleMatricule: has_account=Oui, platform=E-Carrière, cni=None
+DEBUG ActionHandleMatricule: latest_intent=provide_matricule, latest_text='2476197200058'
+DEBUG ActionHandleMatricule: Input ressemble à un CNI, skip matricule processing
+2025-08-06 13:25:19 DEBUG    rasa_sdk.executor  - Finished running 'action_handle_matricule'
