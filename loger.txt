@@ -1,61 +1,31 @@
+SELECT TOP 3
+      a.agt_nom,
+      a.agt_prenom,
+      a.agt_matricule_solde,
+      ac.act_numero_acte,
+      ac.act_date_acte,
+      ac.act_etat_id,
+      ea.eta_act_code AS etat_acte,
+      ta.tac_libelle AS type_acte,
+      ac.act_is_projet
+  FROM
+      referentiel_fudpe_new.dbo.agent a
+  INNER JOIN
+      referentiel_fudpe_new.dbo.acte_agent aa ON aa.act_agt_agt_id = a.agt_id
+  INNER JOIN
+      referentiel_fudpe_new.dbo.acte ac ON ac.act_id = aa.act_agt_act_id
+  LEFT JOIN
+      referentiel_fudpe_new.dbo.etat_acte ea ON ea.eta_act_id = ac.act_etat_id
+  LEFT JOIN
+      referentiel_fudpe_new.dbo.type_acte ta ON ta.tac_id = ac.act_tac_id
+  WHERE
+      a.agt_matricule_solde = '723874C'
+      AND ac.act_is_projet = 1
+     
+      AND a.agt_deleted = 0
+  ORDER BY ac.act_date_acte DESC;
 
-(.venv) C:\Users\Arona\Desktop\fp\test\pycharm\pycharm>rasa run actions --debug
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\core\tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
-  Base: DeclarativeMeta = declarative_base()
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
-  import pkg_resources
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('sphinxcontrib')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\pkg_resources\__init__.py:3117: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('zope')`.
-Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
-  declare_namespace(pkg)
-C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\sanic_cors\extension.py:39: DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.
-  SANIC_VERSION = LooseVersion(sanic_version)
-2025-07-31 18:34:57 INFO     rasa_sdk.endpoint  - Starting action endpoint server...
-Traceback (most recent call last):
-  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\runpy.py", line 197, in _run_module_as_main
-    return _run_code(code, main_globals, None,
-  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\runpy.py", line 87, in _run_code
-    exec(code, run_globals)
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\Scripts\rasa.exe\__main__.py", line 7, in <module>
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\__main__.py", line 133, in main
-    cmdline_arguments.func(cmdline_arguments)
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa\cli\run.py", line 57, in run_actions
-    sdk.main_from_args(args)
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\__main__.py", line 21, in main_from_args
-    run(
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\endpoint.py", line 157, in run
-    app = create_app(
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\endpoint.py", line 85, in create_app
-    executor.register_package(action_package_name)
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 263, in register_package
-    self._import_submodules(package)
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 226, in _import_submodules
-    self._import_module(full_name)
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\.venv\lib\site-packages\rasa_sdk\executor.py", line 240, in _import_module
-    module = importlib.import_module(name)
-  File "C:\Users\Arona\AppData\Local\Programs\Python\Python39\lib\importlib\__init__.py", line 127, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 786, in exec_module
-  File "<frozen importlib._bootstrap_external>", line 923, in get_code
-  File "<frozen importlib._bootstrap_external>", line 853, in source_to_code
-  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
-  File "C:\Users\Arona\Desktop\fp\test\pycharm\pycharm\actions\actions.py", line 666
-    else:
-IndentationError: expected an indented block
-2025-07-31 18:34:57 DEBUG    urllib3.connectionpool  - Starting new HTTPS connection (1): o251570.ingest.sentry.io:443
-2025-07-31 18:34:57 DEBUG    urllib3.connectionpool  - https://o251570.ingest.sentry.io:443 "POST /api/2801673/envelope/ HTTP/1.1" 200 2
+
+MBACKE	Sokhna faty	723874C			1	INITIAL	Avancement echelon	1
+MBACKE	Sokhna faty	723874C			1	INITIAL	Avancement de grade	1
+MBACKE	Sokhna faty	723874C			1	INITIAL	Avancement de grade	1

@@ -422,8 +422,33 @@
     }
 
     function restartChat() {
+        // Vider l'affichage du chat
         document.getElementById("chat-box").innerHTML = "";
-        sendMessage("/greet");
+        
+        // Réinitialiser la session côté serveur Rasa avant de générer un nouveau sender_id
+        fetch(`http://localhost:5005/conversations/${senderId}/tracker/events`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                "event": "restart",
+                "timestamp": Date.now() / 1000
+            })
+        })
+        .then(() => {
+            // Générer un nouveau sender_id pour créer une nouvelle session
+            senderId = generateUUID();
+            sessionStorage.setItem('sender_id', senderId);
+            
+            // Démarrer une nouvelle conversation
+            sendMessage("/greet");
+        })
+        .catch(error => {
+            console.warn("Erreur lors de la réinitialisation de la session:", error);
+            // Même en cas d'erreur, continuer avec un nouveau sender_id
+            senderId = generateUUID();
+            sessionStorage.setItem('sender_id', senderId);
+            sendMessage("/greet");
+        });
     }
 
     function fermerChat() {

@@ -40,6 +40,9 @@ intents:
   - voir_projets
   - aucun_projet_acte
   - retour_menu_utilisateur
+  - reset_password_ecarriere
+  - confirm_reset_ecarriere
+  - cancel_reset_ecarriere
 
 entities:
   - nom
@@ -356,6 +359,9 @@ actions:
   - action_voir_projets
   - action_aucun_projet_acte
   - action_retour_menu_utilisateur
+  - action_reset_password_ecarriere
+  - action_confirm_reset_ecarriere
+  - action_cancel_reset_ecarriere
   
 
 
@@ -363,4 +369,4 @@ actions:
 
 session_config:
   session_expiration_time: 5
-  carry_over_slots_to_new_session: true
+  carry_over_slots_to_new_session: false

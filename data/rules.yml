@@ -186,3 +186,18 @@ rules:
       - intent: retour_menu_utilisateur
       - action: action_retour_menu_utilisateur
 
+  - rule: Réinitialiser mot de passe E-Carrière
+    steps:
+      - intent: reset_password_ecarriere
+      - action: action_reset_password_ecarriere
+
+  - rule: Confirmer réinitialisation E-Carrière
+    steps:
+      - intent: confirm_reset_ecarriere
+      - action: action_confirm_reset_ecarriere
+
+  - rule: Annuler réinitialisation E-Carrière
+    steps:
+      - intent: cancel_reset_ecarriere
+      - action: action_cancel_reset_ecarriere
+

@@ -42,9 +42,9 @@ class ECarriereAPIService:
             print(f"DEBUG: Connexion pymssql réussie pour verify_user_by_cni_matricule")
             cursor = conn.cursor()
             
-            # Requête pour récupérer l'utilisateur
+            # Requête pour récupérer l'utilisateur avec email
             user_query = """
-                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id
+                SELECT agt_id, agt_cni, agt_matricule_solde, agt_nom, agt_prenom, agt_affectation_id, agt_email
                 FROM referentiel_fudpe_new.dbo.agent 
                 WHERE agt_cni = %s AND agt_matricule_solde = %s AND agt_deleted = 0
             """
@@ -55,17 +55,15 @@ class ECarriereAPIService:
                 print(f"DEBUG: Aucun utilisateur trouvé pour CNI={cni} et Matricule={matricule}")
                 return None
 
-            agent_id, _, matricule_solde, nom, prenom, agt_affectation_id = user
+            agent_id, _, matricule_solde, nom, prenom, agt_affectation_id, agt_email = user
             print(f"DEBUG: Utilisateur trouvé: id={agent_id}, nom={prenom} {nom}")
 
-            # Requête pour récupérer les 3 derniers projets de l'agent
-            actes_query = """
+            # Requête pour récupérer les 3 derniers projets de l'agent (SEULEMENT les données projet)
+            projets_query = """
                 SELECT TOP 3
                     ac.act_numero_projet,
-                    ac.act_numero_acte,
-                    ea.eta_act_code AS etat_projet,
+                    ea.eta_act_libelle AS etat_projet,
                     ta.tac_libelle AS type_projet,
-                    ac.act_date_acte,
                     ac.act_date_projet
                 FROM 
                     referentiel_fudpe_new.dbo.acte_agent aa
@@ -78,21 +76,19 @@ class ECarriereAPIService:
                 WHERE 
                     aa.act_agt_agt_id = %s
                     AND ac.act_is_projet = 1
-                ORDER BY ac.act_date_acte DESC;
+                ORDER BY ac.act_date_projet DESC;
             """
-            cursor.execute(actes_query, (agent_id,))
-            actes = cursor.fetchall()
+            cursor.execute(projets_query, (agent_id,))
+            projets = cursor.fetchall()
             
             projets_list = []
-            for i, acte in enumerate(actes, 1):
-                numero_projet = acte[0]
-                numero_acte = acte[1]
-                etat_projet = acte[2]
-                type_projet = acte[3]
-                date_acte = acte[4].strftime("%d/%m/%Y") if acte[4] else None
-                date_projet = acte[5].strftime("%d/%m/%Y") if acte[5] else None
+            for i, projet in enumerate(projets, 1):
+                numero_projet = projet[0]
+                etat_projet = projet[1]
+                type_projet = projet[2]
+                date_projet = projet[3].strftime("%d/%m/%Y") if projet[3] else None
                 
-                # Construire le message ligne par ligne en évitant les N/A
+                # Construire le message ligne par ligne en évitant les N/A (SEULEMENT données projet)
                 projet_info = f"**{i}. Projet n°{numero_projet or 'Sans numéro'}**"
                 
                 if type_projet:
@@ -101,14 +97,8 @@ class ECarriereAPIService:
                 if etat_projet:
                     projet_info += f"\n📊 État : {etat_projet}"
                 
-                if numero_acte:
-                    projet_info += f"\n📄 N° Acte : {numero_acte}"
-                
                 if date_projet:
                     projet_info += f"\n📅 Date projet : {date_projet}"
-                
-                if date_acte:
-                    projet_info += f"\n📅 Date acte : {date_acte}"
                 
                 projets_list.append(projet_info)
             
@@ -119,6 +109,7 @@ class ECarriereAPIService:
                 "nom": f"{prenom} {nom}",
                 "matricule": matricule_solde,
                 "cni": cni,
+                "email": agt_email,
                 "projets": projets_list,
                 "agt_affectation_id": agt_affectation_id
             }
@@ -186,7 +177,7 @@ class ECarriereAPIService:
             actes_query = """
                 SELECT TOP 3
                     ac.act_numero_acte,
-                    ea.eta_act_code AS etat_acte,
+                    ea.eta_act_libelle AS etat_acte,
                     ta.tac_libelle AS type_acte,
                     ac.act_is_projet,
                     ac.act_date_acte
@@ -201,7 +192,7 @@ class ECarriereAPIService:
                 WHERE 
                     aa.act_agt_agt_id = %s
                     AND ac.act_is_projet = 0
-                    
+                    AND ac.act_etat_id = 24
                     AND ac.act_date_acte IS NOT NULL
                 ORDER BY ac.act_date_acte DESC;
             """
@@ -287,6 +278,49 @@ class ECarriereAPIService:
         finally:
             if conn:
                 conn.close()
+
+    @staticmethod
+    def request_password_reset_ecarriere(email: str) -> bool:
+        """
+        Demander une réinitialisation de mot de passe E-Carrière via API
+        
+        Returns:
+            bool: True si succès, False sinon
+        """
+        try:
+            import requests
+            import json
+            import urllib3
+            
+            # Supprimer les warnings SSL pour les certificats non vérifiés
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            
+            # URL de l'API de réinitialisation E-Carrière
+            api_url = f"https://e-carriere.sec.gouv.sn/account-management-fudpe/users/{email}/reset-password-forgot"
+            
+            # Headers
+            headers = {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+            
+            # Appel API PUT (désactiver vérification SSL pour les certificats auto-signés)
+            response = requests.put(api_url, headers=headers, timeout=15, verify=False)
+            
+            if response.status_code == 200:
+                print(f"DEBUG: Reset password E-Carrière API success for {email}")
+                return True
+            else:
+                print(f"DEBUG: Reset password E-Carrière API failed - Status: {response.status_code}")
+                return False
+                
+        except requests.exceptions.RequestException as e:
+            print(f"DEBUG: E-Carrière API Request failed: {e}")
+            return False
+        
+        except ImportError:
+            print("DEBUG: requests module not available")
+            return False
 
 
 class PGDEAPIService:
@@ -622,7 +656,9 @@ class ActionStartAccountVerification(Action):
             SlotSet("username", None),
             SlotSet("dossier_number", None),
             SlotSet("nom_officiel", None),
-            SlotSet("user_id", None)
+            SlotSet("user_id", None),
+            SlotSet("matricule", None),
+            SlotSet("agent_id", None)
         ]
 
 
@@ -887,12 +923,15 @@ class ActionHandleMatricule(Action):
         latest_text = tracker.latest_message.get("text", "")
         print(f"DEBUG ActionHandleMatricule: latest_intent={latest_intent}, latest_text='{latest_text}'")
         
-        # Si on n'a pas de CNI pour E-Carrière, l'input peut être un CNI mal classifié
-        if platform == "E-Carrière" and not cni:
-            input_text = latest_text.strip()
+        # Vérifier si l'input ressemble à un CNI (13 chiffres)
+        input_text = latest_text.strip()
+        is_input_cni = input_text.isdigit() and len(input_text) == 13
+        
+        # Si on n'a pas de CNI OU si l'input est un nouveau CNI différent
+        if platform == "E-Carrière" and (not cni or (is_input_cni and cni != input_text)):
             
             # Détecter si c'est un CNI (13 chiffres uniquement)
-            if input_text.isdigit() and len(input_text) == 13:
+            if is_input_cni:
                 print("DEBUG ActionHandleMatricule: Input est un CNI, rediriger vers traitement CNI")
                 # Traiter directement comme un CNI
                 try:
@@ -921,8 +960,8 @@ class ActionHandleMatricule(Action):
                     )
                     return []
             
-            # Si ce n'est pas un CNI, peut-être un matricule mal classifié
-            elif self._is_valid_matricule_format(input_text):
+            # Si ce n'est pas un CNI, peut-être un matricule mal classifié  
+            elif not cni and self._is_valid_matricule_format(input_text):
                 print("DEBUG ActionHandleMatricule: Input ressemble à un matricule, mais CNI manquant")
                 dispatcher.utter_message(
                     text="⚠️ **CNI requis d'abord**\n\nPour vérifier votre matricule, j'ai d'abord besoin de votre numéro de CNI (13 chiffres).\n\nVeuillez saisir votre CNI :",
@@ -939,6 +978,18 @@ class ActionHandleMatricule(Action):
             if not matricule:
                 matricule = tracker.latest_message.get("text", "").strip()
             
+            # Vérifier si l'utilisateur saisit un CNI au lieu d'un matricule
+            if matricule and matricule.isdigit() and len(matricule) == 13:
+                print(f"DEBUG ActionHandleMatricule: Utilisateur saisit CNI '{matricule}' au lieu de matricule")
+                dispatcher.utter_message(
+                    text="⚠️ **Vous avez saisi un CNI au lieu d'un matricule**\n\nNous attendons votre **matricule** (6-9 chiffres + 1 lettre).\n\nExemples : `123456A`, `654986B`\n\nVotre CNI est déjà enregistré. Veuillez maintenant saisir votre matricule :",
+                    buttons=[
+                        {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                    ]
+                )
+                return []
+            
             # Nettoyer et valider le matricule
             matricule_clean = self._clean_matricule(matricule) if matricule else None
             print(f"DEBUG ActionHandleMatricule: matricule brut='{matricule}', matricule nettoyé='{matricule_clean}'")
@@ -954,6 +1005,7 @@ class ActionHandleMatricule(Action):
                     agent_id = user_data["id"]
                     projets = user_data["projets"]
                     agt_affectation_id = user_data.get("agt_affectation_id")
+                    agent_email = user_data.get("email")
                     
                     projets = user_data.get("projets", [])
                     
@@ -989,6 +1041,10 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                     if not compte_active:
                         buttons.append({"title": "✅ Activer mon compte", "payload": "/ask_account_creation"})
                     
+                    # Ajouter option de réinitialisation mot de passe si compte activé ET email disponible
+                    if compte_active and agent_email:
+                        buttons.append({"title": "🔑 Réinitialiser mot de passe", "payload": "/reset_password_ecarriere"})
+                    
                     # Boutons de navigation
                     buttons.extend([
                         {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
@@ -1002,7 +1058,8 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                     
                     return [SlotSet("matricule", matricule_clean), 
                             SlotSet("nom_officiel", nom_officiel), 
-                            SlotSet("agent_id", agent_id)]
+                            SlotSet("agent_id", agent_id),
+                            SlotSet("email", agent_email)]
                 else:
                     dispatcher.utter_message(
                         text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe matricule saisi ne correspond pas à votre CNI dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre matricule ou contacter notre équipe d'assistance si besoin.",
@@ -1072,6 +1129,106 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
         
         print(f"DEBUG _is_valid_matricule_format: '{matricule}' -> {is_valid}")
         return is_valid
+
+
+class ActionResetPasswordECarriere(Action):
+    """Demander confirmation pour réinitialisation mot de passe E-Carrière"""
+    def name(self) -> Text:
+        return "action_reset_password_ecarriere"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        nom_officiel = tracker.get_slot("nom_officiel") or "Utilisateur"
+        email = tracker.get_slot("email")
+        
+        if email:
+            dispatcher.utter_message(
+                text=f"🔑 **Réinitialisation mot de passe E-Carrière**\n\nBonjour **{nom_officiel}**,\n\nVoulez-vous réinitialiser votre mot de passe E-Carrière ?\n\n📧 Un email sera envoyé à : **{email}**\n\n⚠️ Cette action ne peut pas être annulée.",
+                buttons=[
+                    {"title": "✅ Confirmer réinitialisation", "payload": "/confirm_reset_ecarriere"},
+                    {"title": "❌ Annuler", "payload": "/cancel_reset_ecarriere"},
+                    {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"}
+                ]
+            )
+        else:
+            dispatcher.utter_message(
+                text="❌ **Email non trouvé**\n\nNous n'avons pas trouvé d'adresse email associée à votre compte.\n\nVeuillez contacter le support technique.",
+                buttons=[
+                    {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
+                    {"title": "📞 Support", "payload": "/ask_support"}
+                ]
+            )
+        
+        return []
+
+
+class ActionConfirmResetECarriere(Action):
+    """Confirmer et effectuer la réinitialisation E-Carrière"""
+    def name(self) -> Text:
+        return "action_confirm_reset_ecarriere"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        email = tracker.get_slot("email")
+        nom_officiel = tracker.get_slot("nom_officiel") or "Utilisateur"
+        
+        if email:
+            # Appel API de réinitialisation
+            success = ECarriereAPIService.request_password_reset_ecarriere(email)
+            
+            if success:
+                dispatcher.utter_message(
+                    text=f"✅ **Votre demande de réinitialisation a été envoyée avec succès.**\n\n📧 Consultez votre boîte email : **{email}**\n\n💡 Suivez les instructions dans l'email pour créer un nouveau mot de passe.",
+                    buttons=[
+                        {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
+                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                    ]
+                )
+            else:
+                dispatcher.utter_message(
+                    text=f"❌ **Échec de la réinitialisation**\n\nDésolé **{nom_officiel}**,\n\nNous n'avons pas pu traiter votre demande de réinitialisation.\nVeuillez réessayer plus tard ou contacter le support technique pour assistance.",
+                    buttons=[
+                        {"title": "🔄 Réessayer", "payload": "/reset_password_ecarriere"},
+                        {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
+                        {"title": "📞 Support", "payload": "/ask_support"}
+                    ]
+                )
+        else:
+            dispatcher.utter_message(
+                text="❌ **Informations manquantes**\n\nNous ne trouvons pas votre email. Veuillez recommencer la vérification.",
+                buttons=[
+                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
+                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                ]
+            )
+        
+        return []
+
+
+class ActionCancelResetECarriere(Action):
+    """Annuler la réinitialisation E-Carrière"""
+    def name(self) -> Text:
+        return "action_cancel_reset_ecarriere"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        nom_officiel = tracker.get_slot("nom_officiel") or "Utilisateur"
+        
+        dispatcher.utter_message(
+            text=f"❌ **Réinitialisation annulée**\n\nPas de problème **{nom_officiel}** !\n\nLa réinitialisation de votre mot de passe a été annulée.\n\nVotre mot de passe actuel reste inchangé.",
+            buttons=[
+                {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
+                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+            ]
+        )
+        
+        return []
 
 
 class ActionConfirmPasswordReset(Action):
@@ -1321,9 +1478,12 @@ class ActionRetourMenuUtilisateur(Action):
         matricule = tracker.get_slot("matricule")
         
         if nom_officiel and matricule_official:
-            # Vérifier la disponibilité des projets/actes
+            # Vérifier la disponibilité des projets/actes et récupérer email + statut activation
             user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
             projets = user_data.get("projets", []) if user_data else []
+            agent_email = user_data.get("email") if user_data else None
+            agt_affectation_id = user_data.get("agt_affectation_id") if user_data else None
+            compte_active = agt_affectation_id == 174200
             
             message = f"""Enchanté **{nom_officiel}**,
 
@@ -1340,6 +1500,10 @@ Que souhaitez-vous consulter ?"""
                 ])
             else:
                 buttons.append({"title": "❌ Aucun projet/acte disponible", "payload": "/aucun_projet_acte"})
+            
+            # Ajouter option de réinitialisation mot de passe si compte activé ET email disponible
+            if compte_active and agent_email:
+                buttons.append({"title": "🔑 Réinitialiser mot de passe", "payload": "/reset_password_ecarriere"})
             
             # Boutons de navigation
             buttons.extend([

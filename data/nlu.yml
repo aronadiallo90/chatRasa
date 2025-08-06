@@ -500,7 +500,29 @@ nlu:
       - Menu utilisateur
       - Retour menu
       - Menu principal utilisateur
-      - Revenir au menu
+
+  - intent: reset_password_ecarriere
+    examples: |
+      - Réinitialiser mon mot de passe
+      - Reset password
+      - Changer mon mot de passe
+      - Mot de passe oublié
+      - J'ai oublié mon mot de passe
+
+  - intent: confirm_reset_ecarriere
+    examples: |
+      - Confirmer la réinitialisation E-Carrière
+      - Oui, réinitialiser E-Carrière
+      - Confirmer réinitialisation E-Carrière
+      - Valider la réinitialisation E-Carrière
+
+  - intent: cancel_reset_ecarriere
+    examples: |
+      - Annuler la réinitialisation E-Carrière
+      - Non, annuler E-Carrière
+      - Ne pas réinitialiser E-Carrière
+      - Laisser tomber réinitialisation
+      - Revenir au menu E-Carrière
 
   # - regex: nom
   #   examples: |
