@@ -889,10 +889,11 @@ class ActionHandleMatricule(Action):
         
         # Si on n'a pas de CNI pour E-Carrière, l'input peut être un CNI mal classifié
         if platform == "E-Carrière" and not cni:
-            # Si l'input ressemble à un CNI (13 chiffres), traiter comme CNI
             input_text = latest_text.strip()
+            
+            # Détecter si c'est un CNI (13 chiffres uniquement)
             if input_text.isdigit() and len(input_text) == 13:
-                print("DEBUG ActionHandleMatricule: Input ressemble à un CNI, rediriger vers ActionHandleCNI")
+                print("DEBUG ActionHandleMatricule: Input est un CNI, rediriger vers traitement CNI")
                 # Traiter directement comme un CNI
                 try:
                     user_data = ECarriereAPIService.verify_user_by_cni(input_text)
@@ -919,6 +920,18 @@ class ActionHandleMatricule(Action):
                         ]
                     )
                     return []
+            
+            # Si ce n'est pas un CNI, peut-être un matricule mal classifié
+            elif self._is_valid_matricule_format(input_text):
+                print("DEBUG ActionHandleMatricule: Input ressemble à un matricule, mais CNI manquant")
+                dispatcher.utter_message(
+                    text="⚠️ **CNI requis d'abord**\n\nPour vérifier votre matricule, j'ai d'abord besoin de votre numéro de CNI (13 chiffres).\n\nVeuillez saisir votre CNI :",
+                    buttons=[
+                        {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
+                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                    ]
+                )
+                return []
         
         if has_account == "Oui" and platform == "E-Carrière" and cni:
             # Récupérer le matricule du message
@@ -926,10 +939,13 @@ class ActionHandleMatricule(Action):
             if not matricule:
                 matricule = tracker.latest_message.get("text", "").strip()
             
-            # Valider le matricule (format à adapter selon vos règles)
-            if matricule and len(matricule) >= 4:
-                # Vérifier avec la base SQL Server
-                user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+            # Nettoyer et valider le matricule
+            matricule_clean = self._clean_matricule(matricule) if matricule else None
+            print(f"DEBUG ActionHandleMatricule: matricule brut='{matricule}', matricule nettoyé='{matricule_clean}'")
+            
+            if matricule_clean and self._is_valid_matricule_format(matricule_clean):
+                # Vérifier avec la base SQL Server en utilisant le matricule nettoyé
+                user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule_clean)
                 
                 if user_data:
                     # Utiliser les vraies données de la base SQL Server
@@ -984,7 +1000,7 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                     # Envoyer le message avec boutons de choix
                     dispatcher.utter_message(text=message, buttons=buttons)
                     
-                    return [SlotSet("matricule", matricule), 
+                    return [SlotSet("matricule", matricule_clean), 
                             SlotSet("nom_officiel", nom_officiel), 
                             SlotSet("agent_id", agent_id)]
                 else:
@@ -999,7 +1015,7 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                     return []
             else:
                 dispatcher.utter_message(
-                    text="⚠️ **Format incorrect**\n\nVeuillez saisir un matricule valide.\n\n💡 *Exemple : A12345*",
+                    text="⚠️ **Format de matricule incorrect**\n\nLe matricule doit contenir :\n• 6 à 9 chiffres + 1 lettre\n• Exemple : `123456A` ou `123456789B`\n\n💡 *Les slash \"/\" sont automatiquement supprimés*",
                     buttons=[
                         {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                         {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
@@ -1019,6 +1035,43 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
             return []
         
         return []
+    
+    def _clean_matricule(self, matricule_raw: str) -> str:
+        """Nettoie le matricule selon les règles définies."""
+        import re
+        
+        if not matricule_raw:
+            return ""
+            
+        # Supprimer les espaces
+        matricule = matricule_raw.strip()
+        
+        # Supprimer les slashes "/"
+        matricule = re.sub(r'/', '', matricule)
+        
+        # Mettre la lettre finale en majuscule
+        # Pattern: 6-9 chiffres suivis d'une lettre
+        match = re.match(r'^(\d{6,9})([a-zA-Z])$', matricule)
+        if match:
+            chiffres, lettre = match.groups()
+            matricule = chiffres + lettre.upper()
+        
+        print(f"DEBUG _clean_matricule: '{matricule_raw}' -> '{matricule}'")
+        return matricule
+    
+    def _is_valid_matricule_format(self, matricule: str) -> bool:
+        """Valide le format du matricule: 6-9 chiffres + 1 lettre majuscule."""
+        import re
+        
+        if not matricule:
+            return False
+            
+        # Pattern: exactement 6-9 chiffres suivis d'exactement 1 lettre majuscule
+        pattern = r'^[0-9]{6,9}[A-Z]$'
+        is_valid = bool(re.match(pattern, matricule))
+        
+        print(f"DEBUG _is_valid_matricule_format: '{matricule}' -> {is_valid}")
+        return is_valid
 
 
 class ActionConfirmPasswordReset(Action):
