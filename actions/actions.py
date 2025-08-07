@@ -696,6 +696,16 @@ class ActionHandleHasAccount(Action):
                         {"title": "📞 Support", "payload": "/ask_support"}
                     ]
                 )
+            elif platform == "PGDE":
+                dispatcher.utter_message(
+                    text="Pas de souci ! 👌\n\nLa **PGDE** est ouverte à tous les Sénégalais. Vous pouvez créer votre compte facilement :",
+                    buttons=[
+                        {"title": "ℹ️ Comment créer un compte", "payload": "/ask_account_creation"},
+                        {"title": "🔄 Retour PGDE", "payload": "/go_back_pgde"},
+                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "📞 Support", "payload": "/ask_support"}
+                    ]
+                )
             else:
                 dispatcher.utter_message(response="utter_no_account")
             return [SlotSet("has_account", "Non")]
@@ -1292,9 +1302,24 @@ class ActionConfirmPasswordReset(Action):
             if success:
                 dispatcher.utter_message(response="utter_password_reset_success", email=email)
             else:
-                dispatcher.utter_message(text="❌ **Réinitialisation non aboutie**\n\nUne erreur est survenue lors de l'envoi de l'email de réinitialisation.\n\n🔁 Vous pouvez réessayer dans un instant ou contacter le support technique pour obtenir de l'aide.")
+                dispatcher.utter_message(
+                    text="❌ **Réinitialisation non aboutie**\n\nUne erreur est survenue lors de l'envoi de l'email de réinitialisation.\n\n🔁 Vous pouvez réessayer dans un instant ou contacter le support technique pour obtenir de l'aide.",
+                    buttons=[
+                        {"title": "🔄 Réessayer", "payload": "/confirm_password_reset"},
+                        {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
+                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "📞 Support", "payload": "/ask_support"}
+                    ]
+                )
         else:
-            dispatcher.utter_message(text="❌ Informations manquantes pour la réinitialisation.")
+            dispatcher.utter_message(
+                text="❌ **Informations manquantes**\n\nDonnées nécessaires pour la réinitialisation introuvables.\n\nVeuillez recommencer le processus.",
+                buttons=[
+                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
+                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                    {"title": "📞 Support", "payload": "/ask_support"}
+                ]
+            )
         
         return []
 

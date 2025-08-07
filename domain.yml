@@ -142,7 +142,7 @@ responses:
   utter_greet:
     - text: "Dalal ak Jàmm 😊 ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\nPuis-je connaître votre nom, s'il vous plaît ?"
   utter_greet_with_name:
-  - text: "Bienvenue {nom} ! 👋\n**En quoi puis-je vous aider aujourd'hui ?**\n\n💡Choisissez la plateforme qui vous intéresse"
+  - text: "Bienvenue {nom} ! 👋\n**En quoi puis-je vous aider aujourd'hui ?**"
     buttons:
       - title: "💼E-Carrière"
         payload: '/choose_platform{{"platform": "E-Carrière"}}'
@@ -191,21 +191,40 @@ responses:
   utter_ask_pgde_account_creation:
     - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur **Créer un compte**.\n\n3️⃣ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
       buttons:
-        - title: "Retour"
+        - title: "🔄 Retour PGDE"
           payload: "/go_back_pgde"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_server_error:
-    - text: "Une erreur s'est produite . Veuillez réessayer ou contacter le support à support@fonctionpublique.gouv.sn."
+    - text: "❌ **Erreur temporaire**\n\nUne erreur s'est produite. Veuillez réessayer dans quelques instants ou contacter le support."
+      buttons:
+        - title: "🔄 Réessayer"
+          payload: "/start_account_verification"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
 
   utter_ask_pgde_login:
     - text: "Pour vous **connecter** à **PGDE** :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
       buttons:                                                                                          
-        - title: "Retour"
+        - title: "🔄 Retour PGDE"
           payload: "/go_back_pgde"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_ask_pgde_password_reset:
     - text: "Vous pouvez utiliser **[ce lien👆](https://emploi-fpublique.sec.gouv.sn/resetting/request)** pour réinitialiser votre mot de passe.\nEn cas de problèmes ou de difficultés, veuillez nous contacter à l'adresse **emploi@fonctionpublique.gouv.sn** en indiquant **Mot de passe oublié** comme objet du message."
       buttons:                                                                                          
-        - title: "Retour"
-          payload: "/go_back_pgde" 
+        - title: "🔄 Retour PGDE"
+          payload: "/go_back_pgde"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support" 
 
   utter_crce_menu:
     - text: "Bienvenue sur **CRCE** 📜, la plateforme pour la reconnaissance des diplômes. Comment puis-je vous aider ?"
@@ -244,12 +263,42 @@ responses:
           payload: "/go_back_greet_with_name"
   utter_ask_email:
     - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
+      buttons:
+        - title: "🔄 Recommencer"
+          payload: "/start_account_verification"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
     - text: "Super ! 🎉Pour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
+      buttons:
+        - title: "🔄 Retour PGDE"
+          payload: "/go_back_pgde"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_ask_cni_ecarriere:  # CNI pour E-Carrière
     - text: "Super ! 🎉Pour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
+      buttons:
+        - title: "🔄 Retour E-Carrière"
+          payload: "/go_back_ecarriere"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_ask_matricule:  # Demander matricule après CNI pour E-Carrière
     - text: "Parfait ! 👍Maintenant, j'ai besoin de votre **matricule solde**.\nVotre matricule doit être en MAJUSCULES et sans slash(/)"
+      buttons:
+        - title: "🔄 Recommencer"
+          payload: "/start_account_verification"
+        - title: "🔄 Retour E-Carrière"
+          payload: "/go_back_ecarriere"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
     - text: "Votre adresse email est celle que vous avez utilisée lors de votre inscription sur la plateforme. Vérifiez vos emails pour retrouver les communications officielles."
   utter_chitchat/ask_cni:  # Réponse pour l'intent chitchat/ask_cni
@@ -269,23 +318,31 @@ responses:
         - title: "Non"
           payload: "/deny_has_access"
   utter_no_account:
-    - text: "⚠️**Compte introuvable** {nom}\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n🔁 Veuillez vérifier vos données ou réessayer dans un instant."
+    - text: "⚠️ **Compte introuvable**\n\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n\n🔁 Veuillez vérifier vos données ou réessayer dans un instant."
       buttons:
-        - title: "ℹ️ Comment activer mon compte"
+        - title: "ℹ️ Comment créer un compte"
           payload: "/ask_account_creation"
-        - title: "Retour"
+        - title: "🔄 Réessayer"
+          payload: "/start_account_verification"
+        - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_no_access:
-    - text: "🔐 **Accès non reconnu**\n Si vous avez oublié vos identifiants ou rencontré un souci, vous pouvez demander une réinitialisation ou contacter le support"
+    - text: "🔐 **Accès non reconnu**\n\nSi vous avez oublié vos identifiants ou rencontré un souci, vous pouvez demander une réinitialisation ou contacter le support."
       buttons:
         - title: "📝 Activer mon compte"
           payload: "/ask_account_creation"
-        - title: "🔑 Se connecter (j'ai un compte)"
+        - title: "🔑 Se connecter"
           payload: "/ask_login"
         - title: "🔒 Mot de passe oublié"
           payload: "/ask_password_reset"
-        - title: "🏠 Retour"
+        - title: "🔄 Réessayer"
+          payload: "/start_account_verification"
+        - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
+        - title: "📞 Support"
+          payload: "/ask_support"
   utter_account_verified:
     - text: "✅ **Votre compte a bien été vérifié !**\n Bienvenue **{nom}** 👋 \n Vous êtes maintenant connecté·e à votre espace personnel.Voici vos infos :\n\n👤 **Nom :** {nom}\n👥 **Nom d'utilisateur :** {username}\n📋 **Numéro de dossier :** {dossier_number}\n\n🔐 Avez-vous toujours accès à votre compte ?"
       buttons:
