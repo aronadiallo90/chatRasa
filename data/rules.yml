@@ -99,12 +99,22 @@ rules:
   - rule: Gérer la demande d'attestation
     steps:
       - intent: ask_attestation_request
-      - action: utter_attestation_menu
+      - action: utter_ask_attestation_request
 
   - rule: Gérer le suivi d'attestation
     steps:
       - intent: ask_attestation_status
-      - action: utter_attestation_menu
+      - action: utter_ask_attestation_status
+
+  - rule: Gérer les informations sur l'attestation
+    steps:
+      - intent: ask_attestation_info
+      - action: utter_ask_attestation_info
+
+  - rule: Gérer la création de compte attestation
+    steps:
+      - intent: ask_attestation_account
+      - action: utter_ask_attestation_account
 
   - rule: Demander le support technique
     steps:

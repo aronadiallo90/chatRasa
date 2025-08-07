@@ -1,6 +1,8 @@
 "# chatRasa" 
 "# chatRasa" 
 
+http://91.121.9.144/webhook.php ultrasmg
+
 -pour entrainer le modele
 rasa train
 

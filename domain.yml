@@ -28,6 +28,8 @@ intents:
   - access_services
   - ask_attestation_request
   - ask_attestation_status
+  - ask_attestation_info
+  - ask_attestation_account
   - chitchat
   - chitchat/ask_email
   - chitchat/ask_cni
@@ -148,8 +150,8 @@ responses:
         payload: '/choose_platform{{"platform": "E-Carrière"}}'
       - title: "🎯Demande d'emploi (PGDE)"
         payload: '/choose_platform{{"platform": "PGDE"}}'
-      - title: "📜 Reconnaissance de diplôme (CRCE)"
-        payload: '/choose_platform{{"platform": "CRCE"}}'
+      # - title: "📜 Reconnaissance de diplôme (CRCE)"
+      #   payload: '/choose_platform{{"platform": "CRCE"}}'
       - title: "📄 Attestation de non appartenance"
         payload: '/choose_platform{{"platform": "Attestation"}}'
   utter_E_carriere:
@@ -241,15 +243,61 @@ responses:
           payload: "/go_back_greet_with_name"
 
   utter_attestation_menu:
-    - text: "Bienvenue sur le service **Attestation** 📄. Vous pouvez demander une attestation sans compte. Comment puis-je vous aider ?"
+    - text: "Bienvenue sur le service **Attestation de non appartenance** 📄\n\nCe service vous permet d'obtenir une attestation certifiant que vous n'appartenez pas à la fonction publique sénégalaise.\n\n❓ **Comment puis-je vous aider ?**"
       buttons:
-        - title: "Demander une attestation"
+        - title: "📋 À quoi ça sert ?"
+          payload: "/ask_attestation_info"
+        - title: "🔗 Comment créer un compte ?"
+          payload: "/ask_attestation_account"
+        - title: "📝 Comment postuler ?"
           payload: "/ask_attestation_request"
-        - title: "Suivre une demande"
+        - title: "📊 Suivre une demande"
           payload: "/ask_attestation_status"
-        - title: "Vérifier mon compte"
-          payload: "/start_account_verification"
-        - title: "Retour"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+  utter_ask_attestation_info:
+    - text: "📋 **À quoi sert l'Attestation de non appartenance ?**\n\nCette attestation certifie officiellement que vous **n'êtes pas** agent de la fonction publique sénégalaise.\n\n✅ **Elle est requise pour :**\n• Postuler à des offres d'emploi privées\n• S'inscrire à certains concours\n• Créer une entreprise\n• Justifier votre statut professionnel\n\n📄 **Document officiel** délivré par le Ministère de la Fonction Publique."
+      buttons:
+        - title: "🔗 Comment créer un compte ?"
+          payload: "/ask_attestation_account"
+        - title: "📝 Comment postuler ?"
+          payload: "/ask_attestation_request"
+        - title: "🔄 Retour Attestation"
+          payload: "/choose_platform{\"platform\": \"Attestation\"}"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+  utter_ask_attestation_account:
+    - text: "🔗 **Comment créer un compte pour l'Attestation ?**\n\n1️⃣ Rendez-vous sur la plateforme **[en cliquant sur ce lien👆](https://demarche.mfprsp.com/)**\n\n2️⃣ Cliquez sur **« S'inscrire »** ou **« Créer un compte »**\n\n3️⃣ **Remplissez** vos informations personnelles :\n   • Nom et Prénom\n   • Email\n   • Numéro de téléphone\n   • Mot de passe\n\n4️⃣ **Validez** votre inscription via l'email de confirmation\n\n✅ **Votre compte est prêt !** Vous pouvez maintenant faire votre demande."
+      buttons:
+        - title: "📝 Comment postuler ?"
+          payload: "/ask_attestation_request"
+        - title: "📊 Suivre une demande"
+          payload: "/ask_attestation_status"
+        - title: "🔄 Retour Attestation"
+          payload: "/choose_platform{\"platform\": \"Attestation\"}"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+  utter_ask_attestation_request:
+    - text: "📝 **Comment postuler pour une Attestation ?**\n\n**Étape 1 :** Connectez-vous sur **[demarche.mfprsp.com](https://demarche.mfprsp.com/)**\n\n**Étape 2 :** Cliquez sur **« Nouvelle demande »** ou **« Attestation de non appartenance »**\n\n**Étape 3 :** **Remplissez le formulaire** avec :\n   • Vos informations personnelles\n   • Motif de la demande\n   • Pièces justificatives (CNI, etc.)\n\n**Étape 4 :** **Soumettez** votre demande\n\n⏱️ **Délai de traitement :** 48-72h ouvrables\n📧 **Suivi :** Vous recevrez un email de confirmation"
+      buttons:
+        - title: "📊 Suivre une demande"
+          payload: "/ask_attestation_status"
+        - title: "🔗 Comment créer un compte ?"
+          payload: "/ask_attestation_account"
+        - title: "🔄 Retour Attestation"
+          payload: "/choose_platform{\"platform\": \"Attestation\"}"
+        - title: "🏠 Menu principal"
+          payload: "/go_back_greet_with_name"
+  utter_ask_attestation_status:
+    - text: "📊 **Comment suivre votre demande d'Attestation ?**\n\n**Option 1 :** Connectez-vous sur **[demarche.mfprsp.com](https://demarche.mfprsp.com/)**\n   • Allez dans **« Mes demandes »**\n   • Consultez le statut en temps réel\n\n**Option 2 :** Vérifiez votre **email**\n   • Email de confirmation à la soumission\n   • Email de notification quand c'est prêt\n\n**Option 3 :** **SMS** (si activé)\n   • Notifications sur votre téléphone\n\n📋 **États possibles :**\n   • ⏳ En cours de traitement\n   • ✅ Attestation prête\n   • 📤 Envoyée par email\n\n⏱️ **Délai moyen :** 48-72h ouvrables"
+      buttons:
+        - title: "📝 Faire une nouvelle demande"
+          payload: "/ask_attestation_request"
+        - title: "📋 À quoi ça sert ?"
+          payload: "/ask_attestation_info"
+        - title: "🔄 Retour Attestation"
+          payload: "/choose_platform{\"platform\": \"Attestation\"}"
+        - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
   utter_ask_support:
     - text: "Pour toute assistance, contactez-nous au +221 33 889 99 00 ou par email à support@fonctionpublique.gouv.sn (lundi-vendredi, 8h-17h)."

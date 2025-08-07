@@ -137,7 +137,7 @@ stories:
           - platform: "Attestation"
       - action: action_redirect_platform
       - intent: ask_attestation_request
-      - action: utter_attestation_menu
+      - action: utter_ask_attestation_request
       - intent: go_back_greet_with_name
       - action: utter_greet_with_name
 
@@ -169,7 +169,7 @@ stories:
           - platform: "Attestation"
       - action: action_redirect_platform
       - intent: ask_attestation_status
-      - action: utter_attestation_menu
+      - action: utter_ask_attestation_status
       - intent: go_back_greet_with_name
       - action: utter_greet_with_name
 

@@ -348,6 +348,13 @@ class PGDEAPIService:
                 "user": "root",
                 "password": ""
             }
+            # mysql_config = {
+            #     "host": "127.0.0.1",
+            #     "port": 3307,
+            #     "database": "PGDEPGDE",
+            #     "user": "root",
+            #     "password": "adieadie"
+            # }
             
             connection = mysql.connector.connect(**mysql_config)
             cursor = connection.cursor(dictionary=True)
@@ -846,10 +853,20 @@ class ActionHandleCNI(Action):
                 dispatcher.utter_message(response="utter_server_error")
                 return []
         
-        # Si on a déjà un CNI et qu'on est sur E-Carrière, on attend un matricule, pas un autre CNI
+        # Si on a déjà un CNI et qu'on est sur E-Carrière, vérifier si c'est le même CNI ou un nouveau
+        latest_text = tracker.latest_message.get("text", "").strip()
         if existing_cni and platform == "E-Carrière":
-            print("DEBUG ActionHandleCNI: CNI déjà présent, on attend probablement un matricule")
-            return []
+            # Si c'est le même CNI, ignorer 
+            if existing_cni == latest_text:
+                print(f"DEBUG ActionHandleCNI: Même CNI '{latest_text}' déjà présent, ignorer")
+                return []
+            # Si c'est un CNI différent, on le traite
+            elif latest_text.isdigit() and len(latest_text) == 13:
+                print(f"DEBUG ActionHandleCNI: Nouveau CNI '{latest_text}' détecté, traiter")
+                # Continue le traitement normal
+            else:
+                print("DEBUG ActionHandleCNI: CNI déjà présent, on attend probablement un matricule")
+                return []
         
         if has_account == "Oui" and (platform == "PGDE" or platform == "E-Carrière"):
             # Récupérer le CNI du message
@@ -979,6 +996,12 @@ class ActionHandleMatricule(Action):
         # Vérifier si l'input ressemble à un CNI (13 chiffres)
         input_text = latest_text.strip()
         is_input_cni = input_text.isdigit() and len(input_text) == 13
+        
+        # Fix: Si on a déjà un CNI dans le slot ET qu'on reçoit le même CNI, on n'a rien à faire
+        # (éviter le retraitement du même CNI)
+        if platform == "E-Carrière" and cni and is_input_cni and cni == input_text:
+            print(f"DEBUG ActionHandleMatricule: Même CNI '{input_text}' déjà traité, ignorer")
+            return []
         
         # Si on n'a pas de CNI OU si l'input est un nouveau CNI différent
         if platform == "E-Carrière" and (not cni or (is_input_cni and cni != input_text)):
