@@ -812,7 +812,29 @@ class ActionHandleCNI(Action):
         platform = tracker.get_slot("platform")
         existing_cni = tracker.get_slot("cni")
         
-        print(f"DEBUG ActionHandleCNI: has_account={has_account}, platform={platform}, existing_cni={existing_cni}")
+        print(f"DEBUG ActionHandleCNI: has_account='{has_account}', platform='{platform}', existing_cni='{existing_cni}'")
+        
+        # Fix immédiat pour PGDE - traiter directement si CNI de 13 chiffres
+        latest_text = tracker.latest_message.get("text", "").strip()
+        if platform == "PGDE" and latest_text.isdigit() and len(latest_text) == 13:
+            print(f"DEBUG ActionHandleCNI: Traitement direct PGDE pour CNI '{latest_text}'")
+            try:
+                user_data = PGDEAPIService.verify_user_by_cni(latest_text)
+                if user_data:
+                    nom_officiel = user_data["nom"]
+                    username = user_data["username"] 
+                    dossier_number = user_data["id"]
+                    email = user_data["email"]
+                    
+                    dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
+                    return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number), SlotSet("has_account", "Oui")]
+                else:
+                    dispatcher.utter_message(response="utter_no_account")
+                    return []
+            except Exception as e:
+                print(f"ERREUR ActionHandleCNI PGDE: {e}")
+                dispatcher.utter_message(response="utter_server_error")
+                return []
         
         # Si on a déjà un CNI et qu'on est sur E-Carrière, on attend un matricule, pas un autre CNI
         if existing_cni and platform == "E-Carrière":
@@ -922,6 +944,27 @@ class ActionHandleMatricule(Action):
         latest_intent = tracker.latest_message.get("intent", {}).get("name")
         latest_text = tracker.latest_message.get("text", "")
         print(f"DEBUG ActionHandleMatricule: latest_intent={latest_intent}, latest_text='{latest_text}'")
+        
+        # Fix pour PGDE : Si c'est PGDE et que le texte est un CNI (13 chiffres), traiter comme CNI
+        if platform == "PGDE" and latest_text.isdigit() and len(latest_text) == 13:
+            print(f"DEBUG ActionHandleMatricule: PGDE détecté avec CNI '{latest_text}', rediriger vers traitement CNI")
+            try:
+                user_data = PGDEAPIService.verify_user_by_cni(latest_text)
+                if user_data:
+                    nom_officiel = user_data["nom"]
+                    username = user_data["username"] 
+                    dossier_number = user_data["id"]
+                    email = user_data["email"]
+                    
+                    dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
+                    return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
+                else:
+                    dispatcher.utter_message(response="utter_no_account")
+                    return []
+            except Exception as e:
+                print(f"ERREUR ActionHandleMatricule PGDE: {e}")
+                dispatcher.utter_message(response="utter_server_error")
+                return []
         
         # Vérifier si l'input ressemble à un CNI (13 chiffres)
         input_text = latest_text.strip()
