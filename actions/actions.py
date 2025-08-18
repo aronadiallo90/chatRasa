@@ -5,6 +5,9 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 import pymssql
 import sys
+import json
+from datetime import datetime
+import hashlib
 
 
 class ECarriereAPIService:
@@ -591,13 +594,50 @@ class ActionHandleName(Action):
                 dispatcher.utter_message(response="utter_greet_with_name", nom=nom_clean)
                 return [SlotSet("nom", nom_clean)]
         
-        # Si pas de nom valide, redemander avec aide
-        dispatcher.utter_message(text="**👤 Pour mieux vous aider, j'ai besoin de votre nom.**\n\nPouvez-vous réessayer ?")
+        # Si l'utilisateur refuse de donner son nom, continuer sans nom
+        user_message = tracker.latest_message.get("text", "").strip().lower()
+        refusal_patterns = ['non', 'pas', 'ne veux pas', 'refuse', 'ne souhaite pas', 'préfère pas']
+        
+        if any(pattern in user_message for pattern in refusal_patterns):
+            print(f"DEBUG ActionHandleName: Utilisateur refuse de donner son nom: '{user_message}'")
+            dispatcher.utter_message(
+                text="Pas de problème ! 😊\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
+                buttons=[
+                    {"title": "🏢 E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+                    {"title": "📋 PGDE", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+                    {"title": "🏛️ CRCE", "payload": "/choose_platform{\"platform\": \"CRCE\"}"},
+                    {"title": "📄 Attestation", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+                ]
+            )
+            return [SlotSet("nom", "Utilisateur")]  # Nom générique
+        
+        # Si pas de nom valide et pas de refus explicite, redemander une seule fois
+        dispatcher.utter_message(text="**👤 Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
         return []
 
     def _clean_and_format_name(self, nom_raw: str) -> str:
         """Nettoie et formate un nom en supprimant les mots parasites"""
         import re
+        
+        # NOUVEAU: Vérifier d'abord les mots de refus/négation
+        refusal_words = [
+            'non', 'pas', 'ne', 'jamais', 'rien', 'aucun', 'aucune', 'personne',
+            'refuse', 'veux', 'want', 'peut', 'peux', 'pourquoi', 'comment',
+            'quand', 'où', 'quoi', 'qui', 'combien', 'lequel', 'laquelle'
+        ]
+        
+        nom_lower = nom_raw.lower().strip()
+        
+        # Si le message entier est un mot de refus, retourner vide
+        if nom_lower in refusal_words:
+            print(f"DEBUG _clean_and_format_name: Mot de refus détecté: '{nom_raw}'")
+            return ""
+        
+        # Si le message contient uniquement des mots de refus, retourner vide
+        words_in_message = nom_lower.split()
+        if all(word in refusal_words for word in words_in_message):
+            print(f"DEBUG _clean_and_format_name: Message composé uniquement de mots de refus: '{nom_raw}'")
+            return ""
         
         # Patterns pour extraire seulement le nom (après les expressions courantes)
         extraction_patterns = [
@@ -624,12 +664,12 @@ class ActionHandleName(Action):
         # Nettoyer les caractères spéciaux
         nom_clean = re.sub(r'[^\w\s\-\'àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ]', '', nom_extracted)
         
-        # Supprimer les mots vides restants
+        # Supprimer les mots vides restants + mots de refus
         stop_words = [
             'je', 'suis', 'est', 'me', 'moi', 'mon', 'ma', 'mes', 'le', 'la', 'les', 
             'un', 'une', 'c', 'ce', 'se', 'de', 'du', 'des', 'et', 'nomme', 'appelle',
             'mappel', 'mapel', 'mappelle', 'nom', 'est'
-        ]
+        ] + refusal_words  # Ajouter les mots de refus aux stop_words
         
         words = []
         for word in nom_clean.split():
@@ -639,8 +679,14 @@ class ActionHandleName(Action):
                 words.append(word.title())
         
         result = ' '.join(words).strip()
+        
+        # NOUVEAU: Validation supplémentaire - un nom doit faire au moins 2 caractères
+        if len(result) < 2:
+            print(f"DEBUG _clean_and_format_name: Nom trop court après nettoyage: '{result}'")
+            return ""
+        
         print(f"DEBUG _clean_and_format_name: résultat final = '{result}'")
-        return result if result else nom_clean.title().strip()
+        return result
 
 
 class ActionStartAccountVerification(Action):
