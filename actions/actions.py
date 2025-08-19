@@ -596,17 +596,25 @@ class ActionHandleName(Action):
         
         # Si l'utilisateur refuse de donner son nom, continuer sans nom
         user_message = tracker.latest_message.get("text", "").strip().lower()
-        refusal_patterns = ['non', 'pas', 'ne veux pas', 'refuse', 'ne souhaite pas', 'préfère pas']
+        intent_name = tracker.latest_message.get("intent", {}).get("name", "")
         
-        if any(pattern in user_message for pattern in refusal_patterns):
-            print(f"DEBUG ActionHandleName: Utilisateur refuse de donner son nom: '{user_message}'")
+        refusal_patterns = ['non', 'pas', 'ne veux pas', 'refuse', 'ne souhaite pas', 'préfère pas']
+        refusal_intents = ['deny_has_account', 'deny_has_access', 'refuse_name']
+        
+        # Détecter refus par texte, par intent, ou si fallback avec mot "non"
+        is_refusal = (any(pattern in user_message for pattern in refusal_patterns) or 
+                     intent_name in refusal_intents or
+                     user_message == "non" or
+                     (intent_name == 'nlu_fallback' and 'non' in user_message))
+        
+        if is_refusal:
+            print(f"DEBUG ActionHandleName: Utilisateur refuse de donner son nom: '{user_message}' (intent: {intent_name})")
             dispatcher.utter_message(
                 text="Pas de problème ! 😊\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
                 buttons=[
-                    {"title": "🏢 E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
-                    {"title": "📋 PGDE", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
-                    {"title": "🏛️ CRCE", "payload": "/choose_platform{\"platform\": \"CRCE\"}"},
-                    {"title": "📄 Attestation", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+                    {"title": "💼E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+                    {"title": "🎯Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+                    {"title": "📄 Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
                 ]
             )
             return [SlotSet("nom", "Utilisateur")]  # Nom générique
@@ -1329,6 +1337,47 @@ class ActionConfirmResetECarriere(Action):
             )
         
         return []
+
+
+class ActionHandleFallbackAfterGreet(Action):
+    """Gérer le fallback après demande de nom - traiter comme refus de nom"""
+    def name(self) -> Text:
+        return "action_handle_fallback_after_greet"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        # Récupérer le dernier message avant le UserUtteranceReverted
+        events = tracker.events
+        last_user_message = None
+        
+        # Chercher le dernier UserUttered avant le possible UserUtteranceReverted
+        for event in reversed(events):
+            if event.get("event") == "user":
+                last_user_message = event.get("text", "").lower().strip()
+                break
+        
+        print(f"DEBUG ActionHandleFallbackAfterGreet: dernier message = '{last_user_message}'")
+        
+        # Si c'est un message de refus, traiter comme refus de nom
+        refusal_patterns = ['non', 'pas', 'ne veux pas', 'refuse', 'ne souhaite pas', 'préfère pas']
+        
+        if last_user_message and any(pattern in last_user_message for pattern in refusal_patterns):
+            print(f"DEBUG ActionHandleFallbackAfterGreet: Refus détecté, redirection vers menu")
+            dispatcher.utter_message(
+                text="Pas de problème ! 😊\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
+                buttons=[
+                    {"title": "💼E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+                    {"title": "🎯Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+                    {"title": "📄 Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+                ]
+            )
+            return [SlotSet("nom", "Utilisateur")]
+        else:
+            # Sinon, demander le nom à nouveau
+            dispatcher.utter_message(text="**👤 Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
+            return []
 
 
 class ActionCancelResetECarriere(Action):

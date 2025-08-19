@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="chatbot-amath.css">
+    <title>Chatbot Amath - MFPRSP</title>
+</head>
+<body>
+
+<div class="amath-chatbot-container">
+    <div class="amath-chatbot-header">
+        <span><i class="fas fa-robot"></i> Amath (MFPRSP)</span>
+        <div class="amath-chatbot-header-actions">
+            <button onclick="AmathChatbot.restartChat()"><i class="fas fa-sync"></i></button>
+            <button onclick="AmathChatbot.closeChat()"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+    <div class="amath-chatbot-box"></div>
+    <div class="amath-chatbot-input-container">
+        <input type="text" class="amath-chatbot-user-input" placeholder="Tapez votre message...">
+        <button class="amath-chatbot-send-button"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<div class="amath-chatbot-actions">
+    <div class="amath-chatbot-icon" onclick="AmathChatbot.openChat()">
+        <i class="fas fa-comments"></i>
+    </div>
+</div>
+
+<script src="chatbot-amath.js"></script>
+<script>
+    // Initialiser le chatbot au chargement de la page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Attendre un peu pour s'assurer que le script est chargé
+        setTimeout(function() {
+            if (typeof AmathChatbot !== 'undefined') {
+                AmathChatbot.init();
+            } else {
+                console.error('AmathChatbot non défini');
+            }
+        }, 100);
+    });
+</script>
+
+</body>
+</html>

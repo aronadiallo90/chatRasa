@@ -217,9 +217,9 @@ nlu:
     examples: |
       - Non, annuler
       - Annuler la réinitialisation
-      - Non merci
-      - Je ne veux pas
+      - Je ne veux pas réinitialiser
       - Annuler
+      - Pas de réinitialisation
 
   - intent: provide_matricule
     examples: |
@@ -401,13 +401,6 @@ nlu:
       - moi [Khadija](nom)
       - je suis [Amadou](nom)
       - je sui [Dienaba](nom)
-      - non
-      - pas
-      - ne veux pas
-      - préfère pas
-      - refuse
-      - je ne veux pas donner mon nom
-      - pas besoin
       - [Thierno](nom)
       - [Aissatou](nom)
       - [Babacar](nom)
@@ -39682,6 +39675,30 @@ nlu:
           - Zoubida
           - Zuleikha
           - Zuzane
+
+  - intent: refuse_name
+    examples: |
+      - non
+      - Non merci
+      - Je ne veux pas dire mon nom
+      - Pas envie
+      - Je préfère pas
+      - non pas de nom
+      - je refuse
+      - sans nom
+      - pas de nom
+      - non merci
+      - je veux pas
+      - non je veux pas
+      - pas besoin
+      - aucun nom
+      - anonyme
+      - sans nom svp
+      - je préfère rester anonyme
+      - pas envie de donner mon nom
+      - ça va sans nom
+      - continuons sans nom
+      - je refuse de donner mon nom
 
 
 

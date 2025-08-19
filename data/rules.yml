@@ -81,10 +81,19 @@ rules:
       - intent: provide_name
       - action: action_handle_name
 
-  - rule: Fallback pour capture du nom après salutation
+  - rule: Gérer le fallback après utter_greet  
     steps:
       - action: utter_greet
+      - action: action_listen
+      - intent: nlu_fallback  
+      - action: action_handle_fallback_after_greet
+
+  - rule: Gérer le refus de nom
+    steps:
+      - intent: refuse_name
       - action: action_handle_name
+
+
 
   - rule: Gérer la réinitialisation du mot de passe
     steps:

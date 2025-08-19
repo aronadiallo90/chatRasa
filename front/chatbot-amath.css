@@ -1,0 +1,284 @@
+/* Amath Chatbot CSS - Version intégrable */
+.amath-chatbot-container {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: calc(100% - 2rem);
+    max-width: 90vw;
+    height: calc(100vh - 2rem);
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 10000;
+    transition: all 0.3s ease;
+    display: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.amath-chatbot-header {
+    background: linear-gradient(to right, #00843F, #00a65a);
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    font-size: clamp(1rem, 4vw, 1.125rem);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.amath-chatbot-header-actions {
+    display: flex;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+}
+
+.amath-chatbot-header-actions button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: clamp(0.875rem, 3vw, 1rem);
+    transition: color 0.2s;
+}
+
+.amath-chatbot-header-actions button:hover i {
+    color: #ffd700;
+}
+
+.amath-chatbot-header-actions button:last-child:hover i {
+    color: #ff6347;
+}
+
+.amath-chatbot-box {
+    flex: 1;
+    padding: clamp(0.5rem, 3vw, 1rem);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    background: #f9fafb;
+}
+
+.amath-chatbot-message {
+    padding: clamp(0.5rem, 2.5vw, 0.75rem);
+    margin: 0.25rem 0;
+    border-radius: 0.5rem;
+    max-width: 80%;
+    font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.amath-chatbot-bot-message {
+    background: #e5e7eb;
+    align-self: flex-start;
+}
+
+.amath-chatbot-user-message {
+    background: #00843F;
+    color: #ffffff;
+    align-self: flex-end;
+}
+
+.amath-chatbot-error-message {
+    background: #fee2e2;
+    color: #b91c1c;
+    align-self: center;
+    text-align: center;
+    max-width: 90%;
+}
+
+.amath-chatbot-info-message {
+    background: #dbeafe;
+    color: #1d4ed8;
+    align-self: center;
+    text-align: center;
+    max-width: 90%;
+}
+
+.amath-chatbot-button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+}
+
+.amath-chatbot-button {
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
+    border: none;
+    border-radius: 0.375rem;
+    background: #00843F;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.amath-chatbot-button:hover {
+    background: #006d32;
+}
+
+.amath-chatbot-button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.amath-chatbot-actions {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 10000;
+}
+
+.amath-chatbot-icon {
+    background: #00843F;
+    color: #ffffff;
+    border-radius: 50%;
+    width: clamp(2.5rem, 10vw, 3.5rem);
+    height: clamp(2.5rem, 10vw, 3.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1rem, 5vw, 1.5rem);
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+.amath-chatbot-icon:hover {
+    background: #006d32;
+    transform: scale(1.05);
+}
+
+.amath-chatbot-input-container {
+    display: flex;
+    padding: clamp(0.5rem, 3vw, 1rem);
+    border-top: 1px solid #d1d5db;
+    gap: clamp(0.5rem, 2vw, 0.75rem);
+    background: #ffffff;
+}
+
+.amath-chatbot-user-input {
+    flex: 1;
+    padding: clamp(0.5rem, 2.5vw, 0.75rem);
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.amath-chatbot-user-input:focus {
+    border-color: #00843F;
+    box-shadow: 0 0 0 2px rgba(0, 132, 63, 0.2);
+}
+
+.amath-chatbot-user-input:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.amath-chatbot-send-button {
+    background: #00843F;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.375rem;
+    padding: clamp(0.5rem, 2.5vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
+    cursor: pointer;
+    font-size: clamp(0.8rem, 3.5vw, 0.9rem);
+    transition: background 0.2s;
+    font-family: inherit;
+}
+
+.amath-chatbot-send-button:hover {
+    background: #006d32;
+}
+
+.amath-chatbot-send-button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.amath-chatbot-loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.5rem, 2vw, 0.75rem);
+}
+
+.amath-chatbot-dot {
+    width: clamp(0.4rem, 1.5vw, 0.5rem);
+    height: clamp(0.4rem, 1.5vw, 0.5rem);
+    margin: 0 clamp(0.1rem, 0.5vw, 0.125rem);
+    background: #00843F;
+    border-radius: 50%;
+    display: inline-block;
+    animation: amath-dot-bounce 1.4s infinite ease-in-out both;
+}
+
+.amath-chatbot-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.amath-chatbot-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes amath-dot-bounce {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+    .amath-chatbot-container {
+        width: clamp(360px, 80vw, 450px);
+        height: clamp(500px, 80vh, 600px);
+        border-radius: 1rem;
+    }
+    .amath-chatbot-header {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .amath-chatbot-container {
+        width: clamp(400px, 35vw, 500px);
+        height: clamp(600px, 70vh, 700px);
+    }
+}
+
+@media (min-width: 1280px) {
+    .amath-chatbot-container {
+        width: clamp(450px, 30vw, 550px);
+        height: clamp(650px, 65vh, 750px);
+    }
+    .amath-chatbot-header {
+        font-size: clamp(1.125rem, 2vw, 1.25rem);
+    }
+    .amath-chatbot-message, 
+    .amath-chatbot-button, 
+    .amath-chatbot-user-input, 
+    .amath-chatbot-send-button {
+        font-size: clamp(0.9rem, 1.5vw, 1rem);
+    }
+    .amath-chatbot-icon {
+        width: clamp(3rem, 5vw, 3.5rem);
+        height: clamp(3rem, 5vw, 3.5rem);
+        font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    }
+}

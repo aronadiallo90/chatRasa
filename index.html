@@ -133,6 +133,13 @@
             text-align: center;
             max-width: 90%;
         }
+        .info-message {
+            background: #dbeafe;
+            color: #1d4ed8;
+            align-self: center;
+            text-align: center;
+            max-width: 90%;
+        }
         .button-container {
             display: flex;
             flex-wrap: wrap;
@@ -320,7 +327,7 @@
     function appendMessage(text, sender) {
         let chatBox = document.getElementById("chat-box");
         let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : sender === "error" ? "error-message" : "user-message");
+        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : sender === "error" ? "error-message" : sender === "info" ? "info-message" : "user-message");
         
         let formattedText = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -420,7 +427,7 @@
         .then(data => {
             hideLoadingIndicator();
             if (data.length === 0) {
-                appendMessage("Désolé, aucune réponse reçue du serveur.", "error");
+                appendMessage("réessayer", "info");
                 return;
             }
             let foundButtons = false;

@@ -45,6 +45,7 @@ intents:
   - reset_password_ecarriere
   - confirm_reset_ecarriere
   - cancel_reset_ecarriere
+  - refuse_name
 
 entities:
   - nom
@@ -437,6 +438,7 @@ actions:
   - action_reset_password_ecarriere
   - action_confirm_reset_ecarriere
   - action_cancel_reset_ecarriere
+  - action_handle_fallback_after_greet
   
 
 
