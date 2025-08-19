@@ -311,42 +311,12 @@ responses:
           payload: "/go_back_greet_with_name"
   utter_ask_email:
     - text: "Veuillez entrer votre adresse email pour vérifier votre compte."
-      buttons:
-        - title: "🔄 Recommencer"
-          payload: "/start_account_verification"
-        - title: "🏠 Menu principal"
-          payload: "/go_back_greet_with_name"
-        - title: "📞 Support"
-          payload: "/ask_support"
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
     - text: "Super ! 🎉Pour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
-      buttons:
-        - title: "🔄 Retour PGDE"
-          payload: "/go_back_pgde"
-        - title: "🏠 Menu principal"
-          payload: "/go_back_greet_with_name"
-        - title: "📞 Support"
-          payload: "/ask_support"
   utter_ask_cni_ecarriere:  # CNI pour E-Carrière
     - text: "Super ! 🎉Pour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
-      buttons:
-        - title: "🔄 Retour E-Carrière"
-          payload: "/go_back_ecarriere"
-        - title: "🏠 Menu principal"
-          payload: "/go_back_greet_with_name"
-        - title: "📞 Support"
-          payload: "/ask_support"
   utter_ask_matricule:  # Demander matricule après CNI pour E-Carrière
     - text: "Parfait ! 👍Maintenant, j'ai besoin de votre **matricule solde**.\nVotre matricule doit être en MAJUSCULES et sans slash(/)"
-      buttons:
-        - title: "🔄 Recommencer"
-          payload: "/start_account_verification"
-        - title: "🔄 Retour E-Carrière"
-          payload: "/go_back_ecarriere"
-        - title: "🏠 Menu principal"
-          payload: "/go_back_greet_with_name"
-        - title: "📞 Support"
-          payload: "/ask_support"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
     - text: "Votre adresse email est celle que vous avez utilisée lors de votre inscription sur la plateforme. Vérifiez vos emails pour retrouver les communications officielles."
   utter_chitchat/ask_cni:  # Réponse pour l'intent chitchat/ask_cni

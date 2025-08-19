@@ -1,49 +1,10 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Chatbot Rasa</title>
+    <title>Chatbot Rasa - MFPRSP</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -94,10 +55,10 @@
             transition: color 0.2s;
         }
         #header-actions button:hover i {
-            color: #ffd700; /* Yellow for restart */
+            color: #ffd700;
         }
         #header-actions button:last-child:hover i {
-            color: #ff6347; /* Red for close */
+            color: #ff6347;
         }
         #chat-box {
             flex: 1;
@@ -133,11 +94,31 @@
             text-align: center;
             max-width: 90%;
         }
+        .info-message {
+            background: #dbeafe;
+            color: #1d4ed8;
+            align-self: center;
+            text-align: center;
+            max-width: 90%;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+        .input-required-message {
+            background: #f0f9ff;
+            color: #0369a1;
+            border-left: 4px solid #0ea5e9;
+            align-self: center;
+            text-align: center;
+            max-width: 95%;
+            font-weight: 500;
+            padding: 0.75rem;
+        }
         .button-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start;
             gap: clamp(0.5rem, 2vw, 0.75rem);
+            margin: 0.5rem 0;
         }
         .chat-button {
             padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
@@ -147,10 +128,12 @@
             color: #ffffff;
             cursor: pointer;
             font-size: clamp(0.8rem, 3.5vw, 0.9rem);
-            transition: background 0.2s;
+            transition: all 0.2s;
+            position: relative;
         }
-        .chat-button:hover {
+        .chat-button:hover:not(:disabled) {
             background: #006d32;
+            transform: translateY(-1px);
         }
         .chat-button:disabled {
             background: #9ca3af;
@@ -187,6 +170,15 @@
             border-top: 1px solid #d1d5db;
             gap: clamp(0.5rem, 2vw, 0.75rem);
             background: #ffffff;
+            transition: all 0.3s;
+        }
+        #input-container.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        #input-container.input-required {
+            background: #f0f9ff;
+            border-top: 2px solid #0ea5e9;
         }
         #user-input {
             flex: 1;
@@ -202,14 +194,17 @@
             box-shadow: 0 0 0 2px rgba(0, 132, 63, 0.2);
         }
         #user-input:disabled {
-            background-color: #f3f4f6;
-            color: #9ca3af;
+            background: #f3f4f6;
+            color: #6b7280;
             cursor: not-allowed;
         }
-        #send-button:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-            opacity: 0.5;
+        #user-input.input-required {
+            border-color: #0ea5e9;
+            background: #f8fafc;
+        }
+        #user-input.input-required:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2);
         }
         #send-button {
             background: #00843F;
@@ -221,8 +216,18 @@
             font-size: clamp(0.8rem, 3.5vw, 0.9rem);
             transition: background 0.2s;
         }
-        #send-button:hover {
+        #send-button:hover:not(:disabled) {
             background: #006d32;
+        }
+        #send-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        #send-button.input-required {
+            background: #0ea5e9;
+        }
+        #send-button.input-required:hover:not(:disabled) {
+            background: #0284c7;
         }
         .loading-indicator {
             display: flex;
@@ -253,7 +258,13 @@
                 transform: scale(1);
             }
         }
-        /* Tablet (min-width: 640px) */
+        
+        /* Mode strict : masquer complètement l'input quand des boutons sont présents ET input non requis */
+        .strict-mode #input-container:not(.input-required) {
+            display: none;
+        }
+        
+        /* Styles responsives */
         @media (min-width: 640px) {
             #chat-container {
                 width: clamp(360px, 80vw, 450px);
@@ -265,14 +276,12 @@
                 border-top-right-radius: 1rem;
             }
         }
-        /* Desktop (min-width: 1024px) */
         @media (min-width: 1024px) {
             #chat-container {
                 width: clamp(400px, 35vw, 500px);
                 height: clamp(600px, 70vh, 700px);
             }
         }
-        /* Large screens (min-width: 1280px) */
         @media (min-width: 1280px) {
             #chat-container {
                 width: clamp(450px, 30vw, 550px);
@@ -298,6 +307,9 @@
     <div id="chat-header">
         <span><i class="fas fa-robot"></i> Amath (MFPRSP)</span>
         <div id="header-actions">
+            <button onclick="toggleStrictMode()" id="strict-mode-btn" title="Mode intelligent: input activé automatiquement quand nécessaire">
+                <i class="fas fa-brain"></i>
+            </button>
             <button onclick="restartChat()"><i class="fas fa-sync"></i></button>
             <button onclick="fermerChat()"><i class="fas fa-times"></i></button>
         </div>
@@ -316,11 +328,31 @@
 <script>
     let lastButtons = [];
     let loadingIndicator;
+    let buttonsActive = false;
+    let inputRequired = false; // Nouveau: détecte si l'input est obligatoire
+    let strictMode = true; // Mode intelligent par défaut
+    let senderId = sessionStorage.getItem('sender_id') || generateUUID();
 
-    function appendMessage(text, sender) {
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    sessionStorage.setItem('sender_id', senderId);
+
+    function appendMessage(text, sender, showAsInfo = false, requireInput = false) {
         let chatBox = document.getElementById("chat-box");
         let messageDiv = document.createElement("div");
-        messageDiv.classList.add("message", sender === "bot" ? "bot-message" : sender === "error" ? "error-message" : "user-message");
+        
+        if (requireInput) {
+            messageDiv.classList.add("message", "input-required-message");
+        } else if (showAsInfo) {
+            messageDiv.classList.add("message", "info-message");
+        } else {
+            messageDiv.classList.add("message", sender === "bot" ? "bot-message" : sender === "error" ? "error-message" : "user-message");
+        }
         
         let formattedText = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -332,7 +364,29 @@
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function appendButtons(buttons) {
+    function detectInputRequired(text, buttons) {
+        // Détecter automatiquement si l'input est requis selon le contexte
+        const inputTriggers = [
+            /CNI/i, /carte.*nationale/i, /numéro.*identité/i,
+            /matricule/i, /matricule.*solde/i,
+            /email/i, /adresse.*email/i, /e-mail/i,
+            /nom/i, /prénom/i, /votre.*nom/i,
+            /saisissez/i, /tapez/i, /entrez/i, /écrivez/i,
+            /13.*chiffres/i, /numéro/i
+        ];
+
+        // Vérifier les mots-clés dans le texte
+        const needsInput = inputTriggers.some(pattern => pattern.test(text));
+        
+        // Exception : si le texte contient "boutons" et pas de trigger spécifique, pas d'input requis
+        if (!needsInput && /boutons?/i.test(text)) {
+            return false;
+        }
+
+        return needsInput;
+    }
+
+    function appendButtons(buttons, messageText = "") {
         let chatBox = document.getElementById("chat-box");
         let buttonContainer = document.createElement("div");
         buttonContainer.classList.add("button-container");
@@ -342,8 +396,18 @@
             buttonElement.classList.add("chat-button");
             buttonElement.innerText = button.title;
             buttonElement.onclick = () => {
+                // Afficher le choix de l'utilisateur
                 appendMessage(button.title, "user");
+                
+                // Désactiver tous les boutons immédiatement
                 disableButtons();
+                
+                // Réinitialiser les états
+                buttonsActive = false;
+                inputRequired = false;
+                updateInputState();
+                
+                // Envoyer le message
                 sendMessage(button.payload);
             };
             buttonContainer.appendChild(buttonElement);
@@ -352,29 +416,108 @@
         lastButtons = buttonContainer;
         chatBox.appendChild(buttonContainer);
         chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function disableButtons() {
-        if (lastButtons && lastButtons.children) {
-            Array.from(lastButtons.children).forEach(btn => btn.disabled = true);
+        
+        // Détecter si l'input est requis malgré la présence de boutons
+        inputRequired = detectInputRequired(messageText);
+        buttonsActive = true;
+        
+        console.log(`DEBUG: messageText="${messageText}", inputRequired=${inputRequired}, buttonsActive=${buttonsActive}`);
+        
+        updateInputState();
+        
+        // Messages adaptatifs selon le contexte
+        if (inputRequired) {
+            appendMessage("✏️ Vous pouvez saisir votre réponse ci-dessous ou utiliser les boutons.", "bot", false, true);
+        } else if (strictMode) {
+            appendMessage("💡 Veuillez utiliser les boutons ci-dessus pour continuer.", "bot", true);
         }
     }
 
-    // Fonctions pour contrôler l'état de l'input
-    function enableInput() {
-        let userInput = document.getElementById("user-input");
-        let sendButton = document.getElementById("send-button");
-        userInput.disabled = false;
-        userInput.placeholder = "Tapez votre message...";
-        sendButton.disabled = false;
+    function disableButtons() {
+        if (lastButtons) {
+            Array.from(lastButtons.children).forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = "0.5";
+            });
+        }
     }
 
-    function disableInput() {
-        let userInput = document.getElementById("user-input");
-        let sendButton = document.getElementById("send-button");
-        userInput.disabled = true;
-        userInput.placeholder = "Utilisez les boutons ci-dessus...";
-        sendButton.disabled = true;
+    function updateInputState() {
+        const inputContainer = document.getElementById("input-container");
+        const userInput = document.getElementById("user-input");
+        const sendButton = document.getElementById("send-button");
+        const chatContainer = document.getElementById("chat-container");
+        
+        if (inputRequired) {
+            // Input obligatoire : toujours actif même avec boutons
+            chatContainer.classList.remove("strict-mode");
+            inputContainer.classList.remove("disabled");
+            inputContainer.classList.add("input-required");
+            userInput.classList.add("input-required");
+            sendButton.classList.add("input-required");
+            userInput.disabled = false;
+            sendButton.disabled = false;
+            
+            // Placeholders spécifiques selon le contexte
+            if (/CNI/i.test(document.querySelector('.input-required-message')?.textContent || "")) {
+                userInput.placeholder = "Saisissez votre CNI (13 chiffres)...";
+            } else if (/matricule/i.test(document.querySelector('.input-required-message')?.textContent || "")) {
+                userInput.placeholder = "Saisissez votre matricule...";
+            } else if (/email/i.test(document.querySelector('.input-required-message')?.textContent || "")) {
+                userInput.placeholder = "Saisissez votre email...";
+            } else {
+                userInput.placeholder = "Saisissez votre réponse...";
+            }
+        } else if (strictMode && buttonsActive) {
+            // Mode strict avec boutons : masquer l'input
+            chatContainer.classList.add("strict-mode");
+            inputContainer.classList.remove("input-required");
+            userInput.classList.remove("input-required");
+            sendButton.classList.remove("input-required");
+            userInput.disabled = true;
+            sendButton.disabled = true;
+            userInput.placeholder = "Utilisez les boutons pour répondre";
+        } else if (!strictMode && buttonsActive) {
+            // Mode souple avec boutons : désactiver mais laisser visible
+            chatContainer.classList.remove("strict-mode");
+            inputContainer.classList.add("disabled");
+            inputContainer.classList.remove("input-required");
+            userInput.classList.remove("input-required");
+            sendButton.classList.remove("input-required");
+            userInput.disabled = true;
+            sendButton.disabled = true;
+            userInput.placeholder = "Utilisez de préférence les boutons pour répondre";
+        } else {
+            // Pas de boutons actifs : réactiver l'input normalement
+            chatContainer.classList.remove("strict-mode");
+            inputContainer.classList.remove("disabled", "input-required");
+            userInput.classList.remove("input-required");
+            sendButton.classList.remove("input-required");
+            userInput.disabled = false;
+            sendButton.disabled = false;
+            userInput.placeholder = "Tapez votre message...";
+        }
+    }
+
+    function toggleStrictMode() {
+        strictMode = !strictMode;
+        const btn = document.getElementById("strict-mode-btn");
+        
+        if (strictMode) {
+            btn.innerHTML = '<i class="fas fa-brain"></i>';
+            btn.title = "Mode intelligent activé - l'input s'active automatiquement quand nécessaire";
+            appendMessage("🧠 Mode intelligent activé : l'input s'adapte automatiquement au contexte.", "bot", true);
+        } else {
+            btn.innerHTML = '<i class="fas fa-unlock"></i>';
+            btn.title = "Mode libre activé - l'input reste toujours disponible";
+            appendMessage("🔓 Mode libre activé : l'input reste toujours disponible.", "bot", true);
+        }
+        
+        // Sauvegarder le mode dans localStorage
+        localStorage.setItem('chatbot_strict_mode', strictMode);
+        
+        // Mettre à jour l'état de l'input
+        updateInputState();
     }
 
     function showLoadingIndicator() {
@@ -392,17 +535,6 @@
             loadingIndicator = null;
         }
     }
-
-    
-    function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
-    let senderId = sessionStorage.getItem('sender_id') || generateUUID();
-    sessionStorage.setItem('sender_id', senderId);
 
     function sendMessage(payload) {
         showLoadingIndicator();
@@ -423,55 +555,70 @@
                 appendMessage("Désolé, aucune réponse reçue du serveur.", "error");
                 return;
             }
+            
             let foundButtons = false;
+            let lastMessageText = "";
+            
             data.forEach(res => {
-                if (res.text) appendMessage(res.text, "bot");
-                if (res.buttons) {
+                if (res.text) {
+                    appendMessage(res.text, "bot");
+                    lastMessageText = res.text;
+                }
+                if (res.buttons && res.buttons.length > 0) {
                     foundButtons = true;
-                    appendButtons(res.buttons);
+                    appendButtons(res.buttons, lastMessageText);
                 }
             });
             
-            // Contrôler l'état de l'input basé sur la présence de boutons
-            if (foundButtons) {
-                disableInput(); // Désactiver l'input quand il y a des boutons
-            } else {
-                enableInput(); // Activer l'input quand il n'y a pas de boutons (pour saisie libre)
+            // Si aucun bouton n'est fourni, réinitialiser les états
+            if (!foundButtons) {
+                buttonsActive = false;
+                inputRequired = false;
+                updateInputState();
             }
         })
         .catch(error => {
             hideLoadingIndicator();
             console.error("Erreur:", error);
             appendMessage("Impossible de contacter le serveur. Veuillez vérifier votre connexion ou réessayer plus tard.", "error");
+            
+            // Réactiver l'input en cas d'erreur
+            buttonsActive = false;
+            inputRequired = false;
+            updateInputState();
         });
     }
 
     function sendUserMessage() {
-        let userInput = document.getElementById("user-input");
-        let sendButton = document.getElementById("send-button");
+        let userInput = document.getElementById("user-input").value.trim();
+        if (userInput === "" || document.getElementById("user-input").disabled) return;
         
-        // Vérifier si l'input est physiquement désactivé
-        if (userInput.disabled || sendButton.disabled) return;
+        // Avertir en mode souple si des boutons sont actifs mais pas d'input requis
+        if (buttonsActive && !inputRequired && !strictMode) {
+            appendMessage("⚠️ Des boutons sont disponibles, mais j'ai noté votre message.", "bot", true);
+        }
         
-        let message = userInput.value.trim();
-        if (message === "") return;
+        appendMessage(userInput, "user");
+        sendMessage(userInput);
+        document.getElementById("user-input").value = "";
         
-        // Désactiver les boutons existants avant d'envoyer le message
-        disableButtons();
-        
-        appendMessage(message, "user");
-        sendMessage(message);
-        userInput.value = "";
+        // Réinitialiser les états après envoi
+        if (buttonsActive && !inputRequired) {
+            updateInputState();
+        }
     }
 
     function restartChat() {
         // Vider l'affichage du chat
         document.getElementById("chat-box").innerHTML = "";
         
-        // Réinitialiser l'état de l'input
-        enableInput();
+        // Réinitialiser les variables
+        buttonsActive = false;
+        inputRequired = false;
+        lastButtons = [];
+        updateInputState();
         
-        // Réinitialiser la session côté serveur Rasa avant de générer un nouveau sender_id
+        // Réinitialiser la session côté serveur Rasa
         fetch(`http://localhost:5005/conversations/${senderId}/tracker/events`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -481,7 +628,7 @@
             })
         })
         .then(() => {
-            // Générer un nouveau sender_id pour créer une nouvelle session
+            // Générer un nouveau sender_id
             senderId = generateUUID();
             sessionStorage.setItem('sender_id', senderId);
             
@@ -507,8 +654,25 @@
         document.getElementById("open-chat-icon").style.display = "none";
     }
 
+    // Initialisation
     window.onload = () => {
-        // appendMessage("Connexion au serveur en cours...", "bot");
+        // Charger le mode depuis localStorage
+        const savedStrictMode = localStorage.getItem('chatbot_strict_mode');
+        if (savedStrictMode !== null) {
+            strictMode = savedStrictMode === 'true';
+        }
+        
+        // Mettre à jour l'icône du bouton
+        const btn = document.getElementById("strict-mode-btn");
+        if (strictMode) {
+            btn.innerHTML = '<i class="fas fa-brain"></i>';
+            btn.title = "Mode intelligent activé - l'input s'active automatiquement quand nécessaire";
+        } else {
+            btn.innerHTML = '<i class="fas fa-unlock"></i>';
+            btn.title = "Mode libre activé - l'input reste toujours disponible";
+        }
+        
+        // Démarrer la conversation
         sendMessage("/greet");
     };
 </script>
