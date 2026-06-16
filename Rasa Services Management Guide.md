@@ -85,6 +85,43 @@ sudo journalctl -u <service>.service -f
 Debug logs (for --debug enabled services):
 sudo journalctl -u <service>.service --since "1 hour ago"
 
+Automatic Log Backup
+To automatically save logs periodically, create a cron job:
+
+Create log backup script:
+sudo nano /home/adminadie/chat/backup_logs.sh
+
+Add the following content:
+```bash
+#!/bin/bash
+# Backup Rasa services logs
+DATE=$(date +"%Y%m%d_%H%M%S")
+LOG_DIR="/home/adminadie/chat/logs"
+mkdir -p "$LOG_DIR"
+
+# Backup logs for each service
+for SERVICE in rasa-api rasa-actions rasa-front; do
+    sudo journalctl -u ${SERVICE}.service --since "24 hours ago" > "$LOG_DIR/${SERVICE}_${DATE}.log"
+done
+
+# Keep only last 7 days of logs
+find "$LOG_DIR" -name "*.log" -type f -mtime +7 -delete
+
+echo "Log backup completed at $(date)"
+```
+
+Make script executable:
+sudo chmod +x /home/adminadie/chat/backup_logs.sh
+
+Setup daily cron job (runs at 2 AM):
+sudo crontab -e
+
+Add this line:
+0 2 * * * /home/adminadie/chat/backup_logs.sh >> /home/adminadie/chat/backup_logs.log 2>&1
+
+Manual log backup:
+sudo /home/adminadie/chat/backup_logs.sh
+
 Edit Service Files
 Edit a service file:
 sudo nano /etc/systemd/system/<service>.service

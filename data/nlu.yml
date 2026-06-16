@@ -471,11 +471,14 @@ nlu:
       - c'est [Awa Diop](nom)
       - [Moussa Sow](nom)
       - [Fatou Ba](nom)
-      - Ousman Fall
-      - Mansour Gadiaga
-      - Omar Fall
-      - Awa Diop
-  
+      - [nana](nom)
+      - [ba](nom)
+      - [dié](nom)
+      - [Ousman Fall](nom)
+      - [Mansour Gadiaga](nom)
+      - [Omar Fall](nom)
+      - [Awa Diop](nom)
+
 
   - intent: go_back_autres
     examples: |
@@ -545,6 +548,10 @@ nlu:
   # - regex: nom
   #   examples: |
   #      - \b[\w\s'-]+\b 
+  - regex: nom
+    examples: |
+        - ^(?i)([a-zà-öø-ÿ][a-zà-öø-ÿ\s\-']{1,29}|nul)$
+
   - lookup: nom
     examples: |
           - +fatou Binetou Mariane
@@ -555,6 +562,9 @@ nlu:
           - A?ss? Ndaw
           - a
           - aa
+          - nana
+          - ba
+          - dié
           - aaa
           - amadou Ndene
           - amdou

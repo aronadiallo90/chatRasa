@@ -1,6 +1,35 @@
+# IDEs
 .idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Rasa
 .rasa/cache/
 models/
-html test/
 .models/
-actions/__pycache__/actions.cpython-39.pyc
+
+# Node
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+log.txt
+loger.txt
+
+# Temp/Backup
+*.bak
+*.backup
+*.tmp
+html test/
+data/knowledge_base/nlu.yml.backup
