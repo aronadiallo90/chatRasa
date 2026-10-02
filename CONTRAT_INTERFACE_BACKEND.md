@@ -39,6 +39,7 @@ Codes métier attendus :
 - `INACTIVE_ACCOUNT` : compte trouvé mais inactif ;
 - `RESET_ACCEPTED` : demande de réinitialisation acceptée ;
 - `UNAUTHORIZED` : appel non autorisé ;
+- `TOO_MANY_REQUESTS` : limite de débit atteinte (ex. réinitialisation déjà demandée récemment) ;
 - `TEMPORARY_ERROR` : erreur technique temporaire.
 
 Le backend peut utiliser d'autres libellés, mais il doit fournir la table d'équivalence avant l'intégration.

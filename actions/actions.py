@@ -8,6 +8,19 @@ import sys
 import json
 from datetime import datetime
 import hashlib
+import os
+
+# Couche d'intégration HTTP. Les affectations ci-dessous remplacent les services
+# historiques quand les actions sont chargées (voir aussi backend_api.py).
+from .backend_api import (
+    CODE_INACTIVE_ACCOUNT,
+    CODE_NOT_FOUND,
+    CODE_RESET_ACCEPTED,
+    CODE_TOO_MANY_REQUESTS,
+    BackendAPIError,
+    ECarriereBackendService,
+    PGDEBackendService,
+)
 
 
 class ECarriereAPIService:
@@ -18,10 +31,12 @@ class ECarriereAPIService:
     @staticmethod
     def _get_db_connection():
         """Crée et retourne une connexion à la base de données SQL Server."""
-        server = "10.42.3.49"
-        database = "referentiel_fudpe_new"
-        username = "sa"
-        password = "AdieAdie2"
+        # Ancien chemin conservé temporairement pour limiter le diff : il n'est
+        # plus utilisé, les actions sont reliées aux services HTTP ci-dessous.
+        server = os.getenv("LEGACY_ECARRIERE_DB_HOST", "")
+        database = os.getenv("LEGACY_ECARRIERE_DB_NAME", "")
+        username = os.getenv("LEGACY_ECARRIERE_DB_USER", "")
+        password = os.getenv("LEGACY_ECARRIERE_DB_PASSWORD", "")
         port = 1433
         
         return pymssql.connect(
@@ -446,6 +461,37 @@ class PGDEAPIService:
             return False
 
 
+ECarriereAPIService = ECarriereBackendService()
+PGDEAPIService = PGDEBackendService()
+
+
+def _utter_backend_unavailable(dispatcher: CollectingDispatcher, error: BackendAPIError,
+                               retry_payload: str = "/start_account_verification") -> None:
+    """Message unique pour toute panne backend (indisponible, refus, réponse hors contrat)."""
+    print(f"ERREUR backend: {error} (code={error.code}, correlation_id={error.correlation_id})")
+    dispatcher.utter_message(
+        text="❌ **Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
+        buttons=[
+            {"title": "🔄 Réessayer", "payload": retry_payload},
+            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+            {"title": "📞 Support", "payload": "/ask_support"}
+        ]
+    )
+
+
+def _utter_pgde_inactive_account(dispatcher: CollectingDispatcher, user_data: Dict[str, Any]) -> None:
+    """Compte PGDE trouvé mais non activé (email jamais confirmé) ou suspendu."""
+    nom_officiel = user_data.get("nom") or "Utilisateur"
+    dispatcher.utter_message(
+        text=f"⚠️ **Compte non activé**\n\nBonjour **{nom_officiel}**, votre compte PGDE existe mais il n'est pas actif.\n\n📧 Cliquez sur le lien d'activation reçu par email lors de votre inscription.\n\n👉 Si vous ne l'avez pas reçu ou si votre compte a été suspendu, contactez le support.",
+        buttons=[
+            {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
+            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+            {"title": "📞 Support", "payload": "/ask_support"}
+        ]
+    )
+
+
 class ActionRedirectPlatform(Action):
     def name(self) -> Text:
         return "action_redirect_platform"
@@ -859,8 +905,15 @@ class ActionHandleEmail(Action):
         """Vérification et réponse finale - utilise la vraie BD"""
         if platform == "PGDE" and cni:
             # Utiliser directement l'API PGDE pour vérifier
-            user_data = PGDEAPIService.verify_user_by_cni(cni)
-            if user_data and user_data.get("email") == email:
+            try:
+                user_data = PGDEAPIService.verify_user_by_cni(cni)
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error)
+                return
+            if user_data and (user_data.get("email") or "").lower() == email.lower():
+                if not user_data["actif"]:
+                    _utter_pgde_inactive_account(dispatcher, user_data)
+                    return
                 dispatcher.utter_message(response="utter_account_verified")
                 return
         
@@ -891,17 +944,23 @@ class ActionHandleCNI(Action):
             print(f"DEBUG ActionHandleCNI: Traitement direct PGDE pour CNI '{latest_text}'")
             try:
                 user_data = PGDEAPIService.verify_user_by_cni(latest_text)
+                if user_data and not user_data["actif"]:
+                    _utter_pgde_inactive_account(dispatcher, user_data)
+                    return []
                 if user_data:
                     nom_officiel = user_data["nom"]
-                    username = user_data["username"] 
+                    username = user_data["username"]
                     dossier_number = user_data["id"]
                     email = user_data["email"]
-                    
+
                     dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
                     return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number), SlotSet("has_account", "Oui")]
                 else:
                     dispatcher.utter_message(response="utter_no_account")
                     return []
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error)
+                return []
             except Exception as e:
                 print(f"ERREUR ActionHandleCNI PGDE: {e}")
                 dispatcher.utter_message(response="utter_server_error")
@@ -934,8 +993,15 @@ class ActionHandleCNI(Action):
             if cni and cni.isdigit() and len(cni) >= 12 and len(cni) <= 13:
                 if platform == "PGDE":
                     # PGDE : Vérification directe avec CNI
-                    user_data = PGDEAPIService.verify_user_by_cni(cni)
-                    
+                    try:
+                        user_data = PGDEAPIService.verify_user_by_cni(cni)
+                    except BackendAPIError as error:
+                        _utter_backend_unavailable(dispatcher, error)
+                        return []
+
+                    if user_data and not user_data["actif"]:
+                        _utter_pgde_inactive_account(dispatcher, user_data)
+                        return []
                     if user_data:
                         # Utiliser les vraies données de la base de données
                         nom_officiel = user_data["nom"]
@@ -1031,17 +1097,23 @@ class ActionHandleMatricule(Action):
             print(f"DEBUG ActionHandleMatricule: PGDE détecté avec CNI '{latest_text}', rediriger vers traitement CNI")
             try:
                 user_data = PGDEAPIService.verify_user_by_cni(latest_text)
+                if user_data and not user_data["actif"]:
+                    _utter_pgde_inactive_account(dispatcher, user_data)
+                    return []
                 if user_data:
                     nom_officiel = user_data["nom"]
-                    username = user_data["username"] 
+                    username = user_data["username"]
                     dossier_number = user_data["id"]
                     email = user_data["email"]
-                    
+
                     dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
                     return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
                 else:
                     dispatcher.utter_message(response="utter_no_account")
                     return []
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error)
+                return []
             except Exception as e:
                 print(f"ERREUR ActionHandleMatricule PGDE: {e}")
                 dispatcher.utter_message(response="utter_server_error")
@@ -1125,22 +1197,22 @@ class ActionHandleMatricule(Action):
             print(f"DEBUG ActionHandleMatricule: matricule brut='{matricule}', matricule nettoyé='{matricule_clean}'")
             
             if matricule_clean and self._is_valid_matricule_format(matricule_clean):
-                # Vérifier avec la base SQL Server en utilisant le matricule nettoyé
-                user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule_clean)
-                
+                # Vérifier via l'API E-Carrière en utilisant le matricule nettoyé
+                try:
+                    user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule_clean)
+                except BackendAPIError as error:
+                    _utter_backend_unavailable(dispatcher, error, "/go_back_ecarriere")
+                    return []
+
                 if user_data:
-                    # Utiliser les vraies données de la base SQL Server
                     nom_officiel = user_data["nom"]
-                    matricule_official = user_data["matricule"] 
+                    matricule_official = user_data["matricule"]
                     agent_id = user_data["id"]
-                    projets = user_data["projets"]
-                    agt_affectation_id = user_data.get("agt_affectation_id")
                     agent_email = user_data.get("email")
-                    
                     projets = user_data.get("projets", [])
-                    
-                    # Vérifier si le compte est activé (agt_affectation_id == 174200)
-                    compte_active = agt_affectation_id == 174200
+
+                    # L'activation est désormais fournie par le backend (champ actif / code INACTIVE_ACCOUNT)
+                    compte_active = user_data["actif"]
                     
                     # Message de salutation
                     message = f"""Enchanté **{nom_officiel}**,
@@ -1308,9 +1380,13 @@ class ActionConfirmResetECarriere(Action):
         
         if email:
             # Appel API de réinitialisation
-            success = ECarriereAPIService.request_password_reset_ecarriere(email)
-            
-            if success:
+            try:
+                reset_code = ECarriereAPIService.request_password_reset_ecarriere(email)
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error, "/reset_password_ecarriere")
+                return []
+
+            if reset_code == CODE_RESET_ACCEPTED:
                 dispatcher.utter_message(
                     text=f"✅ **Votre demande de réinitialisation a été envoyée avec succès.**\n\n📧 Consultez votre boîte email : **{email}**\n\n💡 Suivez les instructions dans l'email pour créer un nouveau mot de passe.",
                     buttons=[
@@ -1415,10 +1491,32 @@ class ActionConfirmPasswordReset(Action):
         
         if cni and email:
             # Appel API réel avec numberid (CNI)
-            success = PGDEAPIService.request_password_reset(cni, email)
-            
-            if success:
+            try:
+                reset_code = PGDEAPIService.request_password_reset(cni, email)
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error, "/confirm_password_reset")
+                return []
+
+            if reset_code == CODE_RESET_ACCEPTED:
                 dispatcher.utter_message(response="utter_password_reset_success", email=email)
+            elif reset_code == CODE_INACTIVE_ACCOUNT:
+                _utter_pgde_inactive_account(dispatcher, {"nom": tracker.get_slot("nom_officiel")})
+            elif reset_code == CODE_TOO_MANY_REQUESTS:
+                dispatcher.utter_message(
+                    text="⏳ **Demande déjà en cours**\n\nUn email de réinitialisation vient déjà d'être envoyé. Consultez votre boîte de réception (et les spams) ou réessayez dans quelques minutes.",
+                    buttons=[
+                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "📞 Support", "payload": "/ask_support"}
+                    ]
+                )
+            elif reset_code == CODE_NOT_FOUND:
+                dispatcher.utter_message(
+                    text="❌ **Informations incohérentes**\n\nL'email et la CNI ne correspondent pas au même compte. Veuillez recommencer la vérification.",
+                    buttons=[
+                        {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
+                        {"title": "📞 Support", "payload": "/ask_support"}
+                    ]
+                )
             else:
                 dispatcher.utter_message(
                     text="❌ **Réinitialisation non aboutie**\n\nUne erreur est survenue lors de l'envoi de l'email de réinitialisation.\n\n🔁 Vous pouvez réessayer dans un instant ou contacter le support technique pour obtenir de l'aide.",
@@ -1466,7 +1564,11 @@ class ActionGetDossierNumber(Action):
         cni = tracker.get_slot("cni")
         
         if cni:
-            user_data = PGDEAPIService.verify_user_by_cni(cni)
+            try:
+                user_data = PGDEAPIService.verify_user_by_cni(cni)
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error)
+                return []
             if user_data:
                 dossier_number = user_data["id"]  # ID de la BD
                 dispatcher.utter_message(
@@ -1556,7 +1658,12 @@ class ActionVoirActes(Action):
         
         if cni and matricule:
             # Récupérer tous les actes de l'utilisateur
-            user_data = ECarriereAPIService.get_all_actes(cni, matricule)
+            agent_id = tracker.get_slot("agent_id")
+            try:
+                user_data = ECarriereAPIService.get_all_actes(agent_id) if agent_id else None
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error, "/voir_actes")
+                return []
             
             if user_data and user_data.get("actes"):
                 actes = user_data["actes"]
@@ -1598,7 +1705,12 @@ class ActionVoirProjets(Action):
         
         if cni and matricule:
             # Récupérer les projets de l'utilisateur
-            user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+            agent_id = tracker.get_slot("agent_id")
+            try:
+                user_data = ECarriereAPIService.get_projets(agent_id) if agent_id else None
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error, "/voir_projets")
+                return []
             
             if user_data and user_data.get("projets"):
                 projets = user_data["projets"]
@@ -1665,11 +1777,14 @@ class ActionRetourMenuUtilisateur(Action):
         
         if nom_officiel and matricule_official:
             # Vérifier la disponibilité des projets/actes et récupérer email + statut activation
-            user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+            try:
+                user_data = ECarriereAPIService.verify_user_by_cni_matricule(cni, matricule)
+            except BackendAPIError as error:
+                _utter_backend_unavailable(dispatcher, error, "/retour_menu_utilisateur")
+                return []
             projets = user_data.get("projets", []) if user_data else []
             agent_email = user_data.get("email") if user_data else None
-            agt_affectation_id = user_data.get("agt_affectation_id") if user_data else None
-            compte_active = agt_affectation_id == 174200
+            compte_active = user_data["actif"] if user_data else False
             
             message = f"""Enchanté **{nom_officiel}**,
 
