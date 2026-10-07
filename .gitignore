@@ -33,3 +33,6 @@ loger.txt
 *.tmp
 html test/
 data/knowledge_base/nlu.yml.backup
+
+# Variables locales du serveur d'actions (start_actions_local.ps1)
+.env.local

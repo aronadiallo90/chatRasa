@@ -1,6 +1,35 @@
 "# chatRasa" 
 "# chatRasa" 
 
+## Lancement local (architecture API — à utiliser en priorité)
+
+Les actions n'accèdent plus directement à MySQL : PGDE passe par l'API Laravel `emplois`.
+Lancer `rasa run actions` seul ne suffit plus (erreur « CHATBOT_PGDE_BASE_URL n'est pas configurée »).
+
+```powershell
+# Terminal 1 — Laravel emplois (CHATBOT_API_TOKEN doit être défini dans emplois\.env)
+cd C:\Users\Arona\Desktop\fp\emplois
+php artisan serve
+
+# Terminal 2 — serveur d'actions (lit le jeton dans emplois\.env, vérifie Laravel et le port)
+cd C:\Users\Arona\Desktop\fp\test\pycharm\pycharm
+powershell -ExecutionPolicy Bypass -File .\start_actions_local.ps1
+
+# Terminal 3 — Rasa
+.\.venv\Scripts\rasa.exe run -m models --enable-api --cors "*"
+
+# Terminal 4 — page web : http://localhost:8001/index.html  (8000 est pris par Laravel)
+.\.venv\Scripts\python.exe -m http.server 8001
+```
+
+Options du script : `-LaravelUrl http://127.0.0.1:8098`, `-Port 5056`, `-ECarriereMode api`.
+Identifiants SQL Server E-Carrière (mode legacy) : les mettre dans `.env.local`
+(non suivi par git), au format de `.env.example` (`LEGACY_ECARRIERE_DB_*`).
+
+---
+
+## Ancienne procédure (accès direct aux bases)
+
 http://91.121.9.144/webhook.php ultrasmg
 
 -pour entrainer le modele
