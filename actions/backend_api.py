@@ -102,7 +102,7 @@ class BackendAPIClient:
         return result
 
 
-def _format_items(items: Any, label: str) -> list[str]:
+def format_items(items: Any, label: str) -> list[str]:
     """Transforme les objets du contrat en texte compatible avec les actions Rasa."""
     formatted = []
     for index, item in enumerate(items or [], start=1):
@@ -159,7 +159,7 @@ class ECarriereBackendService:
             "matricule": agent.get("matricule"),
             "cni": agent.get("cni"),
             "email": agent.get("email"),
-            "projets": _format_items(agent.get("projets"), "Projet"),
+            "projets": format_items(agent.get("projets"), "Projet"),
             # Le contrat ne définit pas encore l'activation E-Carrière : actif sauf INACTIVE_ACCOUNT.
             "actif": result.code == CODE_FOUND and agent.get("actif", True),
         }
@@ -178,7 +178,7 @@ class ECarriereBackendService:
         _reject_throttled(result)
         if not result.success:
             return None
-        return {"actes": _format_items((result.data or {}).get("actes"), "Acte")}
+        return {"actes": format_items((result.data or {}).get("actes"), "Acte")}
 
     def get_projets(self, agent_id: str) -> Optional[Dict[str, Any]]:
         result = self.client.post(
@@ -188,7 +188,7 @@ class ECarriereBackendService:
         _reject_throttled(result)
         if not result.success:
             return None
-        return {"projets": _format_items((result.data or {}).get("projets"), "Projet")}
+        return {"projets": format_items((result.data or {}).get("projets"), "Projet")}
 
     def request_password_reset_ecarriere(self, email: str) -> str:
         """Retourne le code métier (RESET_ACCEPTED en cas de succès)."""
@@ -197,6 +197,29 @@ class ECarriereBackendService:
             {"email": email},
         )
         return result.code
+
+
+ECARRIERE_MODES = ("legacy", "api")
+
+
+def build_ecarriere_service() -> Any:
+    """Choisit la source E-Carrière selon CHATBOT_ECARRIERE_MODE.
+
+    legacy (défaut) : lecture directe SQL Server, tant que l'API E-Carrière n'existe pas.
+    api             : client HTTP du contrat backend.
+    Une valeur inconnue fait échouer le démarrage plutôt que de choisir en silence.
+    """
+    mode = os.getenv("CHATBOT_ECARRIERE_MODE", "legacy").strip().lower()
+    if mode not in ECARRIERE_MODES:
+        raise ValueError(f"CHATBOT_ECARRIERE_MODE invalide : {mode!r} (attendu : legacy ou api)")
+
+    LOGGER.info("Source E-Carrière : %s", mode)
+    if mode == "api":
+        return ECarriereBackendService()
+
+    # Import local : le module legacy dépend de pymssql et importe déjà ce module.
+    from .ecarriere_legacy import LegacyECarriereService
+    return LegacyECarriereService()
 
 
 class PGDEBackendService:

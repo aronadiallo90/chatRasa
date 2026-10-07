@@ -17,6 +17,23 @@ Les réponses attendues suivent l'enveloppe de `CONTRAT_INTERFACE_BACKEND.md`.
 E-Carrière et PGDE sont isolés : une URL, un jeton et des chemins d'endpoint
 peuvent être différents pour chaque plateforme.
 
+## E-Carrière — interrupteur `CHATBOT_ECARRIERE_MODE`
+
+L'API E-Carrière n'existe pas encore. En attendant, le chatbot garde l'accès
+historique :
+
+| Mode | Source | Variables |
+|---|---|---|
+| `legacy` (défaut) | SQL Server en direct + service officiel de reset `e-carriere.sec.gouv.sn` (`actions/ecarriere_legacy.py`) | `LEGACY_ECARRIERE_DB_*`, `LEGACY_ECARRIERE_RESET_URL` |
+| `api` | Client HTTP du contrat (`actions/backend_api.py`) | `CHATBOT_ECARRIERE_*` |
+
+Les deux sources exposent la même interface : passer de `legacy` à `api` le
+jour où l'API existe ne demande qu'un changement de variable et un redémarrage
+du serveur d'actions. Une valeur inconnue empêche le serveur de démarrer.
+
+En mode `legacy`, une panne SQL Server ou du service de reset s'affiche comme
+« Problème temporaire » (même traitement que `BackendAPIError`).
+
 ## PGDE (backend Laravel `emplois`) — disponible
 
 | Service | Méthode et URL |
