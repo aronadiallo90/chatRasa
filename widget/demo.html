@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Démo du widget Amath</title>
+    <style>
+        /* CSS volontairement agressif, comme sur un site tiers : il ne doit PAS atteindre le widget. */
+        * { color: purple; font-family: 'Comic Sans MS', cursive !important; }
+        button { background: red !important; border-radius: 0 !important; padding: 30px !important; }
+        div { border: 2px dashed orange; padding: 20px; }
+        svg { width: 120px !important; }
+        input { font-size: 30px !important; }
+
+        body { margin: 0; background: #f4f6f5; }
+        main { max-width: 900px; margin: 0 auto; padding: 24px; }
+        code { background: #fff; padding: 2px 6px; }
+        .modal-backdrop {
+            position: fixed; inset: 0; z-index: 1050; display: none;
+            background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(3px);
+            align-items: center; justify-content: center;
+        }
+        .modal-backdrop.is-open { display: flex; }
+        .modal { background: #fff; max-width: 420px; }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Site de démonstration du Ministère</h1>
+    <p>Cette page imite un site tiers au CSS agressif (boutons rouges, Comic Sans, bordures orange).
+       Le widget Amath, en bas à droite, ne doit être affecté par aucun de ces styles.</p>
+
+    <div>
+        <h2>Configuration utilisée</h2>
+        <p>Point d'envoi : <code id="config-endpoint"></code></p>
+        <p>Site : <code id="config-site"></code> — Plateforme de départ : <code id="config-platform"></code></p>
+        <p>Variantes : <code>?platform=E-Carrière</code>, <code>?endpoint=relais</code> (Laravel 8000),
+           <code>?site=ecarriere</code>, <code>?position=left</code></p>
+    </div>
+
+    <div>
+        <h2>Contrôle par JavaScript</h2>
+        <button type="button" onclick="AmathChat.open()">AmathChat.open()</button>
+        <button type="button" onclick="AmathChat.restart()">AmathChat.restart()</button>
+        <button type="button" onclick="document.querySelector('.modal-backdrop').classList.add('is-open')">Ouvrir une modale du site (z-index 1050)</button>
+    </div>
+</main>
+
+<div class="modal-backdrop" onclick="this.classList.remove('is-open')">
+    <div class="modal">La modale du site doit passer <strong>au-dessus</strong> du widget (z-index 1040). Cliquez pour fermer.</div>
+</div>
+
+<script>
+    // Construit la balise d'intégration à partir de l'URL, comme le ferait un site réel.
+    var params = new URLSearchParams(location.search);
+    var endpoints = {
+        rasa: 'http://localhost:5005/webhooks/rest/webhook',
+        relais: 'http://127.0.0.1:8000/api/v1/chatbot/messages'
+    };
+    var endpoint = endpoints[params.get('endpoint')] || params.get('endpoint') || endpoints.rasa;
+
+    var tag = document.createElement('script');
+    tag.src = 'amath.js';
+    tag.setAttribute('data-endpoint', endpoint);
+    tag.setAttribute('data-site', params.get('site') || 'demo');
+    if (params.get('platform')) { tag.setAttribute('data-platform', params.get('platform')); }
+    if (params.get('position')) { tag.setAttribute('data-position', params.get('position')); }
+    document.body.appendChild(tag);
+
+    document.getElementById('config-endpoint').textContent = endpoint;
+    document.getElementById('config-site').textContent = params.get('site') || 'demo';
+    document.getElementById('config-platform').textContent = params.get('platform') || 'menu général';
+</script>
+</body>
+</html>
