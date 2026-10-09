@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List, Optional
 
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import ActionExecuted, SessionStarted, SlotSet
 import sys
 import json
 from datetime import datetime
@@ -24,6 +24,35 @@ from .backend_api import (
 # E-Carrière : SQL Server direct ou API selon CHATBOT_ECARRIERE_MODE (legacy par défaut).
 ECarriereAPIService = build_ecarriere_service()
 PGDEAPIService = PGDEBackendService()
+
+
+PLATFORM_BUTTONS = [
+    {"title": "💼E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+    {"title": "🎯Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+    {"title": "📄 Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+]
+
+# Seules ces informations survivent à une longue inactivité (voir session_config du domain).
+# CNI, email, compte vérifié… sont volontairement effacés : poste partagé possible (cybercafé).
+SLOTS_KEPT_BETWEEN_SESSIONS = ("platform", "nom")
+
+
+class ActionSessionStart(Action):
+    """Nouvelle session après inactivité : on garde la plateforme et le prénom, rien d'autre."""
+
+    def name(self) -> Text:
+        return "action_session_start"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        events: List[Dict[Text, Any]] = [SessionStarted()]
+        for slot_name in SLOTS_KEPT_BETWEEN_SESSIONS:
+            slot_value = tracker.get_slot(slot_name)
+            if slot_value is not None:
+                events.append(SlotSet(slot_name, slot_value))
+        events.append(ActionExecuted("action_listen"))
+        return events
 
 
 def _utter_backend_unavailable(dispatcher: CollectingDispatcher, error: BackendAPIError,
@@ -312,9 +341,18 @@ class ActionStartAccountVerification(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        platform = tracker.get_slot("platform") or "cette plateforme"
+        platform = tracker.get_slot("platform")
+        if not platform:
+            # Plateforme perdue (ex. longue inactivité) : la redemander plutôt que de
+            # partir dans un parcours générique qui ne sait vérifier aucun compte.
+            dispatcher.utter_message(
+                text="🔄 **Reprenons**\n\nPour quelle plateforme souhaitez-vous vérifier votre compte ?",
+                buttons=PLATFORM_BUTTONS
+            )
+            return []
+
         dispatcher.utter_message(response="utter_ask_has_account", platform=platform)
-        
+
         # Reset des données de vérification précédente
         return [
             SlotSet("has_account", None),
@@ -478,10 +516,7 @@ class ActionHandleEmail(Action):
                 dispatcher.utter_message(response="utter_account_verified")
                 return
         
-        # Si pas trouvé
-        dispatcher.utter_message(
-            text="⚠️ Compte introuvable.\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n🔄 Veuillez vérifier vos données ou réessayer dans un instant."
-        )
+        # Si pas trouvé (un seul message : utter_no_account contient déjà le texte et les boutons)
         dispatcher.utter_message(response="utter_no_account")
 
 
@@ -573,11 +608,16 @@ class ActionHandleCNI(Action):
                         dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
                         return [SlotSet("cni", cni), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
                     else:
-                        # Soit CNI n'existe pas, soit problème de connexion BD
+                        # CNI inconnue : un seul message, avec les mêmes boutons que utter_no_account
                         dispatcher.utter_message(
-                            text="❌ ** Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte actif dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin."
+                            text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
+                            buttons=[
+                                {"title": "ℹ️ Comment créer un compte", "payload": "/ask_account_creation"},
+                                {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
+                                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
+                                {"title": "📞 Support", "payload": "/ask_support"}
+                            ]
                         )
-                        dispatcher.utter_message(response="utter_no_account")
                         return []
                 
                 elif platform == "E-Carrière":

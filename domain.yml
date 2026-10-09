@@ -412,6 +412,7 @@ responses:
         - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
 actions:
+  - action_session_start
   - action_redirect_platform
   - action_explain_account_creation
   - action_explain_login
@@ -445,5 +446,8 @@ actions:
 
 
 session_config:
-  session_expiration_time: 5
+  # Minutes d'inactivité avant une nouvelle session (5 était trop court : l'utilisateur
+  # qui allait chercher sa CNI perdait sa plateforme). action_session_start reprend
+  # ensuite uniquement la plateforme et le prénom (voir actions.py).
+  session_expiration_time: 60
   carry_over_slots_to_new_session: false
