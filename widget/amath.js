@@ -62,6 +62,10 @@
         } catch (error) { /* stockage indisponible */ }
     }
 
+    // Conversation liée à l'onglet (sessionStorage) : sur un poste partagé, la personne
+    // suivante ne reprend pas la conversation (CNI vérifiée) de la précédente.
+    try { localStorage.removeItem(SESSION_KEY); } catch (error) { /* stockage bloqué */ }
+
     function newSessionId() {
         if (window.crypto && window.crypto.randomUUID) { return window.crypto.randomUUID(); }
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (character) {
@@ -71,10 +75,10 @@
     }
 
     function sessionId() {
-        var stored = readStorage(localStorage, SESSION_KEY);
+        var stored = readStorage(sessionStorage, SESSION_KEY);
         if (stored && /^[0-9a-f-]{36}$/i.test(stored)) { return stored; }
         var created = newSessionId();
-        writeStorage(localStorage, SESSION_KEY, created);
+        writeStorage(sessionStorage, SESSION_KEY, created);
         return created;
     }
 
@@ -228,7 +232,7 @@
             });
         }
         if (body && body.success && body.data && Array.isArray(body.data.messages)) {
-            if (body.data.session_id) { writeStorage(localStorage, SESSION_KEY, body.data.session_id); }
+            if (body.data.session_id) { writeStorage(sessionStorage, SESSION_KEY, body.data.session_id); }
             return body.data.messages;
         }
         return null;
@@ -276,7 +280,7 @@
                 setBusy(false);
                 var botMessages = result.status === 200 ? extractMessages(result.body) : null;
                 if (!botMessages) {
-                    if (result.status === 422) { writeStorage(localStorage, SESSION_KEY, null); }
+                    if (result.status === 422) { writeStorage(sessionStorage, SESSION_KEY, null); }
                     addEntry({ from: 'error', text: errorMessage(result.status, result.body) });
                     return;
                 }
@@ -321,7 +325,7 @@
     }
 
     function restartConversation() {
-        writeStorage(localStorage, SESSION_KEY, null);
+        writeStorage(sessionStorage, SESSION_KEY, null);
         history = [];
         saveHistory();
         renderAll();
