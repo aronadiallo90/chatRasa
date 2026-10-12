@@ -1317,7 +1317,8 @@ class ActionVoirProjets(Action):
                 projets = user_data["projets"]
                 projets_text = "\n\n".join(projets)
                 
-                message = f"""📊 **Vos 3 derniers projets, {nom_officiel}**
+                titre_projets = "Votre dernier projet" if len(projets) == 1 else f"Vos {len(projets)} derniers projets"
+                message = f"""📊 **{titre_projets}, {nom_officiel}**
 
 {projets_text}"""
             else:
