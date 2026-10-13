@@ -88,6 +88,261 @@ rules:
       - intent: nlu_fallback
       - action: action_handle_name
 
+  # --- Réponse à une question sur le nom : les réponses courtes mal classées sont traitées
+  #     comme un nom (ou un refus) par action_handle_name, au lieu d'un parcours hors contexte.
+
+  - rule: Nom attendu après utter_greet (affirm)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: affirm
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (confirm_has_account)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: confirm_has_account
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (confirm_has_access)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: confirm_has_access
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (deny_has_account)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: deny_has_account
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (deny_has_access)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: deny_has_access
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (confirm_password_reset)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: confirm_password_reset
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (deny_password_reset)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: deny_password_reset
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (provide_email)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: provide_email
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (provide_cni)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: provide_cni
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (provide_matricule)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: provide_matricule
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (start_account_verification)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: start_account_verification
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (voir_actes)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: voir_actes
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (voir_projets)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: voir_projets
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (aucun_projet_acte)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: aucun_projet_acte
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (retour_menu_utilisateur)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: retour_menu_utilisateur
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (reset_password_ecarriere)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: reset_password_ecarriere
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (confirm_reset_ecarriere)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: confirm_reset_ecarriere
+      - action: action_handle_name
+
+  - rule: Nom attendu après utter_greet (cancel_reset_ecarriere)
+    steps:
+      - action: utter_greet
+      - action: action_listen
+      - intent: cancel_reset_ecarriere
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (affirm)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: affirm
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (confirm_has_account)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: confirm_has_account
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (confirm_has_access)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: confirm_has_access
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (deny_has_account)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: deny_has_account
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (deny_has_access)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: deny_has_access
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (confirm_password_reset)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: confirm_password_reset
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (deny_password_reset)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: deny_password_reset
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (provide_email)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: provide_email
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (provide_cni)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: provide_cni
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (provide_matricule)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: provide_matricule
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (start_account_verification)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: start_account_verification
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (voir_actes)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: voir_actes
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (voir_projets)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: voir_projets
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (aucun_projet_acte)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: aucun_projet_acte
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (retour_menu_utilisateur)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: retour_menu_utilisateur
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (reset_password_ecarriere)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: reset_password_ecarriere
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (confirm_reset_ecarriere)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: confirm_reset_ecarriere
+      - action: action_handle_name
+
+  - rule: Nom attendu après action_ask_name_again (cancel_reset_ecarriere)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: cancel_reset_ecarriere
+      - action: action_handle_name
+
   - rule: Message incompris en cours de conversation (jamais de silence)
     steps:
       - intent: nlu_fallback

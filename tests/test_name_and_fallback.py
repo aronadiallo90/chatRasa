@@ -85,6 +85,20 @@ class ActionHandleNameTest(unittest.TestCase):
         self.assertIn("Je n'ai pas reconnu de nom", dispatcher.messages[0]["text"])
         self.assertIn("« non »", dispatcher.messages[0]["text"])
 
+    def test_misclassified_answers_after_the_name_question(self):
+        # Cas réel : « t » classé deny_has_access (0.33) ne répondait rien
+        events = ActionHandleName().run(CollectingDispatcher(), _tracker("t", "deny_has_access"), {})
+        self.assertEqual(events[0]["name"], "action_ask_name_again")
+
+        events = ActionHandleName().run(CollectingDispatcher(), _tracker("Martin", "deny_has_access"), {})
+        self.assertEqual(_slot_events(events), {"nom": "Martin"})
+
+        events = ActionHandleName().run(CollectingDispatcher(), _tracker("oui", "affirm"), {})
+        self.assertEqual(events[0]["name"], "action_ask_name_again")
+
+        events = ActionHandleName().run(CollectingDispatcher(), _tracker("non", "deny_has_access"), {})
+        self.assertEqual(_slot_events(events), {"nom": "Utilisateur"})
+
     def test_french_and_international_names_are_accepted(self):
         for typed, expected in (("pierre", "Pierre"), ("Sophie Martin", "Sophie Martin"),
                                 ("élodie", "Élodie"), ("Kwame Mensah", "Kwame Mensah")):

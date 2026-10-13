@@ -44,6 +44,13 @@ NAME_REFUSAL_PATTERN = re.compile(
 )
 
 
+# Réponses fréquentes à « votre nom ? » qui ne sont pas des noms
+WORDS_THAT_ARE_NOT_NAMES = {
+    "oui", "ok", "okay", "d'accord", "daccord", "merci", "bonjour", "bonsoir", "salut", "hello",
+    "yes", "retour", "menu", "aide", "support", "test", "rien", "personne", "inconnu",
+}
+
+
 def is_name_refusal(message: str) -> bool:
     """« non », « je ne veux pas »… — mais pas « Pascal » ni « Nana »."""
     return bool(NAME_REFUSAL_PATTERN.search(message.strip()))
@@ -53,6 +60,8 @@ def valid_name_or_none(candidate: str) -> Optional[str]:
     """Nom mis en forme s'il ressemble à un nom (2 à 40 caractères), sinon None."""
     cleaned = " ".join(candidate.split())
     if not 2 <= len(cleaned) <= 40 or not VALID_NAME_PATTERN.match(cleaned):
+        return None
+    if cleaned.lower() in WORDS_THAT_ARE_NOT_NAMES:
         return None
     return cleaned
 
@@ -255,13 +264,8 @@ class ActionHandleName(Action):
             intent = intent_name
             
             # Ignorer certains intents spécifiques
-            ignore_intents = [
-                "greet", "choose_platform", "ask_account_creation", "ask_login", 
-                "ask_password_reset", "go_back_greet_with_name", "go_back_ecarriere",
-                "go_back_pgde", "go_back_autres", "ask_support", "fallback",
-                "confirm_has_account", "deny_has_account", "confirm_has_access",
-                "deny_has_access", "provide_email", "provide_cni"
-            ]
+            # Seuls un choix de plateforme ou une salutation ne sont jamais pris pour un nom
+            ignore_intents = ["greet", "choose_platform", "E_carriere", "PGDE", "CRCE", "Attestation"]
             
             if intent not in ignore_intents and user_message:
                 nom = user_message
