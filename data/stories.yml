@@ -7,9 +7,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - action: action_redirect_platform
 
@@ -19,9 +19,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "E-Carrière"
@@ -37,9 +37,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "PGDE"
@@ -55,9 +55,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "E-Carrière"
@@ -73,9 +73,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "PGDE"
@@ -107,9 +107,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "PGDE"
@@ -129,9 +129,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "Attestation"
@@ -147,9 +147,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: ask_support
       - action: utter_ask_support
       - intent: go_back_greet_with_name
@@ -161,9 +161,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "Attestation"
@@ -179,9 +179,9 @@ stories:
       - intent: greet
       - action: utter_greet
       - intent: provide_name
+      - action: action_handle_name
       - slot_was_set:
           - nom: "{nom}"
-      - action: utter_greet_with_name
       - intent: choose_platform
       - slot_was_set:
           - platform: "E-Carrière"
