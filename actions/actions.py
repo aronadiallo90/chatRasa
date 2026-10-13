@@ -86,6 +86,41 @@ def utter_not_understood(dispatcher: CollectingDispatcher, platform: Optional[st
 MINISTERE_NOM_PAR_DEFAUT = "Ministère de la Fonction publique, du Travail et de la Réforme du Service public"
 
 
+# --- Données personnelles : une CNI (souvent connue d'autres personnes) suffit pour lancer une
+#     vérification PGDE. On n'affiche donc que des valeurs masquées ; les valeurs complètes restent
+#     dans les slots pour les appels API (ex. réinitialisation PGDE qui exige l'e-mail exact).
+MASK = "•"
+
+
+def mask_identifier(value: Optional[Any], visible_start: int = 2, visible_end: int = 2) -> str:
+    """« Lalaaicha02 » -> « La•••••••02 » ; « 258706 » -> « 25••06 »."""
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    if len(text) <= visible_start + visible_end:
+        return text[:1] + MASK * (len(text) - 1)
+    return text[:visible_start] + MASK * (len(text) - visible_start - visible_end) + text[-visible_end:]
+
+
+def mask_email(email: Optional[str]) -> str:
+    """« mbaye.dieng@fpublique.gouv.sn » -> « mb•••@fpublique.gouv.sn »."""
+    text = str(email or "").strip()
+    if "@" not in text:
+        return mask_identifier(text)
+    local_part, domain_part = text.split("@", 1)
+    return local_part[:2] + MASK * 3 + "@" + domain_part
+
+
+def mask_person_name(full_name: Optional[str]) -> str:
+    """« Arona Dia DIALLO » -> « Arona D. » : assez pour se reconnaître, pas pour identifier un tiers."""
+    words = str(full_name or "").split()
+    if not words:
+        return ""
+    if len(words) == 1:
+        return words[0]
+    return f"{words[0]} {words[-1][0].upper()}."
+
+
 class ActionSessionStart(Action):
     """Nouvelle session après inactivité : on garde la plateforme et le prénom, rien d'autre."""
 
@@ -479,7 +514,7 @@ class ActionHandleHasAccess(Action):
                     # Utiliser le nom officiel si disponible, sinon le nom saisi
                     nom_display = tracker.get_slot("nom_officiel") or tracker.get_slot("nom") or "Utilisateur"
                     email = tracker.get_slot("email") or "votre email"
-                    dispatcher.utter_message(response="utter_confirm_password_reset", nom=nom_display, email=email)
+                    dispatcher.utter_message(response="utter_confirm_password_reset", nom=nom_display, email=mask_email(email))
                 else:
                     # Pour autres plateformes : options générales
                     dispatcher.utter_message(response="utter_no_access")
@@ -537,7 +572,13 @@ class ActionHandleEmail(Action):
                 if not user_data["actif"]:
                     _utter_pgde_inactive_account(dispatcher, user_data)
                     return
-                dispatcher.utter_message(response="utter_account_verified")
+                # Valeurs masquées passées explicitement : sinon Rasa remplirait le message avec les slots bruts
+                dispatcher.utter_message(
+                    response="utter_account_verified",
+                    nom=mask_person_name(user_data.get("nom")),
+                    username=mask_identifier(user_data.get("username")),
+                    dossier_number=mask_identifier(user_data.get("id")),
+                )
                 return
         
         # Si pas trouvé (un seul message : utter_no_account contient déjà le texte et les boutons)
@@ -573,7 +614,8 @@ class ActionHandleCNI(Action):
                     dossier_number = user_data["id"]
                     email = user_data["email"]
 
-                    dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
+                    dispatcher.utter_message(response="utter_account_verified", nom=mask_person_name(nom_officiel),
+                                         username=mask_identifier(username), dossier_number=mask_identifier(dossier_number))
                     return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number), SlotSet("has_account", "Oui")]
                 else:
                     dispatcher.utter_message(response="utter_no_account")
@@ -629,7 +671,8 @@ class ActionHandleCNI(Action):
                         dossier_number = user_data["id"]  # L'ID est le numéro de dossier
                         email = user_data["email"]
                         
-                        dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
+                        dispatcher.utter_message(response="utter_account_verified", nom=mask_person_name(nom_officiel),
+                                         username=mask_identifier(username), dossier_number=mask_identifier(dossier_number))
                         return [SlotSet("cni", cni), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
                     else:
                         # CNI inconnue : un seul message, avec les mêmes boutons que utter_no_account
@@ -726,7 +769,8 @@ class ActionHandleMatricule(Action):
                     dossier_number = user_data["id"]
                     email = user_data["email"]
 
-                    dispatcher.utter_message(response="utter_account_verified", nom=nom_officiel, username=username, dossier_number=dossier_number)
+                    dispatcher.utter_message(response="utter_account_verified", nom=mask_person_name(nom_officiel),
+                                         username=mask_identifier(username), dossier_number=mask_identifier(dossier_number))
                     return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
                 else:
                     dispatcher.utter_message(response="utter_no_account")
@@ -962,7 +1006,7 @@ class ActionResetPasswordECarriere(Action):
         
         if email:
             dispatcher.utter_message(
-                text=f"**Réinitialisation mot de passe E-Carrière**\n\nBonjour **{nom_officiel}**,\n\nVoulez-vous réinitialiser votre mot de passe E-Carrière ?\n\nUn email sera envoyé à : **{email}**\n\nCette action ne peut pas être annulée.",
+                text=f"**Réinitialisation mot de passe E-Carrière**\n\nBonjour **{nom_officiel}**,\n\nVoulez-vous réinitialiser votre mot de passe E-Carrière ?\n\nUn email sera envoyé à : **{mask_email(email)}**\n\nCette action ne peut pas être annulée.",
                 buttons=[
                     {"title": "Confirmer réinitialisation", "payload": "/confirm_reset_ecarriere"},
                     {"title": "Annuler", "payload": "/cancel_reset_ecarriere"},
@@ -1003,7 +1047,7 @@ class ActionConfirmResetECarriere(Action):
 
             if reset_code == CODE_RESET_ACCEPTED:
                 dispatcher.utter_message(
-                    text=f"**Votre demande de réinitialisation a été envoyée avec succès.**\n\nConsultez votre boîte email : **{email}**\n\nSuivez les instructions dans l'email pour créer un nouveau mot de passe.",
+                    text=f"**Votre demande de réinitialisation a été envoyée avec succès.**\n\nConsultez votre boîte email : **{mask_email(email)}**\n\nSuivez les instructions dans l'email pour créer un nouveau mot de passe.",
                     buttons=[
                         {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
                         {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
@@ -1147,7 +1191,7 @@ class ActionConfirmPasswordReset(Action):
                 return []
 
             if reset_code == CODE_RESET_ACCEPTED:
-                dispatcher.utter_message(response="utter_password_reset_success", email=email)
+                dispatcher.utter_message(response="utter_password_reset_success", email=mask_email(email))
             elif reset_code == CODE_INACTIVE_ACCOUNT:
                 _utter_pgde_inactive_account(dispatcher, {"nom": tracker.get_slot("nom_officiel")})
             elif reset_code == CODE_TOO_MANY_REQUESTS:
@@ -1222,7 +1266,7 @@ class ActionGetDossierNumber(Action):
                 dossier_number = user_data["id"]  # ID de la BD
                 dispatcher.utter_message(
                     response="utter_dossier_number",
-                    dossier_number=dossier_number
+                    dossier_number=mask_identifier(dossier_number)
                 )
                 return []
         
