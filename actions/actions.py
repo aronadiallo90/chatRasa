@@ -9,6 +9,7 @@ from datetime import datetime
 import hashlib
 import os
 import re
+import logging
 
 # Accès aux données : PGDE via l'API emplois, E-Carrière via SQL Server ou API (backend_api.py).
 from .backend_api import (
@@ -26,6 +27,8 @@ from .backend_api import (
 ECarriereAPIService = build_ecarriere_service()
 PGDEAPIService = PGDEBackendService()
 
+
+logger = logging.getLogger(__name__)
 
 PLATFORM_BUTTONS = [
     {"title": "E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
@@ -143,7 +146,7 @@ class ActionSessionStart(Action):
 def _utter_backend_unavailable(dispatcher: CollectingDispatcher, error: BackendAPIError,
                                retry_payload: str = "/start_account_verification") -> None:
     """Message unique pour toute panne backend (indisponible, refus, réponse hors contrat)."""
-    print(f"ERREUR backend: {error} (code={error.code}, correlation_id={error.correlation_id})")
+    logger.error("Backend indisponible : %s (code=%s, correlation_id=%s)", error, error.code, error.correlation_id)
     dispatcher.utter_message(
         text="**Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
         buttons=[
@@ -333,13 +336,11 @@ class ActionHandleName(Action):
         
         # Si le message entier est un mot de refus, retourner vide
         if nom_lower in refusal_words:
-            print(f"DEBUG _clean_and_format_name: Mot de refus détecté: '{nom_raw}'")
             return ""
         
         # Si le message contient uniquement des mots de refus, retourner vide
         words_in_message = nom_lower.split()
         if all(word in refusal_words for word in words_in_message):
-            print(f"DEBUG _clean_and_format_name: Message composé uniquement de mots de refus: '{nom_raw}'")
             return ""
         
         # Patterns pour extraire seulement le nom (après les expressions courantes)
@@ -377,7 +378,6 @@ class ActionHandleName(Action):
         words = []
         for word in nom_clean.split():
             word_lower = word.lower().strip()
-            print(f"DEBUG _clean_and_format_name: mot='{word}', len={len(word)}, in_stop_words={word_lower in stop_words}")
             if word_lower not in stop_words and len(word) > 1:
                 words.append(word.title())
         
@@ -385,10 +385,8 @@ class ActionHandleName(Action):
         
         # NOUVEAU: Validation supplémentaire - un nom doit faire au moins 2 caractères
         if len(result) < 2:
-            print(f"DEBUG _clean_and_format_name: Nom trop court après nettoyage: '{result}'")
             return ""
         
-        print(f"DEBUG _clean_and_format_name: résultat final = '{result}'")
         return result
 
 
@@ -597,12 +595,10 @@ class ActionHandleCNI(Action):
         platform = tracker.get_slot("platform")
         existing_cni = tracker.get_slot("cni")
         
-        print(f"DEBUG ActionHandleCNI: has_account='{has_account}', platform='{platform}', existing_cni='{existing_cni}'")
         
         # Fix immédiat pour PGDE - traiter directement si CNI de 13 chiffres
         latest_text = tracker.latest_message.get("text", "").strip()
         if platform == "PGDE" and latest_text.isdigit() and len(latest_text) == 13:
-            print(f"DEBUG ActionHandleCNI: Traitement direct PGDE pour CNI '{latest_text}'")
             try:
                 user_data = PGDEAPIService.verify_user_by_cni(latest_text)
                 if user_data and not user_data["actif"]:
@@ -624,7 +620,7 @@ class ActionHandleCNI(Action):
                 _utter_backend_unavailable(dispatcher, error)
                 return []
             except Exception as e:
-                print(f"ERREUR ActionHandleCNI PGDE: {e}")
+                logger.error("ERREUR ActionHandleCNI PGDE : %s", type(e).__name__)
                 dispatcher.utter_message(response="utter_server_error")
                 return []
         
@@ -633,14 +629,12 @@ class ActionHandleCNI(Action):
         if existing_cni and platform == "E-Carrière":
             # Si c'est le même CNI, ignorer 
             if existing_cni == latest_text:
-                print(f"DEBUG ActionHandleCNI: Même CNI '{latest_text}' déjà présent, ignorer")
                 return []
             # Si c'est un CNI différent, on le traite
             elif latest_text.isdigit() and len(latest_text) == 13:
-                print(f"DEBUG ActionHandleCNI: Nouveau CNI '{latest_text}' détecté, traiter")
+                pass
                 # Continue le traitement normal
             else:
-                print("DEBUG ActionHandleCNI: CNI déjà présent, on attend probablement un matricule")
                 return []
         
         if has_account == "Oui" and (platform == "PGDE" or platform == "E-Carrière"):
@@ -649,7 +643,6 @@ class ActionHandleCNI(Action):
             if not cni:
                 cni = tracker.latest_message.get("text", "").strip()
             
-            print(f"DEBUG ActionHandleCNI: CNI extracted = {cni}")
             
             # Valider le CNI - accepter 12 ou 13 chiffres
             if cni and cni.isdigit() and len(cni) >= 12 and len(cni) <= 13:
@@ -708,7 +701,7 @@ class ActionHandleCNI(Action):
                             )
                             return []
                     except Exception as e:
-                        print(f"ERREUR dans ActionHandleCNI: {e}")
+                        logger.error("ERREUR dans ActionHandleCNI : %s", type(e).__name__)
                         dispatcher.utter_message(
                             text="**Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
                             buttons=[
@@ -718,7 +711,6 @@ class ActionHandleCNI(Action):
                         )
                         return []
             else:
-                print(f"DEBUG ActionHandleCNI: CNI format invalide - cni={cni}, len={len(cni) if cni else 0}, isdigit={cni.isdigit() if cni else False}")
                 dispatcher.utter_message(
                     text="**Format de CNI incorrect**\n\nVotre numéro de CNI doit contenir exactement 13 chiffres.\n\nVérifiez sur votre carte d'identité et ressaisissez.",
                     buttons=[
@@ -728,7 +720,6 @@ class ActionHandleCNI(Action):
                 )
                 return []
         else:
-            print(f"DEBUG ActionHandleCNI: Conditions non remplies - has_account={has_account}, platform={platform}")
             # Si on arrive ici, quelque chose ne va pas dans le flux
             # Saisie hors parcours de vérification (ex. « 1 » au menu) : ce n'est pas une erreur
             utter_not_understood(dispatcher, platform, tracker.get_slot("nom"))
@@ -749,15 +740,12 @@ class ActionHandleMatricule(Action):
         platform = tracker.get_slot("platform")
         cni = tracker.get_slot("cni")
         
-        print(f"DEBUG ActionHandleMatricule: has_account={has_account}, platform={platform}, cni={cni}")
         
         latest_intent = tracker.latest_message.get("intent", {}).get("name")
         latest_text = tracker.latest_message.get("text", "")
-        print(f"DEBUG ActionHandleMatricule: latest_intent={latest_intent}, latest_text='{latest_text}'")
         
         # Fix pour PGDE : Si c'est PGDE et que le texte est un CNI (13 chiffres), traiter comme CNI
         if platform == "PGDE" and latest_text.isdigit() and len(latest_text) == 13:
-            print(f"DEBUG ActionHandleMatricule: PGDE détecté avec CNI '{latest_text}', rediriger vers traitement CNI")
             try:
                 user_data = PGDEAPIService.verify_user_by_cni(latest_text)
                 if user_data and not user_data["actif"]:
@@ -779,7 +767,7 @@ class ActionHandleMatricule(Action):
                 _utter_backend_unavailable(dispatcher, error)
                 return []
             except Exception as e:
-                print(f"ERREUR ActionHandleMatricule PGDE: {e}")
+                logger.error("ERREUR ActionHandleMatricule PGDE : %s", type(e).__name__)
                 dispatcher.utter_message(response="utter_server_error")
                 return []
         
@@ -790,7 +778,6 @@ class ActionHandleMatricule(Action):
         # Fix: Si on a déjà un CNI dans le slot ET qu'on reçoit le même CNI, on n'a rien à faire
         # (éviter le retraitement du même CNI)
         if platform == "E-Carrière" and cni and is_input_cni and cni == input_text:
-            print(f"DEBUG ActionHandleMatricule: Même CNI '{input_text}' déjà traité, ignorer")
             return []
         
         # Si on n'a pas de CNI OU si l'input est un nouveau CNI différent
@@ -798,7 +785,6 @@ class ActionHandleMatricule(Action):
             
             # Détecter si c'est un CNI (13 chiffres uniquement)
             if is_input_cni:
-                print("DEBUG ActionHandleMatricule: Input est un CNI, rediriger vers traitement CNI")
                 # Traiter directement comme un CNI
                 try:
                     user_data = ECarriereAPIService.verify_user_by_cni(input_text)
@@ -816,7 +802,7 @@ class ActionHandleMatricule(Action):
                         )
                         return []
                 except Exception as e:
-                    print(f"ERREUR dans ActionHandleMatricule (CNI processing): {e}")
+                    logger.error("ERREUR dans ActionHandleMatricule (CNI processing) : %s", type(e).__name__)
                     dispatcher.utter_message(
                         text="**Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
                         buttons=[
@@ -828,7 +814,6 @@ class ActionHandleMatricule(Action):
             
             # Si ce n'est pas un CNI, peut-être un matricule mal classifié  
             elif not cni and self._is_valid_matricule_format(input_text):
-                print("DEBUG ActionHandleMatricule: Input ressemble à un matricule, mais CNI manquant")
                 dispatcher.utter_message(
                     text="**CNI requis d'abord**\n\nPour vérifier votre matricule, j'ai d'abord besoin de votre numéro de CNI (13 chiffres).\n\nVeuillez saisir votre CNI :",
                     buttons=[
@@ -846,7 +831,6 @@ class ActionHandleMatricule(Action):
             
             # Vérifier si l'utilisateur saisit un CNI au lieu d'un matricule
             if matricule and matricule.isdigit() and len(matricule) == 13:
-                print(f"DEBUG ActionHandleMatricule: Utilisateur saisit CNI '{matricule}' au lieu de matricule")
                 dispatcher.utter_message(
                     text="**Vous avez saisi un CNI au lieu d'un matricule**\n\nNous attendons votre **matricule** (6-9 chiffres + 1 lettre).\n\nExemples : `123456A`, `654986B`\n\nVotre CNI est déjà enregistré. Veuillez maintenant saisir votre matricule :",
                     buttons=[
@@ -858,7 +842,6 @@ class ActionHandleMatricule(Action):
             
             # Nettoyer et valider le matricule
             matricule_clean = self._clean_matricule(matricule) if matricule else None
-            print(f"DEBUG ActionHandleMatricule: matricule brut='{matricule}', matricule nettoyé='{matricule_clean}'")
             
             if matricule_clean and self._is_valid_matricule_format(matricule_clean):
                 # Vérifier via l'API E-Carrière en utilisant le matricule nettoyé
@@ -947,7 +930,6 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                 return []
         else:
             # Debug: Conditions non remplies
-            print(f"DEBUG: Conditions non remplies - has_account={has_account}, platform={platform}, cni={cni}")
             # Saisie hors parcours de vérification (ex. « 1 » au menu) : ce n'est pas une erreur
             utter_not_understood(dispatcher, platform, tracker.get_slot("nom"))
             return []
@@ -974,7 +956,6 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
             chiffres, lettre = match.groups()
             matricule = chiffres + lettre.upper()
         
-        print(f"DEBUG _clean_matricule: '{matricule_raw}' -> '{matricule}'")
         return matricule
     
     def _is_valid_matricule_format(self, matricule: str) -> bool:
@@ -988,7 +969,6 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
         pattern = r'^[0-9]{6,9}[A-Z]$'
         is_valid = bool(re.match(pattern, matricule))
         
-        print(f"DEBUG _is_valid_matricule_format: '{matricule}' -> {is_valid}")
         return is_valid
 
 
@@ -1114,13 +1094,11 @@ class ActionHandleFallbackAfterGreet(Action):
                 last_user_message = event.get("text", "").lower().strip()
                 break
         
-        print(f"DEBUG ActionHandleFallbackAfterGreet: dernier message = '{last_user_message}'")
         
         # Si c'est un message de refus, traiter comme refus de nom
         refusal_patterns = ['non', 'pas', 'ne veux pas', 'refuse', 'ne souhaite pas', 'préfère pas']
         
         if last_user_message and any(pattern in last_user_message for pattern in refusal_patterns):
-            print(f"DEBUG ActionHandleFallbackAfterGreet: Refus détecté, redirection vers menu")
             dispatcher.utter_message(
                 text="Pas de problème !\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
                 buttons=[
