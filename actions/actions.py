@@ -35,6 +35,8 @@ PLATFORM_BUTTONS = [
 # Seules ces informations survivent à une longue inactivité (voir session_config du domain).
 # CNI, email, compte vérifié… sont volontairement effacés : poste partagé possible (cybercafé).
 SLOTS_KEPT_BETWEEN_SESSIONS = ("platform", "nom")
+# Nom officiel affiché par Amath : modifiable sans réentraîner le modèle.
+MINISTERE_NOM_PAR_DEFAUT = "Ministère de la Fonction publique, du Travail et de la Réforme du Service public"
 
 
 class ActionSessionStart(Action):
@@ -46,7 +48,8 @@ class ActionSessionStart(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        events: List[Dict[Text, Any]] = [SessionStarted()]
+        ministere = os.getenv("CHATBOT_MINISTERE_NOM", "").strip() or MINISTERE_NOM_PAR_DEFAUT
+        events: List[Dict[Text, Any]] = [SessionStarted(), SlotSet("ministere", ministere)]
         for slot_name in SLOTS_KEPT_BETWEEN_SESSIONS:
             slot_value = tracker.get_slot(slot_name)
             if slot_value is not None:
@@ -394,9 +397,9 @@ class ActionHandleHasAccount(Action):
             # Adapter le message selon la plateforme
             if platform == "E-Carrière":
                 dispatcher.utter_message(
-                    text="Pas de souci ! 👌\n\nPour créer un compte E-Carrière, vous devez d'abord être un agent de la fonction publique.",
+                    text="Prêt à suivre votre carrière en quelques clics ?\nPour créer votre compte sur **E-Carrière** et accéder à vos services, vous devez disposer d'un **matricule de solde**.",
                     buttons=[
-                        {"title": "ℹ️ Comment Activer mon compte", "payload": "/ask_account_creation"},
+                        {"title": "📝 Activer mon compte", "payload": "/ask_account_creation"},
                         {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
                         {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
                         {"title": "📞 Support", "payload": "/ask_support"}
@@ -406,7 +409,7 @@ class ActionHandleHasAccount(Action):
                 dispatcher.utter_message(
                     text="Pas de souci ! 👌\n\nLa **PGDE** est ouverte à tous les Sénégalais. Vous pouvez créer votre compte facilement :",
                     buttons=[
-                        {"title": "ℹ️ Comment créer un compte", "payload": "/ask_account_creation"},
+                        {"title": "📝 Créer mon compte", "payload": "/ask_account_creation"},
                         {"title": "🔄 Retour PGDE", "payload": "/go_back_pgde"},
                         {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
                         {"title": "📞 Support", "payload": "/ask_support"}
@@ -612,7 +615,7 @@ class ActionHandleCNI(Action):
                         dispatcher.utter_message(
                             text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
                             buttons=[
-                                {"title": "ℹ️ Comment créer un compte", "payload": "/ask_account_creation"},
+                                {"title": "📝 Créer mon compte", "payload": "/ask_account_creation"},
                                 {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
                                 {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
                                 {"title": "📞 Support", "payload": "/ask_support"}

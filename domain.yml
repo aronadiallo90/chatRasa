@@ -54,6 +54,14 @@ entities:
   - cni
   - matricule 
 slots:
+  # Nom officiel du ministère : variable CHATBOT_MINISTERE_NOM du serveur d'actions,
+  # posée par action_session_start. Changer le nom ne demande pas de réentraînement.
+  ministere:
+    type: text
+    initial_value: "Ministère de la Fonction publique, du Travail et de la Réforme du Service public"
+    influence_conversation: false
+    mappings:
+      - type: custom
   platform:
     type: text
     influence_conversation: true
@@ -143,9 +151,9 @@ slots:
         value: "Non"
 responses:
   utter_greet:
-    - text: "Dalal ak Jàmm 😊 ! Je suis Amath, le chatbot🤖 du Ministère de la Fonction Publique et de la Réforme du Service Public.\nPuis-je connaître votre nom, s'il vous plaît ?"
+    - text: "Dalal ak Jàmm 😊 !\nJe suis **Amath**, votre assistant virtuel du **{ministere}**.\nJe suis ravi de vous accueillir ! Pour mieux vous accompagner dans vos démarches, pourriez-vous me communiquer votre nom, s'il vous plaît ? 😊"
   utter_greet_with_name:
-  - text: "Bienvenue {nom} ! 👋\n**En quoi puis-je vous aider aujourd'hui ?**"
+  - text: "Bienvenue, {nom} ! 👋\nJe suis là pour vous orienter vers les services disponibles et vous accompagner dans vos démarches administratives.\n**Que souhaitez-vous faire aujourd'hui ?**"
     buttons:
       - title: "💼E-Carrière"
         payload: '/choose_platform{{"platform": "E-Carrière"}}'
@@ -156,14 +164,14 @@ responses:
       - title: "📄 Attestation de non appartenance"
         payload: '/choose_platform{{"platform": "Attestation"}}'
   utter_E_carriere:
-    - text: "Bienvenue sur **E-Carrière** 🧾,La plateforme dédiée au suivi des actes administratifs liés à votre carrière dans la fonction publique du Sénégal.\nPrêt·e à suivre l'évolution de vos dossiers ?😊\n👉 Avez-vous déjà un compte sur la plateforme ?"
+    - text: "Bienvenue sur **E-Carrière** !\nSuivez l'évolution de votre carrière en quelques clics.\n👉 Pour commencer, avez-vous déjà un compte E-Carrière ? 😊"
       buttons:
         - title: "✅ Oui"
           payload: "/confirm_has_account"
         - title: "❌ Non"
           payload: "/deny_has_account"
   utter_ask_account_creation:
-    - text: "Pour **activer** votre compte :\n\n⭐ Allez sur notre site en **[cliquant sur ce lien👆](https://e-carriere.sec.gouv.sn/#/login)**  \n\n⭐ **Remplissez** les informations demandées avec attention :\n\n⭐ Votre **Matricule** doit être en MAJUSCULES et sans slash (/).\n\n⭐ Votre **Nom** doit être en MAJUSCULES.\n\n⭐ Votre **Prénom** doit être saisi exactement comme sur votre CNI.\n\n⭐ Suivez ensuite les instructions pour finaliser l'activation de votre compte."
+    - text: "**Activons votre compte E-Carrière !**\nPour accéder à votre espace personnel et suivre votre carrière en quelques clics, suivez ces étapes :\n\n1️⃣ Accédez à la plateforme en cliquant ici : **[E-Carrière](https://e-carriere.sec.gouv.sn/#/login)**\n\n2️⃣ Renseignez soigneusement les informations demandées :\n• **Matricule de solde** : en MAJUSCULES et sans slash (/).\n• **Nom** : en MAJUSCULES.\n• **Prénom(s)** : saisissez-les exactement comme ils figurent sur votre carte nationale d'identité (CNI).\n\n3️⃣ Finalisez l'activation en suivant les instructions affichées sur la plateforme.\n\n💡 **Petit conseil** : vérifiez bien vos informations avant de valider pour faciliter l'activation de votre compte."
       buttons:
         - title: "Retour"
           payload: "/go_back_ecarriere"
@@ -183,7 +191,7 @@ responses:
         - title: "Retour"
           payload: "/go_back_greet_with_name"
   utter_pgde_menu:
-    - text: "Excellent choix ! 🚀\n\nLa **PGDE** est une plateforme numérique permettant à **tous les Sénégalais**, qu'ils soient au pays ou dans la diaspora, de **postuler à des offres d'emploi dans la Fonction publique**.\n\nPrêt·e à explorer ? 😊\n\n👉 Avez-vous déjà un compte sur la plateforme ?"
+    - text: "Envie de saisir une opportunité dans la Fonction publique sénégalaise ? 🚀\nAvec la **PGDE**, vous pouvez soumettre votre candidature en ligne, que vous soyez au Sénégal ou dans la diaspora.\nJe suis Amath, votre assistant virtuel, et je suis là pour vous guider à chaque étape !\n👉 Avez-vous déjà un compte sur la PGDE ? 😊"
       buttons:
         - title: "Oui"
           payload: "/confirm_has_account"
@@ -192,7 +200,7 @@ responses:
 
 
   utter_ask_pgde_account_creation:
-    - text: "Pour **créer** un compte sur la plateforme **PGDE** :\n\n1️⃣ Rendez-vous sur PGDE **[ en cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Cliquez sur **Créer un compte**.\n\n3️⃣ **Remplissez** les informations demandées (Nom, Prénom, Email, etc.).\n\n4️⃣ Validez votre inscription via le mail de confirmation."
+    - text: "**Créons ensemble votre compte PGDE !**\nSuivez ces quelques étapes pour vous inscrire et accéder aux opportunités d'emploi dans la Fonction publique sénégalaise. 🇸🇳\n\n1️⃣ Accédez à la plateforme en cliquant ici : **[PGDE – Plateforme de Gestion des Demandes d'Emploi](https://emploi-fpublique.sec.gouv.sn/login)**\n\n2️⃣ Cliquez sur « **Créer un compte** ».\n\n3️⃣ Renseignez les informations demandées, notamment votre nom, votre prénom et votre adresse e-mail.\n\n4️⃣ Confirmez votre inscription en suivant les instructions reçues par e-mail.\n\nUne fois ces étapes terminées, vous pourrez accéder à votre compte et poursuivre vos démarches.\nBesoin d'aide ? Amath est là pour vous accompagner ! 😊"
       buttons:
         - title: "🔄 Retour PGDE"
           payload: "/go_back_pgde"
@@ -248,7 +256,7 @@ responses:
       buttons:
         - title: "📋 À quoi ça sert ?"
           payload: "/ask_attestation_info"
-        - title: "🔗 Comment créer un compte ?"
+        - title: "🔗 Créer mon compte"
           payload: "/ask_attestation_account"
         - title: "📝 Comment postuler ?"
           payload: "/ask_attestation_request"
@@ -259,7 +267,7 @@ responses:
   utter_ask_attestation_info:
     - text: "📋 **À quoi sert l'Attestation de non appartenance ?**\n\nCette attestation certifie officiellement que vous **n'êtes pas** agent de la fonction publique sénégalaise.\n\n✅ **Elle est requise pour :**\n• Postuler à des offres d'emploi privées\n• S'inscrire à certains concours\n• Créer une entreprise\n• Justifier votre statut professionnel\n\n📄 **Document officiel** délivré par le Ministère de la Fonction Publique."
       buttons:
-        - title: "🔗 Comment créer un compte ?"
+        - title: "🔗 Créer mon compte"
           payload: "/ask_attestation_account"
         - title: "📝 Comment postuler ?"
           payload: "/ask_attestation_request"
@@ -283,7 +291,7 @@ responses:
       buttons:
         - title: "📊 Suivre une demande"
           payload: "/ask_attestation_status"
-        - title: "🔗 Comment créer un compte ?"
+        - title: "🔗 Créer mon compte"
           payload: "/ask_attestation_account"
         - title: "🔄 Retour Attestation"
           payload: "/choose_platform{\"platform\": \"Attestation\"}"
@@ -315,7 +323,7 @@ responses:
   utter_ask_cni:  # Nouvelle réponse pour demander le CNI
     - text: "Super ! 🎉Pour vérifier votre compte, j'ai juste besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
   utter_ask_cni_ecarriere:  # CNI pour E-Carrière
-    - text: "Super ! 🎉Pour vérifier votre compte E-Carrière, j'ai besoin de votre **numéro de CNI** (Carte nationale d'identité).\n💡Votre cni doit contenir 13 chiffres"
+    - text: "**Parfait, poursuivons la vérification !**\nPour continuer, veuillez renseigner votre numéro de carte nationale d'identité (**CNI**) afin de permettre la vérification de votre compte E-Carrière.\n💡 **À retenir** : votre numéro de CNI doit comporter exactement 13 chiffres."
   utter_ask_matricule:  # Demander matricule après CNI pour E-Carrière
     - text: "Parfait ! 👍Maintenant, j'ai besoin de votre **matricule solde**.\nVotre matricule doit être en MAJUSCULES et sans slash(/)"
   utter_chitchat/ask_email:  # Réponse pour l'intent chitchat/ask_email
@@ -339,7 +347,7 @@ responses:
   utter_no_account:
     - text: "⚠️ **Compte introuvable**\n\nNous n'avons pas pu retrouver de compte avec les informations fournies.\n\n🔁 Veuillez vérifier vos données ou réessayer dans un instant."
       buttons:
-        - title: "ℹ️ Comment créer un compte"
+        - title: "📝 Créer mon compte"
           payload: "/ask_account_creation"
         - title: "🔄 Réessayer"
           payload: "/start_account_verification"

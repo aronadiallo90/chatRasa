@@ -1,4 +1,6 @@
+import os
 import unittest
+from unittest.mock import patch
 
 from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -22,13 +24,32 @@ class ActionSessionStartTest(unittest.TestCase):
 
         self.assertEqual(events[0]["event"], "session_started")
         kept = {event["name"]: event["value"] for event in events if event["event"] == "slot"}
+        kept.pop("ministere")
         self.assertEqual(kept, {"platform": "PGDE", "nom": "Arona"})
         self.assertEqual((events[-1]["event"], events[-1]["name"]), ("action", "action_listen"))
 
     def test_nothing_to_keep_on_a_fresh_conversation(self):
         events = ActionSessionStart().run(CollectingDispatcher(), _tracker({}), {})
 
-        self.assertFalse([event for event in events if event["event"] == "slot"])
+        slots = [event["name"] for event in events if event["event"] == "slot"]
+        self.assertEqual(slots, ["ministere"])
+
+
+class MinistereNameTest(unittest.TestCase):
+    def _ministere(self):
+        events = ActionSessionStart().run(CollectingDispatcher(), _tracker({}), {})
+        return next(event["value"] for event in events if event.get("name") == "ministere")
+
+    def test_default_name_is_the_current_ministry(self):
+        with patch.dict(os.environ, {"CHATBOT_MINISTERE_NOM": ""}):
+            self.assertEqual(
+                self._ministere(),
+                "Ministère de la Fonction publique, du Travail et de la Réforme du Service public",
+            )
+
+    def test_name_comes_from_the_environment(self):
+        with patch.dict(os.environ, {"CHATBOT_MINISTERE_NOM": "  Ministère de Test  "}):
+            self.assertEqual(self._ministere(), "Ministère de Test")
 
 
 class ActionStartAccountVerificationTest(unittest.TestCase):
