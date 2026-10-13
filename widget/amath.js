@@ -262,9 +262,27 @@
         }
     }
 
+    // Un menu de boutons attend un choix : la saisie libre est bloquée jusqu'au clic
+    // (même comportement que l'ancienne page :8000). Le bouton « recommencer » reste disponible.
+    var PLACEHOLDER_TEXT = 'Écrivez votre message…';
+    var PLACEHOLDER_CHOICE = 'Utilisez les boutons ci-dessus…';
+
+    function awaitingChoice() {
+        var last = history[history.length - 1];
+        return Boolean(last && last.from === 'bot' && last.buttons && last.buttons.length);
+    }
+
+    function updateComposer() {
+        var choiceExpected = !isSending && awaitingChoice();
+        input.disabled = isSending || choiceExpected;
+        sendButton.disabled = isSending || choiceExpected;
+        input.placeholder = choiceExpected ? PLACEHOLDER_CHOICE : PLACEHOLDER_TEXT;
+    }
+
     function renderAll() {
         messagesBox.innerHTML = '';
         history.forEach(function (entry, index) { renderEntry(entry, index === history.length - 1); });
+        updateComposer();
         scrollToBottom();
     }
 
@@ -276,8 +294,7 @@
 
     function setBusy(busy) {
         isSending = busy;
-        input.disabled = busy;
-        sendButton.disabled = busy;
+        updateComposer();
         var typing = messagesBox.querySelector('.typing');
         if (busy && !typing) {
             typing = document.createElement('div');
