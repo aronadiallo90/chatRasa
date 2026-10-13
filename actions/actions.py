@@ -8,6 +8,7 @@ import json
 from datetime import datetime
 import hashlib
 import os
+import re
 
 # Accès aux données : PGDE via l'API emplois, E-Carrière via SQL Server ou API (backend_api.py).
 from .backend_api import (
@@ -35,6 +36,43 @@ PLATFORM_BUTTONS = [
 # Seules ces informations survivent à une longue inactivité (voir session_config du domain).
 # CNI, email, compte vérifié… sont volontairement effacés : poste partagé possible (cybercafé).
 SLOTS_KEPT_BETWEEN_SESSIONS = ("platform", "nom")
+# Un prénom/nom plausible : lettres (accents compris), espaces, tirets, apostrophes ; 4 mots max.
+VALID_NAME_PATTERN = re.compile(r"^[^\W\d_][^\W\d_' -]*(?:[ '-][^\W\d_]+){0,3}$")
+NAME_REFUSAL_PATTERN = re.compile(
+    r"^(non|nan|no|pas de nom)\b|\b(ne|n')\s*(veux|souhaite|préfère|prefere)\b|\bpréfère pas\b|\brefuse\b",
+    re.IGNORECASE,
+)
+
+
+def is_name_refusal(message: str) -> bool:
+    """« non », « je ne veux pas »… — mais pas « Pascal » ni « Nana »."""
+    return bool(NAME_REFUSAL_PATTERN.search(message.strip()))
+
+
+def valid_name_or_none(candidate: str) -> Optional[str]:
+    """Nom mis en forme s'il ressemble à un nom (2 à 40 caractères), sinon None."""
+    cleaned = " ".join(candidate.split())
+    if not 2 <= len(cleaned) <= 40 or not VALID_NAME_PATTERN.match(cleaned):
+        return None
+    return cleaned
+
+
+def utter_not_understood(dispatcher: CollectingDispatcher, platform: Optional[str], nom: Optional[str]) -> None:
+    """Message incompris : on le dit et on propose des choix utiles, au lieu de rester muet."""
+    buttons: List[Dict[Text, Any]] = []
+    if platform == "E-Carrière":
+        buttons.append({"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"})
+    elif platform == "PGDE":
+        buttons.append({"title": "Retour PGDE", "payload": "/go_back_pgde"})
+    if nom:
+        buttons.append({"title": "Menu principal", "payload": "/go_back_greet_with_name"})
+    else:
+        buttons.extend(PLATFORM_BUTTONS)
+    buttons.append({"title": "Support", "payload": "/ask_support"})
+    dispatcher.utter_message(
+        text="Je n'ai pas bien compris votre demande.\nVeuillez choisir une option ci-dessous :",
+        buttons=buttons,
+    )
 # Nom officiel affiché par Amath : modifiable sans réentraîner le modèle.
 MINISTERE_NOM_PAR_DEFAUT = "Ministère de la Fonction publique, du Travail et de la Réforme du Service public"
 
@@ -199,17 +237,22 @@ class ActionHandleName(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        # Extraire le nom via l'entité (Rasa NLU s'occupe de l'extraction)
+        user_message = tracker.latest_message.get("text", "").strip()
+        intent_name = tracker.latest_message.get("intent", {}).get("name", "")
+
+        # Refus explicite (« non », « je ne veux pas »…) : on continue sans nom
+        if intent_name == "refuse_name" or is_name_refusal(user_message):
+            dispatcher.utter_message(
+                text="Pas de problème !\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
+                buttons=PLATFORM_BUTTONS,
+            )
+            return [SlotSet("nom", "Utilisateur")]
+
+        # Le nom vient du message EN COURS (entité, sinon texte saisi) : jamais de l'ancien slot,
+        # sinon « Arona » saisi après « Baba » affichait encore « Bienvenue, Baba ».
         nom = next(tracker.get_latest_entity_values("nom"), None)
-        
-        # Si pas d'entité, essayer le slot nom
         if not nom:
-            nom = tracker.get_slot("nom")
-        
-        # Si toujours pas de nom, prendre le message entier comme nom
-        if not nom:
-            user_message = tracker.latest_message.get("text", "").strip()
-            intent = tracker.latest_message.get("intent", {}).get("name")
+            intent = intent_name
             
             # Ignorer certains intents spécifiques
             ignore_intents = [
@@ -223,43 +266,20 @@ class ActionHandleName(Action):
             if intent not in ignore_intents and user_message:
                 nom = user_message
         
-        # Nettoyer et formater le nom
-        if nom:
-            print(f"DEBUG ActionHandleName: nom brut = '{nom}'")
-            nom_clean = self._clean_and_format_name(nom)
-            print(f"DEBUG ActionHandleName: nom nettoyé = '{nom_clean}'")
-            
-            if nom_clean and len(nom_clean) > 1:
-                dispatcher.utter_message(response="utter_greet_with_name", nom=nom_clean)
-                return [SlotSet("nom", nom_clean)]
-        
-        # Si l'utilisateur refuse de donner son nom, continuer sans nom
-        user_message = tracker.latest_message.get("text", "").strip().lower()
-        intent_name = tracker.latest_message.get("intent", {}).get("name", "")
-        
-        refusal_patterns = ['non', 'pas', 'ne veux pas', 'refuse', 'ne souhaite pas', 'préfère pas']
-        refusal_intents = ['deny_has_account', 'deny_has_access', 'refuse_name']
-        
-        # Détecter refus par texte, par intent, ou si fallback avec mot "non"
-        is_refusal = (any(pattern in user_message for pattern in refusal_patterns) or 
-                     intent_name in refusal_intents or
-                     user_message == "non" or
-                     (intent_name == 'nlu_fallback' and 'non' in user_message))
-        
-        if is_refusal:
-            print(f"DEBUG ActionHandleName: Utilisateur refuse de donner son nom: '{user_message}' (intent: {intent_name})")
-            dispatcher.utter_message(
-                text="Pas de problème !\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
-                buttons=[
-                    {"title": "E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
-                    {"title": "Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
-                    {"title": "Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
-                ]
-            )
-            return [SlotSet("nom", "Utilisateur")]  # Nom générique
-        
-        # Si pas de nom valide et pas de refus explicite, redemander une seule fois
-        dispatcher.utter_message(text="**Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
+        # Nettoyer, mettre en forme et vérifier que ça ressemble à un nom
+        # Le texte brut est vérifié AVANT nettoyage : « dfokn,gb » ne doit pas devenir « Dfokngb »
+        saisie_plausible = bool(nom) and not re.search(r"[^\w\s'’.-]|[\d_]", nom)
+        nom_valide = valid_name_or_none(self._clean_and_format_name(nom)) if saisie_plausible else None
+        if nom_valide:
+            dispatcher.utter_message(response="utter_greet_with_name", nom=nom_valide)
+            return [SlotSet("nom", nom_valide)]
+
+        # Chiffres, symboles, une seule lettre… : on redemande en expliquant
+        dispatcher.utter_message(
+            text="Je n'ai pas reconnu de nom dans votre message.\n\n"
+                 "**Pourriez-vous m'indiquer votre nom ?** (lettres uniquement)\n"
+                 "Sinon, tapez « non » pour continuer sans nom."
+        )
         return []
 
     def _clean_and_format_name(self, nom_raw: str) -> str:
@@ -666,13 +686,8 @@ class ActionHandleCNI(Action):
         else:
             print(f"DEBUG ActionHandleCNI: Conditions non remplies - has_account={has_account}, platform={platform}")
             # Si on arrive ici, quelque chose ne va pas dans le flux
-            dispatcher.utter_message(
-                text="**Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
-                buttons=[
-                    {"title": "Recommencer", "payload": "/start_account_verification"},
-                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
-                ]
-            )
+            # Saisie hors parcours de vérification (ex. « 1 » au menu) : ce n'est pas une erreur
+            utter_not_understood(dispatcher, platform, tracker.get_slot("nom"))
         
         return []
 
@@ -888,13 +903,8 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
         else:
             # Debug: Conditions non remplies
             print(f"DEBUG: Conditions non remplies - has_account={has_account}, platform={platform}, cni={cni}")
-            dispatcher.utter_message(
-                text="**Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
-                buttons=[
-                    {"title": "Recommencer", "payload": "/start_account_verification"},
-                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
-                ]
-            )
+            # Saisie hors parcours de vérification (ex. « 1 » au menu) : ce n'est pas une erreur
+            utter_not_understood(dispatcher, platform, tracker.get_slot("nom"))
             return []
         
         return []
@@ -1028,7 +1038,11 @@ class ActionHandleFallbackAfterGreet(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        # Récupérer le dernier message avant le UserUtteranceReverted
+        # Après « pourriez-vous me communiquer votre nom », le texte saisi EST la réponse :
+        # même traitement que action_handle_name (refus, nom valide, ou nouvelle demande).
+        return ActionHandleName().run(dispatcher, tracker, domain)
+
+    def _ancien_traitement(self, dispatcher: CollectingDispatcher, tracker: Tracker) -> List[Dict[Text, Any]]:
         events = tracker.events
         last_user_message = None
         
@@ -1058,6 +1072,19 @@ class ActionHandleFallbackAfterGreet(Action):
             # Sinon, demander le nom à nouveau
             dispatcher.utter_message(text="**Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
             return []
+
+
+class ActionFallbackMenu(Action):
+    """Message incompris en cours de conversation : réponse explicite au lieu d'un silence."""
+
+    def name(self) -> Text:
+        return "action_fallback_menu"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        utter_not_understood(dispatcher, tracker.get_slot("platform"), tracker.get_slot("nom"))
+        return []
 
 
 class ActionCancelResetECarriere(Action):

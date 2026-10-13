@@ -421,6 +421,7 @@ responses:
           payload: "/go_back_greet_with_name"
 actions:
   - action_session_start
+  - action_fallback_menu
   - action_redirect_platform
   - action_explain_account_creation
   - action_explain_login

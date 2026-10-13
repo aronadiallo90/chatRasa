@@ -16,7 +16,6 @@ nlu:
       - Nanga def ?
       - Jàmm rekk
       - Jërëjëf
-      - retour
 
   - intent: choose_platform
     examples: |
@@ -244,6 +243,7 @@ nlu:
   - intent: go_back_greet_with_name
     examples: |
       - Retour au menu principal
+      - retour
       - Retour à l'accueil
       - Revenir au menu principal
       - Retour accueil

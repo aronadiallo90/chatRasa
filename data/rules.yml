@@ -69,13 +69,6 @@ rules:
           - nom
       - action: utter_greet_with_name
 
-  - rule: Saluer l'utilisateur avec le nom saisi - entity
-    steps:
-      - intent: provide_name
-      - slot_was_set:
-          - nom
-      - action: utter_greet_with_name
-
   - rule: Saluer l'utilisateur avec le nom saisi - fallback
     steps:
       - intent: provide_name
@@ -87,6 +80,11 @@ rules:
       - action: action_listen
       - intent: nlu_fallback  
       - action: action_handle_fallback_after_greet
+
+  - rule: Message incompris en cours de conversation (jamais de silence)
+    steps:
+      - intent: nlu_fallback
+      - action: action_fallback_menu
 
   - rule: Gérer le refus de nom
     steps:
