@@ -371,7 +371,7 @@ responses:
         - title: "Support"
           payload: "/ask_support"
   utter_account_verified:
-    - text: "**Votre compte a bien été vérifié.**\nBienvenue **{nom}**. Voici les informations de votre compte :\n\n**Nom :** {nom}\n**Nom d'utilisateur :** {username}\n**Numéro de dossier :** {dossier_number}\n\nAvez-vous toujours accès à votre compte ?"
+    - text: "**Votre compte a bien été vérifié.**\nBienvenue **{nom}**. Voici les informations de votre compte :\n\n**Nom :** {nom}\n**Numéro de dossier :** {dossier_number}\n\nAvez-vous toujours accès à votre compte ?"
       buttons:
         - title: "Oui, j'ai accès"
           payload: "/confirm_has_access"
