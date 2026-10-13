@@ -86,7 +86,7 @@ class ECarriereBackendServiceTest(unittest.TestCase):
 
         self.assertEqual(agent["id"], "123")
         self.assertTrue(agent["actif"])
-        self.assertEqual(agent["projets"], ["**1. Projet n°PROJ-1**\n📅 Date : 15/06/2026"])
+        self.assertEqual(agent["projets"], ["**1. Projet n°PROJ-1**\nDate : 15/06/2026"])
 
     def test_not_found_returns_none(self):
         client = _client_returning("NOT_FOUND")

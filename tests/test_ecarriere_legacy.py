@@ -58,7 +58,7 @@ class LegacyECarriereServiceTest(unittest.TestCase):
         self.assertTrue(agent["actif"])
         self.assertEqual(
             agent["projets"],
-            ["**1. Projet n°P-1**\n📋 Type : Avancement\n📊 État : En cours\n📅 Date : 15/06/2026"],
+            ["**1. Projet n°P-1**\nType : Avancement\nÉtat : En cours\nDate : 15/06/2026"],
         )
 
     @patch("actions.ecarriere_legacy.pymssql.connect")
@@ -95,7 +95,7 @@ class LegacyECarriereServiceTest(unittest.TestCase):
 
         actes = self.service.get_all_actes(42)
 
-        self.assertEqual(actes["actes"], ["**1. Acte n°A-9**\n📋 Type : Titularisation\n📊 État : Validé\n📅 Date : 10/01/2024"])
+        self.assertEqual(actes["actes"], ["**1. Acte n°A-9**\nType : Titularisation\nÉtat : Validé\nDate : 10/01/2024"])
         connection.close.assert_called_once()
 
     @patch("actions.ecarriere_legacy.requests.put")

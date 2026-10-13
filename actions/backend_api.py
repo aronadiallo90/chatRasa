@@ -110,9 +110,9 @@ def format_items(items: Any, label: str) -> list[str]:
             continue
         text = f"**{index}. {label} n°{item.get('numero') or 'Sans numéro'}**"
         if item.get("type"):
-            text += f"\n📋 Type : {item['type']}"
+            text += f"\nType : {item['type']}"
         if item.get("etat"):
-            text += f"\n📊 État : {item['etat']}"
+            text += f"\nÉtat : {item['etat']}"
         if item.get("date"):
             # Le backend renvoie une date ISO ; l'interface affiche JJ/MM/AAAA.
             date = str(item["date"])
@@ -121,7 +121,7 @@ def format_items(items: Any, label: str) -> list[str]:
                 date = f"{dd}/{mm}/{yyyy}"
             except ValueError:
                 pass
-            text += f"\n📅 Date : {date}"
+            text += f"\nDate : {date}"
         formatted.append(text)
     return formatted
 

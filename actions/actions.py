@@ -27,9 +27,9 @@ PGDEAPIService = PGDEBackendService()
 
 
 PLATFORM_BUTTONS = [
-    {"title": "💼E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
-    {"title": "🎯Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
-    {"title": "📄 Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+    {"title": "E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+    {"title": "Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+    {"title": "Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
 ]
 
 # Seules ces informations survivent à une longue inactivité (voir session_config du domain).
@@ -63,11 +63,11 @@ def _utter_backend_unavailable(dispatcher: CollectingDispatcher, error: BackendA
     """Message unique pour toute panne backend (indisponible, refus, réponse hors contrat)."""
     print(f"ERREUR backend: {error} (code={error.code}, correlation_id={error.correlation_id})")
     dispatcher.utter_message(
-        text="❌ **Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
+        text="**Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
         buttons=[
-            {"title": "🔄 Réessayer", "payload": retry_payload},
-            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-            {"title": "📞 Support", "payload": "/ask_support"}
+            {"title": "Réessayer", "payload": retry_payload},
+            {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+            {"title": "Support", "payload": "/ask_support"}
         ]
     )
 
@@ -76,11 +76,11 @@ def _utter_pgde_inactive_account(dispatcher: CollectingDispatcher, user_data: Di
     """Compte PGDE trouvé mais non activé (email jamais confirmé) ou suspendu."""
     nom_officiel = user_data.get("nom") or "Utilisateur"
     dispatcher.utter_message(
-        text=f"⚠️ **Compte non activé**\n\nBonjour **{nom_officiel}**, votre compte PGDE existe mais il n'est pas actif.\n\n📧 Cliquez sur le lien d'activation reçu par email lors de votre inscription.\n\n👉 Si vous ne l'avez pas reçu ou si votre compte a été suspendu, contactez le support.",
+        text=f"**Compte non activé**\n\nBonjour **{nom_officiel}**, votre compte PGDE existe mais il n'est pas actif.\n\nCliquez sur le lien d'activation reçu par email lors de votre inscription.\n\nSi vous ne l'avez pas reçu ou si votre compte a été suspendu, contactez le support.",
         buttons=[
-            {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-            {"title": "📞 Support", "payload": "/ask_support"}
+            {"title": "Autre vérification", "payload": "/start_account_verification"},
+            {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+            {"title": "Support", "payload": "/ask_support"}
         ]
     )
 
@@ -249,17 +249,17 @@ class ActionHandleName(Action):
         if is_refusal:
             print(f"DEBUG ActionHandleName: Utilisateur refuse de donner son nom: '{user_message}' (intent: {intent_name})")
             dispatcher.utter_message(
-                text="Pas de problème ! 😊\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
+                text="Pas de problème !\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
                 buttons=[
-                    {"title": "💼E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
-                    {"title": "🎯Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
-                    {"title": "📄 Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+                    {"title": "E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+                    {"title": "Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+                    {"title": "Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
                 ]
             )
             return [SlotSet("nom", "Utilisateur")]  # Nom générique
         
         # Si pas de nom valide et pas de refus explicite, redemander une seule fois
-        dispatcher.utter_message(text="**👤 Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
+        dispatcher.utter_message(text="**Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
         return []
 
     def _clean_and_format_name(self, nom_raw: str) -> str:
@@ -349,7 +349,7 @@ class ActionStartAccountVerification(Action):
             # Plateforme perdue (ex. longue inactivité) : la redemander plutôt que de
             # partir dans un parcours générique qui ne sait vérifier aucun compte.
             dispatcher.utter_message(
-                text="🔄 **Reprenons**\n\nPour quelle plateforme souhaitez-vous vérifier votre compte ?",
+                text="**Reprenons**\n\nPour quelle plateforme souhaitez-vous vérifier votre compte ?",
                 buttons=PLATFORM_BUTTONS
             )
             return []
@@ -399,20 +399,20 @@ class ActionHandleHasAccount(Action):
                 dispatcher.utter_message(
                     text="Prêt à suivre votre carrière en quelques clics ?\nPour créer votre compte sur **E-Carrière** et accéder à vos services, vous devez disposer d'un **matricule de solde**.",
                     buttons=[
-                        {"title": "📝 Activer mon compte", "payload": "/ask_account_creation"},
-                        {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Activer mon compte", "payload": "/ask_account_creation"},
+                        {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                        {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ]
                 )
             elif platform == "PGDE":
                 dispatcher.utter_message(
-                    text="Pas de souci ! 👌\n\nLa **PGDE** est ouverte à tous les Sénégalais. Vous pouvez créer votre compte facilement :",
+                    text="Pas de souci !\n\nLa **PGDE** est ouverte à tous les Sénégalais. Vous pouvez créer votre compte facilement :",
                     buttons=[
-                        {"title": "📝 Créer mon compte", "payload": "/ask_account_creation"},
-                        {"title": "🔄 Retour PGDE", "payload": "/go_back_pgde"},
-                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Créer mon compte", "payload": "/ask_account_creation"},
+                        {"title": "Retour PGDE", "payload": "/go_back_pgde"},
+                        {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ]
                 )
             else:
@@ -442,10 +442,10 @@ class ActionHandleHasAccess(Action):
                 elif platform == "E-Carrière":
                     # Pour E-Carrière : confirmer connexion
                     dispatcher.utter_message(
-                        text="🎉 Génial ! Vous pouvez vous connecter normalement via ce lien :\n\n🔗 [**Se connecter à E-Carrière**](https://e-carriere.sec.gouv.sn/#/login)\n\n✨ Bonne chance dans vos démarches ! 🤝",
+                        text="Génial ! Vous pouvez vous connecter normalement via ce lien :\n\n[**Se connecter à E-Carrière**](https://e-carriere.sec.gouv.sn/#/login)\n\nBonne chance dans vos démarches !",
                         buttons=[
-                            {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-                            {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                            {"title": "Autre vérification", "payload": "/start_account_verification"},
+                            {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
                         ]
                     )
                 else:
@@ -497,7 +497,7 @@ class ActionHandleEmail(Action):
                     self._verify_and_respond(dispatcher, email, None, platform)
                 return [SlotSet("email", email)]
             else:
-                dispatcher.utter_message(text="**📧 Adresse email non valide**\n Assurez-vous d'entrer une adresse email au bon format, comme exemple@gmail.com.")
+                dispatcher.utter_message(text="**Adresse email non valide**\n Assurez-vous d'entrer une adresse email au bon format, comme exemple@gmail.com.")
                 return []
         
         return []
@@ -613,12 +613,12 @@ class ActionHandleCNI(Action):
                     else:
                         # CNI inconnue : un seul message, avec les mêmes boutons que utter_no_account
                         dispatcher.utter_message(
-                            text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
+                            text="**Nous n'avons pas pu retrouver votre compte.**\n\nLe numéro de CNI saisi ne correspond à aucun compte dans nos systèmes.\n\nVeuillez vérifier l'exactitude de votre CNI ou contacter notre équipe d'assistance si besoin.",
                             buttons=[
-                                {"title": "📝 Créer mon compte", "payload": "/ask_account_creation"},
-                                {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                                {"title": "📞 Support", "payload": "/ask_support"}
+                                {"title": "Créer mon compte", "payload": "/ask_account_creation"},
+                                {"title": "Réessayer", "payload": "/start_account_verification"},
+                                {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                                {"title": "Support", "payload": "/ask_support"}
                             ]
                         )
                         return []
@@ -635,31 +635,31 @@ class ActionHandleCNI(Action):
                         else:
                             # Si la CNI n'existe pas
                             dispatcher.utter_message(
-                                text="❌ **Compte non trouvé**\n\nNous n'avons pas trouvé de compte avec ce numéro de CNI.\n\n👉 Vérifiez votre numéro ou contactez le support si besoin.",
+                                text="**Compte non trouvé**\n\nNous n'avons pas trouvé de compte avec ce numéro de CNI.\n\nVérifiez votre numéro ou contactez le support si besoin.",
                                 buttons=[
-                                    {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                                    {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                                    {"title": "📞 Support", "payload": "/ask_support"}
+                                    {"title": "Réessayer", "payload": "/start_account_verification"},
+                                    {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                                    {"title": "Support", "payload": "/ask_support"}
                                 ]
                             )
                             return []
                     except Exception as e:
                         print(f"ERREUR dans ActionHandleCNI: {e}")
                         dispatcher.utter_message(
-                            text="❌ **Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
+                            text="**Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
                             buttons=[
-                                {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                                {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                                {"title": "Réessayer", "payload": "/start_account_verification"},
+                                {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"}
                             ]
                         )
                         return []
             else:
                 print(f"DEBUG ActionHandleCNI: CNI format invalide - cni={cni}, len={len(cni) if cni else 0}, isdigit={cni.isdigit() if cni else False}")
                 dispatcher.utter_message(
-                    text="❌ **Format de CNI incorrect**\n\nVotre numéro de CNI doit contenir exactement 13 chiffres.\n\n💡 Vérifiez sur votre carte d'identité et ressaisissez.",
+                    text="**Format de CNI incorrect**\n\nVotre numéro de CNI doit contenir exactement 13 chiffres.\n\nVérifiez sur votre carte d'identité et ressaisissez.",
                     buttons=[
-                        {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                        {"title": "Réessayer", "payload": "/start_account_verification"},
+                        {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"}
                     ]
                 )
                 return []
@@ -667,10 +667,10 @@ class ActionHandleCNI(Action):
             print(f"DEBUG ActionHandleCNI: Conditions non remplies - has_account={has_account}, platform={platform}")
             # Si on arrive ici, quelque chose ne va pas dans le flux
             dispatcher.utter_message(
-                text="❌ **Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
+                text="**Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
                 buttons=[
-                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
-                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                    {"title": "Recommencer", "payload": "/start_account_verification"},
+                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
                 ]
             )
         
@@ -747,21 +747,21 @@ class ActionHandleMatricule(Action):
                         return [SlotSet("cni", input_text)]
                     else:
                         dispatcher.utter_message(
-                            text="❌ **Compte non trouvé**\n\nNous n'avons pas trouvé de compte avec ce numéro de CNI.\n\n👉 Vérifiez votre numéro ou contactez le support si besoin.",
+                            text="**Compte non trouvé**\n\nNous n'avons pas trouvé de compte avec ce numéro de CNI.\n\nVérifiez votre numéro ou contactez le support si besoin.",
                             buttons=[
-                                {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                                {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                                {"title": "📞 Support", "payload": "/ask_support"}
+                                {"title": "Réessayer", "payload": "/start_account_verification"},
+                                {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                                {"title": "Support", "payload": "/ask_support"}
                             ]
                         )
                         return []
                 except Exception as e:
                     print(f"ERREUR dans ActionHandleMatricule (CNI processing): {e}")
                     dispatcher.utter_message(
-                        text="❌ **Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
+                        text="**Problème temporaire**\n\nNous rencontrons des difficultés techniques. Veuillez réessayer dans quelques instants.",
                         buttons=[
-                            {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                            {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                            {"title": "Réessayer", "payload": "/start_account_verification"},
+                            {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"}
                         ]
                     )
                     return []
@@ -770,10 +770,10 @@ class ActionHandleMatricule(Action):
             elif not cni and self._is_valid_matricule_format(input_text):
                 print("DEBUG ActionHandleMatricule: Input ressemble à un matricule, mais CNI manquant")
                 dispatcher.utter_message(
-                    text="⚠️ **CNI requis d'abord**\n\nPour vérifier votre matricule, j'ai d'abord besoin de votre numéro de CNI (13 chiffres).\n\nVeuillez saisir votre CNI :",
+                    text="**CNI requis d'abord**\n\nPour vérifier votre matricule, j'ai d'abord besoin de votre numéro de CNI (13 chiffres).\n\nVeuillez saisir votre CNI :",
                     buttons=[
-                        {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
-                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                        {"title": "Recommencer", "payload": "/start_account_verification"},
+                        {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"}
                     ]
                 )
                 return []
@@ -788,10 +788,10 @@ class ActionHandleMatricule(Action):
             if matricule and matricule.isdigit() and len(matricule) == 13:
                 print(f"DEBUG ActionHandleMatricule: Utilisateur saisit CNI '{matricule}' au lieu de matricule")
                 dispatcher.utter_message(
-                    text="⚠️ **Vous avez saisi un CNI au lieu d'un matricule**\n\nNous attendons votre **matricule** (6-9 chiffres + 1 lettre).\n\nExemples : `123456A`, `654986B`\n\nVotre CNI est déjà enregistré. Veuillez maintenant saisir votre matricule :",
+                    text="**Vous avez saisi un CNI au lieu d'un matricule**\n\nNous attendons votre **matricule** (6-9 chiffres + 1 lettre).\n\nExemples : `123456A`, `654986B`\n\nVotre CNI est déjà enregistré. Veuillez maintenant saisir votre matricule :",
                     buttons=[
-                        {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                        {"title": "Réessayer", "payload": "/start_account_verification"},
+                        {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"}
                     ]
                 )
                 return []
@@ -826,7 +826,7 @@ class ActionHandleMatricule(Action):
                     
                     # Ajouter message d'activation si nécessaire
                     if not compte_active:
-                        message += """\n⚠️ **Activation requise**
+                        message += """\n**Activation requise**
 Je vois que vous n'avez pas encore activé votre compte E-Carrière.
 Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
 
@@ -837,26 +837,26 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                     if projets:
                         message += "Que souhaitez-vous faire ?"
                         buttons.extend([
-                            {"title": "📄 Voir mes actes", "payload": "/voir_actes"},
-                            {"title": "📊 Voir mes projets", "payload": "/voir_projets"}
+                            {"title": "Voir mes actes", "payload": "/voir_actes"},
+                            {"title": "Voir mes projets", "payload": "/voir_projets"}
                         ])
                     else:
                         message += "Aucun projet ou acte n'est disponible pour votre compte pour le moment."
                     
                     # Ajouter bouton d'activation si nécessaire
                     if not compte_active:
-                        buttons.append({"title": "✅ Activer mon compte", "payload": "/ask_account_creation"})
+                        buttons.append({"title": "Activer mon compte", "payload": "/ask_account_creation"})
                     
                     # Ajouter option de réinitialisation mot de passe si compte activé ET email disponible
                     if compte_active and agent_email:
-                        buttons.append({"title": "🔑 Réinitialiser mot de passe", "payload": "/reset_password_ecarriere"})
+                        buttons.append({"title": "Réinitialiser mot de passe", "payload": "/reset_password_ecarriere"})
                     
                     # Boutons de navigation
                     buttons.extend([
-                        {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-                        {"title": "🏢 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Autre vérification", "payload": "/start_account_verification"},
+                        {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                        {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ])
 
                     # Envoyer le message avec boutons de choix
@@ -868,20 +868,20 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
                             SlotSet("email", agent_email)]
                 else:
                     dispatcher.utter_message(
-                        text="❌ **Nous n'avons pas pu retrouver votre compte.**\n\nLe matricule saisi ne correspond pas à votre CNI dans nos systèmes.\n\n👉 Veuillez vérifier l'exactitude de votre matricule ou contacter notre équipe d'assistance si besoin.",
+                        text="**Nous n'avons pas pu retrouver votre compte.**\n\nLe matricule saisi ne correspond pas à votre CNI dans nos systèmes.\n\nVeuillez vérifier l'exactitude de votre matricule ou contacter notre équipe d'assistance si besoin.",
                         buttons=[
-                            {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                            {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"},
-                            {"title": "📞 Support", "payload": "/ask_support"}
+                            {"title": "Réessayer", "payload": "/start_account_verification"},
+                            {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"},
+                            {"title": "Support", "payload": "/ask_support"}
                         ]
                     )
                     return []
             else:
                 dispatcher.utter_message(
-                    text="⚠️ **Format de matricule incorrect**\n\nLe matricule doit contenir :\n• 6 à 9 chiffres + 1 lettre\n• Exemple : `123456A` ou `123456789B`\n\n💡 *Les slash \"/\" sont automatiquement supprimés*",
+                    text="**Format de matricule incorrect**\n\nLe matricule doit contenir :\n• 6 à 9 chiffres + 1 lettre\n• Exemple : `123456A` ou `123456789B`\n\n*Les slash \"/\" sont automatiquement supprimés*",
                     buttons=[
-                        {"title": "🔄 Réessayer", "payload": "/start_account_verification"},
-                        {"title": "🏠 Retour E-Carrière", "payload": "/go_back_ecarriere"}
+                        {"title": "Réessayer", "payload": "/start_account_verification"},
+                        {"title": "Retour E-Carrière", "payload": "/go_back_ecarriere"}
                     ]
                 )
                 return []
@@ -889,10 +889,10 @@ Veillez le faire pour accéder à la plateforme E-Carrière en ligne.
             # Debug: Conditions non remplies
             print(f"DEBUG: Conditions non remplies - has_account={has_account}, platform={platform}, cni={cni}")
             dispatcher.utter_message(
-                text="❌ **Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
+                text="**Problème de vérification**\n\nNous devons recommencer la vérification de votre compte. Veuillez suivre les étapes à nouveau.",
                 buttons=[
-                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
-                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                    {"title": "Recommencer", "payload": "/start_account_verification"},
+                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
                 ]
             )
             return []
@@ -951,19 +951,19 @@ class ActionResetPasswordECarriere(Action):
         
         if email:
             dispatcher.utter_message(
-                text=f"🔑 **Réinitialisation mot de passe E-Carrière**\n\nBonjour **{nom_officiel}**,\n\nVoulez-vous réinitialiser votre mot de passe E-Carrière ?\n\n📧 Un email sera envoyé à : **{email}**\n\n⚠️ Cette action ne peut pas être annulée.",
+                text=f"**Réinitialisation mot de passe E-Carrière**\n\nBonjour **{nom_officiel}**,\n\nVoulez-vous réinitialiser votre mot de passe E-Carrière ?\n\nUn email sera envoyé à : **{email}**\n\nCette action ne peut pas être annulée.",
                 buttons=[
-                    {"title": "✅ Confirmer réinitialisation", "payload": "/confirm_reset_ecarriere"},
-                    {"title": "❌ Annuler", "payload": "/cancel_reset_ecarriere"},
-                    {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"}
+                    {"title": "Confirmer réinitialisation", "payload": "/confirm_reset_ecarriere"},
+                    {"title": "Annuler", "payload": "/cancel_reset_ecarriere"},
+                    {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"}
                 ]
             )
         else:
             dispatcher.utter_message(
-                text="❌ **Email non trouvé**\n\nNous n'avons pas trouvé d'adresse email associée à votre compte.\n\nVeuillez contacter le support technique.",
+                text="**Email non trouvé**\n\nNous n'avons pas trouvé d'adresse email associée à votre compte.\n\nVeuillez contacter le support technique.",
                 buttons=[
-                    {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
-                    {"title": "📞 Support", "payload": "/ask_support"}
+                    {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
+                    {"title": "Support", "payload": "/ask_support"}
                 ]
             )
         
@@ -992,27 +992,27 @@ class ActionConfirmResetECarriere(Action):
 
             if reset_code == CODE_RESET_ACCEPTED:
                 dispatcher.utter_message(
-                    text=f"✅ **Votre demande de réinitialisation a été envoyée avec succès.**\n\n📧 Consultez votre boîte email : **{email}**\n\n💡 Suivez les instructions dans l'email pour créer un nouveau mot de passe.",
+                    text=f"**Votre demande de réinitialisation a été envoyée avec succès.**\n\nConsultez votre boîte email : **{email}**\n\nSuivez les instructions dans l'email pour créer un nouveau mot de passe.",
                     buttons=[
-                        {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
-                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                        {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
+                        {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
                     ]
                 )
             else:
                 dispatcher.utter_message(
-                    text=f"❌ **Échec de la réinitialisation**\n\nDésolé **{nom_officiel}**,\n\nNous n'avons pas pu traiter votre demande de réinitialisation.\nVeuillez réessayer plus tard ou contacter le support technique pour assistance.",
+                    text=f"**Échec de la réinitialisation**\n\nDésolé **{nom_officiel}**,\n\nNous n'avons pas pu traiter votre demande de réinitialisation.\nVeuillez réessayer plus tard ou contacter le support technique pour assistance.",
                     buttons=[
-                        {"title": "🔄 Réessayer", "payload": "/reset_password_ecarriere"},
-                        {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Réessayer", "payload": "/reset_password_ecarriere"},
+                        {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ]
                 )
         else:
             dispatcher.utter_message(
-                text="❌ **Informations manquantes**\n\nNous ne trouvons pas votre email. Veuillez recommencer la vérification.",
+                text="**Informations manquantes**\n\nNous ne trouvons pas votre email. Veuillez recommencer la vérification.",
                 buttons=[
-                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
-                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                    {"title": "Recommencer", "payload": "/start_account_verification"},
+                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
                 ]
             )
         
@@ -1046,17 +1046,17 @@ class ActionHandleFallbackAfterGreet(Action):
         if last_user_message and any(pattern in last_user_message for pattern in refusal_patterns):
             print(f"DEBUG ActionHandleFallbackAfterGreet: Refus détecté, redirection vers menu")
             dispatcher.utter_message(
-                text="Pas de problème ! 😊\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
+                text="Pas de problème !\n\nJe peux vous aider même sans connaître votre nom.\n\n**Quelle plateforme vous intéresse ?**",
                 buttons=[
-                    {"title": "💼E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
-                    {"title": "🎯Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
-                    {"title": "📄 Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
+                    {"title": "E-Carrière", "payload": "/choose_platform{\"platform\": \"E-Carrière\"}"},
+                    {"title": "Demande d'emploi (PGDE)", "payload": "/choose_platform{\"platform\": \"PGDE\"}"},
+                    {"title": "Attestation de non appartenance", "payload": "/choose_platform{\"platform\": \"Attestation\"}"}
                 ]
             )
             return [SlotSet("nom", "Utilisateur")]
         else:
             # Sinon, demander le nom à nouveau
-            dispatcher.utter_message(text="**👤 Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
+            dispatcher.utter_message(text="**Pour mieux vous aider, j'aimerais connaître votre nom.**\n\nSinon, tapez 'non' pour continuer sans nom.")
             return []
 
 
@@ -1072,10 +1072,10 @@ class ActionCancelResetECarriere(Action):
         nom_officiel = tracker.get_slot("nom_officiel") or "Utilisateur"
         
         dispatcher.utter_message(
-            text=f"❌ **Réinitialisation annulée**\n\nPas de problème **{nom_officiel}** !\n\nLa réinitialisation de votre mot de passe a été annulée.\n\nVotre mot de passe actuel reste inchangé.",
+            text=f"**Réinitialisation annulée**\n\nPas de problème **{nom_officiel}** !\n\nLa réinitialisation de votre mot de passe a été annulée.\n\nVotre mot de passe actuel reste inchangé.",
             buttons=[
-                {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
-                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
+                {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
             ]
         )
         
@@ -1107,37 +1107,37 @@ class ActionConfirmPasswordReset(Action):
                 _utter_pgde_inactive_account(dispatcher, {"nom": tracker.get_slot("nom_officiel")})
             elif reset_code == CODE_TOO_MANY_REQUESTS:
                 dispatcher.utter_message(
-                    text="⏳ **Demande déjà en cours**\n\nUn email de réinitialisation vient déjà d'être envoyé. Consultez votre boîte de réception (et les spams) ou réessayez dans quelques minutes.",
+                    text="**Demande déjà en cours**\n\nUn email de réinitialisation vient déjà d'être envoyé. Consultez votre boîte de réception (et les spams) ou réessayez dans quelques minutes.",
                     buttons=[
-                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ]
                 )
             elif reset_code == CODE_NOT_FOUND:
                 dispatcher.utter_message(
-                    text="❌ **Informations incohérentes**\n\nL'email et la CNI ne correspondent pas au même compte. Veuillez recommencer la vérification.",
+                    text="**Informations incohérentes**\n\nL'email et la CNI ne correspondent pas au même compte. Veuillez recommencer la vérification.",
                     buttons=[
-                        {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Autre vérification", "payload": "/start_account_verification"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ]
                 )
             else:
                 dispatcher.utter_message(
-                    text="❌ **Réinitialisation non aboutie**\n\nUne erreur est survenue lors de l'envoi de l'email de réinitialisation.\n\n🔁 Vous pouvez réessayer dans un instant ou contacter le support technique pour obtenir de l'aide.",
+                    text="**Réinitialisation non aboutie**\n\nUne erreur est survenue lors de l'envoi de l'email de réinitialisation.\n\nVous pouvez réessayer dans un instant ou contacter le support technique pour obtenir de l'aide.",
                     buttons=[
-                        {"title": "🔄 Réessayer", "payload": "/confirm_password_reset"},
-                        {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-                        {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                        {"title": "📞 Support", "payload": "/ask_support"}
+                        {"title": "Réessayer", "payload": "/confirm_password_reset"},
+                        {"title": "Autre vérification", "payload": "/start_account_verification"},
+                        {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                        {"title": "Support", "payload": "/ask_support"}
                     ]
                 )
         else:
             dispatcher.utter_message(
-                text="❌ **Informations manquantes**\n\nDonnées nécessaires pour la réinitialisation introuvables.\n\nVeuillez recommencer le processus.",
+                text="**Informations manquantes**\n\nDonnées nécessaires pour la réinitialisation introuvables.\n\nVeuillez recommencer le processus.",
                 buttons=[
-                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
-                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                    {"title": "📞 Support", "payload": "/ask_support"}
+                    {"title": "Recommencer", "payload": "/start_account_verification"},
+                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                    {"title": "Support", "payload": "/ask_support"}
                 ]
             )
         
@@ -1183,7 +1183,7 @@ class ActionGetDossierNumber(Action):
         
         # Si pas de CNI ou utilisateur non trouvé
         dispatcher.utter_message(
-            text="❌ Impossible de récupérer le numéro de dossier. Veuillez d'abord vérifier votre compte."
+            text="Impossible de récupérer le numéro de dossier. Veuillez d'abord vérifier votre compte."
         )
         return []
 
@@ -1273,21 +1273,21 @@ class ActionVoirActes(Action):
                 actes = user_data["actes"]
                 actes_text = "\n\n".join(actes)
                 
-                message = f"""📄 **Vos 3 derniers actes, {nom_officiel}**
+                message = f"""**Vos 3 derniers actes, {nom_officiel}**
 
 {actes_text}"""
             else:
-                message = f"""📄 **Aucun acte disponible pour le moment, {nom_officiel}**
+                message = f"""**Aucun acte disponible pour le moment, {nom_officiel}**
 
 Votre espace ne contient pas d'actes actuellement. Si vous pensez que c'est une erreur, vous pouvez contacter le support."""
         else:
-            message = "⚠️ Informations incomplètes.\nIl semble que certaines informations soient manquantes.\nVeuillez recommencer le processus depuis le début."
+            message = "Informations incomplètes.\nIl semble que certaines informations soient manquantes.\nVeuillez recommencer le processus depuis le début."
 
         dispatcher.utter_message(
             text=message,
             buttons=[
-                {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
-                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
+                {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
             ]
         )
         
@@ -1321,22 +1321,22 @@ class ActionVoirProjets(Action):
                 projets_text = "\n\n".join(projets)
                 
                 titre_projets = "Votre dernier projet" if len(projets) == 1 else f"Vos {len(projets)} derniers projets"
-                message = f"""📊 **{titre_projets}, {nom_officiel}**
+                message = f"""**{titre_projets}, {nom_officiel}**
 
 {projets_text}"""
             else:
-                message = f"""📊 **Aucun projet trouvé, {nom_officiel}**
+                message = f"""**Aucun projet trouvé, {nom_officiel}**
 
 Aucun projet n'apparaît pour votre compte pour le moment.
 N'hésitez pas à contacter le support si besoin."""
         else:
-            message = "❌ Erreur : Informations d'authentification manquantes."
+            message = "Erreur : Informations d'authentification manquantes."
         
         dispatcher.utter_message(
             text=message,
             buttons=[
-                {"title": "🔙 Retour au menu", "payload": "/retour_menu_utilisateur"},
-                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                {"title": "Retour au menu", "payload": "/retour_menu_utilisateur"},
+                {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
             ]
         )
         
@@ -1355,11 +1355,11 @@ class ActionAucunProjetActe(Action):
         nom_officiel = tracker.get_slot("nom_officiel") or "Utilisateur"
         
         dispatcher.utter_message(
-            text=f"❌ **Aucun projet ou acte disponible, {nom_officiel}**\n\nNous n'avons trouvé aucun projet ou acte associé à votre compte pour le moment.\n\nVeuillez contacter le support si vous pensez qu'il s'agit d'une erreur.",
+            text=f"**Aucun projet ou acte disponible, {nom_officiel}**\n\nNous n'avons trouvé aucun projet ou acte associé à votre compte pour le moment.\n\nVeuillez contacter le support si vous pensez qu'il s'agit d'une erreur.",
             buttons=[
-                {"title": "🔄 Nouvelle vérification", "payload": "/start_account_verification"},
-                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"},
-                {"title": "📞 Support", "payload": "/ask_support"}
+                {"title": "Nouvelle vérification", "payload": "/start_account_verification"},
+                {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                {"title": "Support", "payload": "/ask_support"}
             ]
         )
         
@@ -1401,29 +1401,29 @@ Que souhaitez-vous consulter ?"""
             buttons = []
             if projets:
                 buttons.extend([
-                    {"title": "📄 Voir mes actes", "payload": "/voir_actes"},
-                    {"title": "📊 Voir mes projets", "payload": "/voir_projets"}
+                    {"title": "Voir mes actes", "payload": "/voir_actes"},
+                    {"title": "Voir mes projets", "payload": "/voir_projets"}
                 ])
             else:
-                buttons.append({"title": "❌ Aucun projet/acte disponible", "payload": "/aucun_projet_acte"})
+                buttons.append({"title": "Aucun projet/acte disponible", "payload": "/aucun_projet_acte"})
             
             # Ajouter option de réinitialisation mot de passe si compte activé ET email disponible
             if compte_active and agent_email:
-                buttons.append({"title": "🔑 Réinitialiser mot de passe", "payload": "/reset_password_ecarriere"})
+                buttons.append({"title": "Réinitialiser mot de passe", "payload": "/reset_password_ecarriere"})
             
             # Boutons de navigation
             buttons.extend([
-                {"title": "🔄 Autre vérification", "payload": "/start_account_verification"},
-                {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                {"title": "Autre vérification", "payload": "/start_account_verification"},
+                {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
             ])
 
             dispatcher.utter_message(text=message, buttons=buttons)
         else:
             dispatcher.utter_message(
-                text="❌ Erreur : Informations d'authentification manquantes. Veuillez recommencer la vérification.",
+                text="Erreur : Informations d'authentification manquantes. Veuillez recommencer la vérification.",
                 buttons=[
-                    {"title": "🔄 Recommencer", "payload": "/start_account_verification"},
-                    {"title": "🏠 Menu principal", "payload": "/go_back_greet_with_name"}
+                    {"title": "Recommencer", "payload": "/start_account_verification"},
+                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"}
                 ]
             )
         
