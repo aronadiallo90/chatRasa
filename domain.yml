@@ -422,6 +422,7 @@ responses:
 actions:
   - action_session_start
   - action_fallback_menu
+  - action_ask_name_again
   - action_redirect_platform
   - action_explain_account_creation
   - action_explain_login

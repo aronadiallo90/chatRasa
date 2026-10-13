@@ -81,6 +81,13 @@ rules:
       - intent: nlu_fallback  
       - action: action_handle_fallback_after_greet
 
+  - rule: Réponse à la nouvelle demande de nom (nom inconnu du modèle)
+    steps:
+      - action: action_ask_name_again
+      - action: action_listen
+      - intent: nlu_fallback
+      - action: action_handle_name
+
   - rule: Message incompris en cours de conversation (jamais de silence)
     steps:
       - intent: nlu_fallback

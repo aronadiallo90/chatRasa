@@ -5,6 +5,7 @@ from rasa_sdk import Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
 from actions.actions import (
+    ActionAskNameAgain,
     ActionFallbackMenu,
     ActionHandleFallbackAfterGreet,
     ActionHandleName,
@@ -71,12 +72,25 @@ class ActionHandleNameTest(unittest.TestCase):
         self.assertEqual(len(dispatcher.messages[0]["buttons"]), 3)
 
     def test_invalid_text_asks_again_without_setting_a_name(self):
+        events = ActionHandleName().run(CollectingDispatcher(), _tracker("dfokn,gb"), {})
+
+        # Pas de nom enregistré ; la nouvelle demande passe par une action dédiée (règle suivante)
+        self.assertEqual(events, [{"event": "followup", "timestamp": None, "name": "action_ask_name_again"}])
+
+    def test_ask_name_again_explains_what_is_expected(self):
         dispatcher = CollectingDispatcher()
 
-        events = ActionHandleName().run(dispatcher, _tracker("dfokn,gb"), {})
+        ActionAskNameAgain().run(dispatcher, _tracker("dfokn,gb"), {})
 
-        self.assertEqual(events, [])
         self.assertIn("Je n'ai pas reconnu de nom", dispatcher.messages[0]["text"])
+        self.assertIn("« non »", dispatcher.messages[0]["text"])
+
+    def test_french_and_international_names_are_accepted(self):
+        for typed, expected in (("pierre", "Pierre"), ("Sophie Martin", "Sophie Martin"),
+                                ("élodie", "Élodie"), ("Kwame Mensah", "Kwame Mensah")):
+            with self.subTest(typed=typed):
+                events = ActionHandleName().run(CollectingDispatcher(), _tracker(typed), {})
+                self.assertEqual(_slot_events(events), {"nom": expected})
 
 
 class ActionHandleFallbackAfterGreetTest(unittest.TestCase):

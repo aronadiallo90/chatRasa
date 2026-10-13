@@ -2,7 +2,7 @@ from typing import Any, Text, Dict, List, Optional
 
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import ActionExecuted, SessionStarted, SlotSet
+from rasa_sdk.events import ActionExecuted, FollowupAction, SessionStarted, SlotSet
 import sys
 import json
 from datetime import datetime
@@ -274,13 +274,10 @@ class ActionHandleName(Action):
             dispatcher.utter_message(response="utter_greet_with_name", nom=nom_valide)
             return [SlotSet("nom", nom_valide)]
 
-        # Chiffres, symboles, une seule lettre… : on redemande en expliquant
-        dispatcher.utter_message(
-            text="Je n'ai pas reconnu de nom dans votre message.\n\n"
-                 "**Pourriez-vous m'indiquer votre nom ?** (lettres uniquement)\n"
-                 "Sinon, tapez « non » pour continuer sans nom."
-        )
-        return []
+        # Chiffres, symboles, une seule lettre… : nouvelle demande par une action dédiée,
+        # pour que la règle « réponse après nouvelle demande » prenne la réponse comme nom.
+        return [FollowupAction("action_ask_name_again")]
+
 
     def _clean_and_format_name(self, nom_raw: str) -> str:
         """Nettoie et formate un nom en supprimant les mots parasites"""
@@ -1026,6 +1023,23 @@ class ActionConfirmResetECarriere(Action):
                 ]
             )
         
+        return []
+
+
+class ActionAskNameAgain(Action):
+    """Redemande le nom ; la réponse suivante sera traitée comme un nom (règle dédiée)."""
+
+    def name(self) -> Text:
+        return "action_ask_name_again"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(
+            text="Je n'ai pas reconnu de nom dans votre message.\n\n"
+                 "**Pourriez-vous m'indiquer votre nom ?** (lettres uniquement)\n"
+                 "Sinon, tapez « non » pour continuer sans nom."
+        )
         return []
 
 
