@@ -157,6 +157,43 @@ def _utter_backend_unavailable(dispatcher: CollectingDispatcher, error: BackendA
     )
 
 
+MAX_CNI_ATTEMPTS_PER_CONVERSATION = 5
+
+
+def looks_like_cni(text: str) -> bool:
+    """12 à 14 chiffres, espaces/points/tirets tolérés (même règle que le relais Laravel)."""
+    return bool(re.fullmatch(r"\d{12,14}", re.sub(r"[\s.-]", "", text or "")))
+
+
+class CniAttemptLimitMixin:
+    """Compte les CNI saisies dans la conversation ; au-delà du maximum, aucune vérification.
+
+    Deuxième barrière contre l'énumération des CNI : le relais Laravel limite déjà par IP,
+    ce compteur couvre les accès directs à Rasa (page :8000, réseau interne).
+    """
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        latest_text = tracker.latest_message.get("text", "").strip()
+        if not looks_like_cni(latest_text):
+            return self.run_verification(dispatcher, tracker, domain) or []
+
+        attempts = int(tracker.get_slot("cni_attempts") or 0) + 1
+        if attempts > MAX_CNI_ATTEMPTS_PER_CONVERSATION:
+            dispatcher.utter_message(
+                text="**Nombre maximal de vérifications atteint**\n\n"
+                     "Pour la sécurité des comptes, je ne peux plus vérifier de numéro de CNI dans cette conversation.\n"
+                     "Si vous avez besoin d'aide, contactez le support.",
+                buttons=[
+                    {"title": "Support", "payload": "/ask_support"},
+                    {"title": "Menu principal", "payload": "/go_back_greet_with_name"},
+                ],
+            )
+            return [SlotSet("cni_attempts", attempts)]
+        return [SlotSet("cni_attempts", attempts)] + (self.run_verification(dispatcher, tracker, domain) or [])
+
+
 def _utter_pgde_inactive_account(dispatcher: CollectingDispatcher, user_data: Dict[str, Any]) -> None:
     """Compte PGDE trouvé mais non activé (email jamais confirmé) ou suspendu."""
     nom_officiel = user_data.get("nom") or "Utilisateur"
@@ -583,11 +620,11 @@ class ActionHandleEmail(Action):
         dispatcher.utter_message(response="utter_no_account")
 
 
-class ActionHandleCNI(Action):
+class ActionHandleCNI(CniAttemptLimitMixin, Action):
     def name(self) -> Text:
         return "action_handle_cni"
 
-    def run(self, dispatcher: CollectingDispatcher,
+    def run_verification(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
@@ -728,11 +765,11 @@ class ActionHandleCNI(Action):
 
 
 
-class ActionHandleMatricule(Action):
+class ActionHandleMatricule(CniAttemptLimitMixin, Action):
     def name(self) -> Text:
         return "action_handle_matricule"
 
-    def run(self, dispatcher: CollectingDispatcher,
+    def run_verification(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         

@@ -88,6 +88,12 @@ slots:
     influence_conversation: false
     mappings:
       - type: custom
+  # Compteur anti-énumération : CNI saisies dans la conversation (remis à zéro à chaque session)
+  cni_attempts:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: custom
   user_id:
     type: text
     influence_conversation: false

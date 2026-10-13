@@ -325,6 +325,8 @@
     }
 
     function errorMessage(status, body) {
+        // Le relais précise le cas « trop de tentatives de vérification » (anti-énumération des CNI)
+        if (status === 429 && body && body.code === 'too_many_cni_attempts' && body.message) { return body.message; }
         if (status === 429) { return 'Vous envoyez beaucoup de messages. Patientez une minute puis réessayez.'; }
         if (status === 503 && body && body.message) { return body.message; }
         return 'Amath est momentanément indisponible. Veuillez réessayer dans quelques instants.';
