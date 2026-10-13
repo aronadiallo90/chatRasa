@@ -47,9 +47,11 @@ class VerifiedPgdeAccountTest(unittest.TestCase):
         shown = [message for message in dispatcher.messages if message.get("response") == "utter_account_verified"]
         self.assertTrue(shown, dispatcher.messages)
         values = " ".join(str(value) for value in shown[0].values())
-        for raw in ("Lalaaicha02", "258706", "LALA", "aicha.lala@"):
+        for raw in ("Lalaaicha02", "LALA", "aicha.lala@"):
             self.assertNotIn(raw, values)
         self.assertEqual(shown[0]["username"], "La•••••••02")
+        # Décision du 13/10 : le numéro de dossier peut être affiché en entier
+        self.assertEqual(str(shown[0]["dossier_number"]), "258706")
 
 
 if __name__ == "__main__":

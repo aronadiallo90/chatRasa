@@ -575,7 +575,7 @@ class ActionHandleEmail(Action):
                     response="utter_account_verified",
                     nom=mask_person_name(user_data.get("nom")),
                     username=mask_identifier(user_data.get("username")),
-                    dossier_number=mask_identifier(user_data.get("id")),
+                    dossier_number=user_data.get("id"),
                 )
                 return
         
@@ -611,7 +611,7 @@ class ActionHandleCNI(Action):
                     email = user_data["email"]
 
                     dispatcher.utter_message(response="utter_account_verified", nom=mask_person_name(nom_officiel),
-                                         username=mask_identifier(username), dossier_number=mask_identifier(dossier_number))
+                                         username=mask_identifier(username), dossier_number=dossier_number)
                     return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number), SlotSet("has_account", "Oui")]
                 else:
                     dispatcher.utter_message(response="utter_no_account")
@@ -665,7 +665,7 @@ class ActionHandleCNI(Action):
                         email = user_data["email"]
                         
                         dispatcher.utter_message(response="utter_account_verified", nom=mask_person_name(nom_officiel),
-                                         username=mask_identifier(username), dossier_number=mask_identifier(dossier_number))
+                                         username=mask_identifier(username), dossier_number=dossier_number)
                         return [SlotSet("cni", cni), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
                     else:
                         # CNI inconnue : un seul message, avec les mêmes boutons que utter_no_account
@@ -758,7 +758,7 @@ class ActionHandleMatricule(Action):
                     email = user_data["email"]
 
                     dispatcher.utter_message(response="utter_account_verified", nom=mask_person_name(nom_officiel),
-                                         username=mask_identifier(username), dossier_number=mask_identifier(dossier_number))
+                                         username=mask_identifier(username), dossier_number=dossier_number)
                     return [SlotSet("cni", latest_text), SlotSet("nom_officiel", nom_officiel), SlotSet("username", username), SlotSet("dossier_number", dossier_number), SlotSet("email", email), SlotSet("user_id", dossier_number)]
                 else:
                     dispatcher.utter_message(response="utter_no_account")
@@ -1244,7 +1244,7 @@ class ActionGetDossierNumber(Action):
                 dossier_number = user_data["id"]  # ID de la BD
                 dispatcher.utter_message(
                     response="utter_dossier_number",
-                    dossier_number=mask_identifier(dossier_number)
+                    dossier_number=dossier_number
                 )
                 return []
         
