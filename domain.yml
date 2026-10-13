@@ -200,7 +200,7 @@ responses:
 
 
   utter_ask_pgde_account_creation:
-    - text: "**Créons ensemble votre compte PGDE !**\nSuivez ces quelques étapes pour vous inscrire et accéder aux opportunités d'emploi dans la Fonction publique sénégalaise. 🇸🇳\n\n1️⃣ Accédez à la plateforme en cliquant ici : **[PGDE – Plateforme de Gestion des Demandes d'Emploi](https://emploi-fpublique.sec.gouv.sn/login)**\n\n2️⃣ Cliquez sur « **Créer un compte** ».\n\n3️⃣ Renseignez les informations demandées, notamment votre nom, votre prénom et votre adresse e-mail.\n\n4️⃣ Confirmez votre inscription en suivant les instructions reçues par e-mail.\n\nUne fois ces étapes terminées, vous pourrez accéder à votre compte et poursuivre vos démarches.\nBesoin d'aide ? Amath est là pour vous accompagner ! 😊"
+    - text: "**Créons ensemble votre compte PGDE !**\nSuivez ces quelques étapes pour vous inscrire et accéder aux opportunités d'emploi dans la Fonction publique sénégalaise. 🇸🇳\n\n1️⃣ Accédez à la plateforme en cliquant ici : **[PGDE – Plateforme de Gestion des Demandes d'Emploi](https://emploi.fonctionpublique.sn/login)**\n\n2️⃣ Cliquez sur « **Créer un compte** ».\n\n3️⃣ Renseignez les informations demandées, notamment votre nom, votre prénom et votre adresse e-mail.\n\n4️⃣ Confirmez votre inscription en suivant les instructions reçues par e-mail.\n\nUne fois ces étapes terminées, vous pourrez accéder à votre compte et poursuivre vos démarches.\nBesoin d'aide ? Amath est là pour vous accompagner ! 😊"
       buttons:
         - title: "🔄 Retour PGDE"
           payload: "/go_back_pgde"
@@ -219,7 +219,7 @@ responses:
           payload: "/ask_support"
 
   utter_ask_pgde_login:
-    - text: "Pour vous **connecter** à **PGDE** :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi-fpublique.sec.gouv.sn/login).**\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
+    - text: "Pour vous **connecter** à **PGDE** :\n\n1️⃣ Accédez à la page en  **[cliquant sur ce lien👆](https://emploi.fonctionpublique.sn/login).**\n\n2️⃣ Saisissez votre **email** et votre **mot de passe**.\n\n3️⃣ Cliquez sur **'Se connecter'**."
       buttons:                                                                                          
         - title: "🔄 Retour PGDE"
           payload: "/go_back_pgde"
@@ -228,7 +228,7 @@ responses:
         - title: "📞 Support"
           payload: "/ask_support"
   utter_ask_pgde_password_reset:
-    - text: "Vous pouvez utiliser **[ce lien👆](https://emploi-fpublique.sec.gouv.sn/resetting/request)** pour réinitialiser votre mot de passe.\nEn cas de problèmes ou de difficultés, veuillez nous contacter à l'adresse **emploi@fonctionpublique.gouv.sn** en indiquant **Mot de passe oublié** comme objet du message."
+    - text: "Vous pouvez utiliser **[ce lien👆](https://emploi.fonctionpublique.sn/forgot-password)** pour réinitialiser votre mot de passe.\nEn cas de problèmes ou de difficultés, veuillez nous contacter à l'adresse **emploi@fonctionpublique.gouv.sn** en indiquant **Mot de passe oublié** comme objet du message."
       buttons:                                                                                          
         - title: "🔄 Retour PGDE"
           payload: "/go_back_pgde"
@@ -385,7 +385,7 @@ responses:
         - title: "❌ Non, mot de passe oublié"
           payload: "/deny_has_access"
   utter_account_access_confirmed:
-    - text: "✅ **Accès confirmé**.\n Vous pouvez vous connecter dès maintenant à votre espace personnel.\n🔗 [**Accéder à la plateforme**](https://emploi-fpublique.sec.gouv.sn/login)\n\n✨ Bonne chance dans vos démarches ! 🤝"
+    - text: "✅ **Accès confirmé**.\n Vous pouvez vous connecter dès maintenant à votre espace personnel.\n🔗 [**Accéder à la plateforme**](https://emploi.fonctionpublique.sn/login)\n\n✨ Bonne chance dans vos démarches ! 🤝"
       buttons:
         - title: "🔄 Autre vérification"
           payload: "/start_account_verification"
@@ -399,14 +399,14 @@ responses:
         - title: "Non, annuler"
           payload: "/deny_password_reset"
   utter_password_reset_success:
-    - text: "✅ **Réinitialisation réussie !**\nUn lien de réinitialisation a été envoyé à l'adresse : **{email}**.\n📬 Pensez à vérifier votre dossier *Spam* ou *Courrier indésirable*.\nUne fois votre mot de passe changé, vous pourrez vous connecter :\n\n[Se connecter à PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
+    - text: "✅ **Réinitialisation réussie !**\nUn lien de réinitialisation a été envoyé à l'adresse : **{email}**.\n📬 Pensez à vérifier votre dossier *Spam* ou *Courrier indésirable*.\nUne fois votre mot de passe changé, vous pourrez vous connecter :\n\n[Se connecter à PGDE](https://emploi.fonctionpublique.sn/login)"
       buttons:
         - title: "🔄 Autre vérification"
           payload: "/start_account_verification"
         - title: "🏠 Menu principal"
           payload: "/go_back_greet_with_name"
   utter_password_reset_cancelled:
-    - text: "Réinitialisation annulée ❌\n\nSi vous vous souvenez de votre mot de passe, vous pouvez essayer de vous connecter :\n\n[Se connecter à PGDE](https://emploi-fpublique.sec.gouv.sn/login)"
+    - text: "Réinitialisation annulée ❌\n\nSi vous vous souvenez de votre mot de passe, vous pouvez essayer de vous connecter :\n\n[Se connecter à PGDE](https://emploi.fonctionpublique.sn/login)"
       buttons:
         - title: "🔄 Autre vérification"
           payload: "/start_account_verification"
