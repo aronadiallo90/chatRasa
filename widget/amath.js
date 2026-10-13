@@ -98,6 +98,75 @@
         close: '<path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>',
         send: '<path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/>'
     };
+    // Icônes des boutons, dans le style du site emploi : choisies d'après l'intention
+    // du bouton (son payload), jamais d'après son texte.
+    var BUTTON_ICON_PATHS = {
+        home: 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z',
+        back: 'M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z',
+        support: 'M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.32.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z',
+        retry: 'M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.75 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z',
+        check: 'M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z',
+        cross: 'M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z',
+        briefcase: 'M10 4h4a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4V6a2 2 0 0 1 2-2zm4 3V6h-4v1h4z',
+        person: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z',
+        document: 'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z',
+        userPlus: 'M15 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z',
+        login: 'M11 7 9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-8v2h8v14z',
+        key: 'M12.65 10A6 6 0 1 0 7 18a6 6 0 0 0 5.65-4H17v4h4v-4h2v-4H12.65zM7 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z',
+        chart: 'M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z',
+        info: 'M11 7h2v2h-2zm0 4h2v6h-2zm1-9a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z',
+        clock: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z'
+    };
+    var BUTTON_ICON_BY_INTENT = {
+        go_back_greet_with_name: 'home',
+        go_back_ecarriere: 'back',
+        go_back_pgde: 'back',
+        retour_menu_utilisateur: 'back',
+        ask_support: 'support',
+        start_account_verification: 'retry',
+        confirm_has_account: 'check',
+        confirm_has_access: 'check',
+        confirm_password_reset: 'check',
+        confirm_reset_ecarriere: 'check',
+        deny_has_account: 'cross',
+        deny_has_access: 'cross',
+        deny_password_reset: 'cross',
+        cancel_reset_ecarriere: 'cross',
+        ask_account_creation: 'userPlus',
+        ask_attestation_account: 'userPlus',
+        ask_login: 'login',
+        ask_password_reset: 'key',
+        reset_password_ecarriere: 'key',
+        voir_actes: 'document',
+        ask_attestation_request: 'document',
+        voir_projets: 'chart',
+        ask_attestation_info: 'info',
+        aucun_projet_acte: 'info',
+        ask_attestation_status: 'clock'
+    };
+    var BUTTON_ICON_BY_PLATFORM = { 'E-Carrière': 'briefcase', 'PGDE': 'person', 'Attestation': 'document' };
+
+    function buttonIconName(payload) {
+        var match = /^\/([a-z_]+)(\{.*\})?$/.exec(String(payload || ''));
+        if (!match) { return null; }
+        if (match[1] === 'choose_platform') {
+            try { return BUTTON_ICON_BY_PLATFORM[JSON.parse(match[2]).platform] || null; } catch (error) { return null; }
+        }
+        return BUTTON_ICON_BY_INTENT[match[1]] || null;
+    }
+
+    // Contenu d'un bouton : icône (si connue) + libellé inséré en texte brut.
+    function fillChoiceButton(element, button) {
+        var iconName = buttonIconName(button.payload);
+        if (iconName) {
+            element.innerHTML = '<svg class="choice-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+                + '<path d="' + BUTTON_ICON_PATHS[iconName] + '"/></svg>';
+        }
+        var label = document.createElement('span');
+        label.textContent = button.title;
+        element.appendChild(label);
+    }
+
     function icon(name) {
         return '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + ICONS[name] + '</svg>';
     }
@@ -184,7 +253,7 @@
                 var choice = document.createElement('button');
                 choice.type = 'button';
                 choice.className = 'choice';
-                choice.textContent = button.title;
+                fillChoiceButton(choice, button);
                 choice.disabled = !isLast; // seuls les choix du dernier message restent actifs
                 choice.addEventListener('click', function () { sendMessage(button.payload, button.title); });
                 group.appendChild(choice);
@@ -403,6 +472,8 @@
             '  font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s; }',
             '.choice:hover:not(:disabled) { background: #00843F; color: #FFFFFF; }',
             '.choice:disabled { border-color: #E5E5E5; color: #6C757D; cursor: default; }',
+            '.choice { display: inline-flex; align-items: center; gap: 6px; }',
+            '.choice-icon { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }',
             '.typing { align-self: flex-start; display: flex; gap: 4px; padding: 12px; }',
             '.typing span { width: 8px; height: 8px; border-radius: 50%; background: #00843F; animation: bounce 1.2s infinite ease-in-out both; }',
             '.typing span:nth-child(2) { animation-delay: 0.15s; }',
